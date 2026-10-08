@@ -1,0 +1,31 @@
+cases:
+- name: six turns
+  inputs: [600000, 100000]
+  expect: 6
+- name: one turn
+  inputs: [100, 100]
+  expect: 1
+- name: no sales
+  inputs: [0, 1000]
+  expect: 0
+- name: fractional inputs
+  inputs: [1234.56, 98.76]
+  expect: 12.500607533414337
+- name: large figures
+  inputs: [5000000000, 250000000]
+  expect: 20
+- name: zero inventory
+  inputs: [100, 0]
+  expect: '#NUM!'
+- name: negative inventory
+  inputs: [100, -5]
+  expect: '#NUM!'
+- name: negative cost
+  inputs: [-5, 100]
+  expect: '#NUM!'
+- name: text cost_of_goods_sold
+  inputs: [x, 100000]
+  expect: '#VALUE!'
+- name: boolean average_inventory
+  inputs: [600000, true]
+  expect: '#VALUE!'
