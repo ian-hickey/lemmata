@@ -1,0 +1,36 @@
+id: npv
+name: AF.NPV
+version: 0.1.0
+summary: Net present value of a series of cash flows at a constant discount rate, with the timing of the first cash flow stated explicitly instead of assumed.
+definition:
+  source: Microsoft Support, NPV function, with the first-period offset made an argument
+  url: https://support.microsoft.com/en-us/office/npv-function-8672cb67-2576-4d07-b67b-ac28acf2a568
+  formula: sum over i from 0 of cashflows[i] / (1 + rate) ^ (first_period + i)
+parameters:
+  - name: rate
+    type: number
+    unit: decimal rate per period
+    description: Discount rate for one period. Must be greater than -1.
+  - name: cashflows
+    type: range
+    unit: currency
+    description: One row or one column of cash flows, one per period, in order. Every cell must hold a number. Outflows are negative.
+  - name: first_period
+    type: number
+    unit: periods
+    description: Period at which the first cash flow occurs. 0 means today (undiscounted). 1 means the end of the first period, which is what Excel's NPV assumes. Must be a whole number of zero or more.
+returns:
+  type: number
+  unit: currency
+  description: Present value of the cash flows, discounted to period 0.
+errors:
+  "#VALUE!": rate or first_period is not a number, cashflows spans more than one row and one column, or a cell in cashflows is blank or not a number.
+  "#NUM!": rate is -1 or less, or first_period is negative or not a whole number.
+conventions:
+  - AF.NPV(rate, cashflows, 1) equals Excel's NPV(rate, cashflows).
+  - AF.NPV(rate, cashflows, 0) treats the first cash flow as today, the usual case when the first entry is an initial investment.
+  - Cash flows are evenly spaced. For dated cash flows use an XNPV-style module.
+  - A blank cell is an error, not a zero. Write 0 for a period with no cash flow.
+tags: [finance, discounting, valuation]
+dependencies: []
+license: MIT-0

@@ -1,0 +1,4 @@
+LAMBDA(start_value, end_value, years,
+  IF(NOT(AND(ISNUMBER(start_value), ISNUMBER(end_value), ISNUMBER(years))), #VALUE!,
+  IF(OR(start_value <= 0, end_value < 0, years <= 0), #NUM!,
+  (end_value / start_value) ^ (1 / years) - 1)))

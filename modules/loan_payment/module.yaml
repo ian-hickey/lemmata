@@ -1,0 +1,36 @@
+id: loan_payment
+name: AF.LOAN_PAYMENT
+version: 0.1.0
+summary: Level payment per period that fully repays a loan over a whole number of periods, with interest charged per period and payments at the end of each period.
+definition:
+  source: Microsoft Support, PMT function (ordinary annuity payment, pv = principal, fv = 0, type = 0)
+  url: https://support.microsoft.com/en-us/office/pmt-function-0214da64-9a63-4996-bc20-214433fa6441
+  formula: principal * rate / (1 - (1 + rate) ^ -periods), or principal / periods when rate is 0
+parameters:
+  - name: principal
+    type: number
+    unit: currency
+    description: Amount borrowed. Must be zero or greater.
+  - name: rate
+    type: number
+    unit: decimal rate per period
+    description: Interest rate for one period. For monthly payments on an annual rate, pass annual_rate / 12. Must be zero or greater.
+  - name: periods
+    type: number
+    unit: periods
+    description: Number of payments. Must be a positive whole number.
+returns:
+  type: number
+  unit: currency per period
+  description: Payment per period as a positive amount.
+errors:
+  "#VALUE!": An argument is not a number.
+  "#NUM!": principal is negative, rate is negative, or periods is not a positive whole number.
+conventions:
+  - Returns a positive payment. Excel's PMT returns a negative number for a positive loan amount.
+  - Payments fall at the end of each period (an ordinary annuity). There is no option for payments in advance.
+  - The loan is fully repaid. There is no balloon or residual value.
+  - rate and periods must use the same period. Monthly payments need a monthly rate and a count of months.
+tags: [finance, loans, amortization, annuity]
+dependencies: []
+license: MIT-0

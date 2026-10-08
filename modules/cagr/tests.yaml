@@ -1,0 +1,50 @@
+cases:
+  - name: doubles in ten years
+    inputs: [100, 200, 10]
+    expect: 0.07177346253629313
+    source: computed from the definition, 2^(1/10) - 1
+  - name: investopedia worked example
+    inputs: [10000, 19000, 3]
+    expect: 0.23856232963017088
+    source: https://www.investopedia.com/terms/c/cagr.asp reports 23.86 percent for 10,000 to 19,000 over 3 years
+  - name: doubles in two years is root two minus one
+    inputs: [50, 100, 2]
+    expect: 0.41421356237309515
+    source: computed from the definition
+  - name: no change is zero
+    inputs: [100, 100, 5]
+    expect: 0
+  - name: halves in one year
+    inputs: [100, 50, 1]
+    expect: -0.5
+  - name: half year is annualized
+    inputs: [1000, 2000, 0.5]
+    expect: 3
+    source: doubling in six months is 300 percent per year
+  - name: end value of zero is total loss
+    inputs: [100, 0, 3]
+    expect: -1
+  - name: zero start value
+    inputs: [0, 100, 3]
+    expect: "#NUM!"
+  - name: negative start value
+    inputs: [-100, 100, 3]
+    expect: "#NUM!"
+  - name: negative end value
+    inputs: [100, -5, 3]
+    expect: "#NUM!"
+  - name: zero years
+    inputs: [100, 200, 0]
+    expect: "#NUM!"
+  - name: negative years
+    inputs: [100, 200, -1]
+    expect: "#NUM!"
+  - name: text start value
+    inputs: ["a", 200, 10]
+    expect: "#VALUE!"
+  - name: text years
+    inputs: [100, 200, "x"]
+    expect: "#VALUE!"
+  - name: boolean is not a number
+    inputs: [true, 200, 10]
+    expect: "#VALUE!"

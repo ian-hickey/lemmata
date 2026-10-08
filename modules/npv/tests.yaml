@@ -1,0 +1,57 @@
+cases:
+  - name: column of flows with the first today
+    inputs: [0.1, {range: [-100, 30, 40, 50]}, 0]
+    expect: -2.1036814425244366
+    source: computed from the definition
+  - name: same flows starting at end of period 1 matches excel npv
+    inputs: [0.1, {range: [-100, 30, 40, 50]}, 1]
+    expect: -1.9124376750222147
+    source: computed from the definition; equals Excel NPV(0.1, {-100,30,40,50})
+  - name: microsoft npv example 1
+    inputs: [0.1, {range: [-10000, 3000, 4200, 6800]}, 1]
+    expect: 1188.4434123352212
+    source: https://support.microsoft.com/en-us/office/npv-function-8672cb67-2576-4d07-b67b-ac28acf2a568 shows 1,188.44
+  - name: microsoft npv example 2 with the outlay today
+    inputs: [0.08, {range: [-40000, 8000, 9200, 10000, 12000, 14500]}, 0]
+    expect: 1922.0615549323657
+    source: https://support.microsoft.com/en-us/office/npv-function-8672cb67-2576-4d07-b67b-ac28acf2a568 shows NPV(8%, 8000..14500) - 40000 as 1,922.06
+  - name: row of flows gives the same result as a column
+    inputs: [0.1, {range: [[-100, 30, 40, 50]]}, 0]
+    expect: -2.1036814425244366
+  - name: zero rate is the plain sum
+    inputs: [0, {range: [-100, 30, 40, 50]}, 0]
+    expect: 20
+  - name: single flow discounted one period
+    inputs: [0.1, {range: [110]}, 1]
+    expect: 100
+  - name: large first period
+    inputs: [0.05, {range: [100]}, 10]
+    expect: 61.39132535407592
+    source: computed from the definition, 100 / 1.05^10
+  - name: two dimensional range
+    inputs: [0.1, {range: [[-100, 30], [40, 50]]}, 0]
+    expect: "#VALUE!"
+  - name: text inside the range
+    inputs: [0.1, {range: [-100, "x", 40]}, 0]
+    expect: "#VALUE!"
+  - name: blank inside the range
+    inputs: [0.1, {range: [-100, null, 40]}, 0]
+    expect: "#VALUE!"
+  - name: rate of minus one
+    inputs: [-1, {range: [-100, 30]}, 0]
+    expect: "#NUM!"
+  - name: rate below minus one
+    inputs: [-1.5, {range: [-100, 30]}, 0]
+    expect: "#NUM!"
+  - name: fractional first period
+    inputs: [0.1, {range: [-100, 30]}, 0.5]
+    expect: "#NUM!"
+  - name: negative first period
+    inputs: [0.1, {range: [-100, 30]}, -1]
+    expect: "#NUM!"
+  - name: text rate
+    inputs: ["a", {range: [-100, 30]}, 0]
+    expect: "#VALUE!"
+  - name: text first period
+    inputs: [0.1, {range: [-100, 30]}, "now"]
+    expect: "#VALUE!"

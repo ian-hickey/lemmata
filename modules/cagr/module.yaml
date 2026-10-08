@@ -1,0 +1,35 @@
+id: cagr
+name: AF.CAGR
+version: 0.1.0
+summary: Compound annual growth rate from a start value to an end value over a number of years, returned as a decimal rate per year.
+definition:
+  source: Investopedia, Compound Annual Growth Rate (CAGR)
+  url: https://www.investopedia.com/terms/c/cagr.asp
+  formula: (end_value / start_value) ^ (1 / years) - 1
+parameters:
+  - name: start_value
+    type: number
+    unit: any consistent unit, such as currency
+    description: Value at the start of the period. Must be greater than zero.
+  - name: end_value
+    type: number
+    unit: same as start_value
+    description: Value at the end of the period. Must be zero or greater.
+  - name: years
+    type: number
+    unit: years
+    description: Length of the period. Must be greater than zero. Fractions are allowed.
+returns:
+  type: number
+  unit: decimal rate per year
+  description: Growth rate per year, where 0.05 means 5 percent.
+errors:
+  "#VALUE!": An argument is not a number. Booleans and text are rejected.
+  "#NUM!": start_value is not positive, end_value is negative, or years is not positive.
+conventions:
+  - Returns a decimal rate, not a percentage.
+  - An end value of zero returns -1, a total loss.
+  - Years need not be whole. Use 0.5 for a six-month period to annualize it.
+tags: [finance, growth, returns]
+dependencies: []
+license: MIT-0

@@ -1,0 +1,40 @@
+cases:
+  - name: microsoft pmt example, 8 percent over 10 months on 10,000
+    inputs: [10000, 0.006666666666666667, 10]
+    expect: 1037.0320893591625
+    source: https://support.microsoft.com/en-us/office/pmt-function-0214da64-9a63-4996-bc20-214433fa6441 shows PMT(0.08/12, 10, 10000) as -1,037.03
+  - name: thirty year mortgage at 5 percent on 200,000
+    inputs: [200000, 0.004166666666666667, 360]
+    expect: 1073.6432460242797
+    source: computed from the definition; Excel PMT(0.05/12, 360, 200000) is -1,073.64
+  - name: twelve payments at 1 percent per period on 1,000
+    inputs: [1000, 0.01, 12]
+    expect: 88.8487886783416
+    source: computed from the definition
+  - name: zero rate divides evenly
+    inputs: [10000, 0, 10]
+    expect: 1000
+  - name: zero principal
+    inputs: [0, 0.01, 12]
+    expect: 0
+  - name: single period repays principal plus interest
+    inputs: [1000, 0.05, 1]
+    expect: 1050
+  - name: negative principal
+    inputs: [-1000, 0.01, 12]
+    expect: "#NUM!"
+  - name: negative rate
+    inputs: [1000, -0.01, 12]
+    expect: "#NUM!"
+  - name: zero periods
+    inputs: [1000, 0.01, 0]
+    expect: "#NUM!"
+  - name: fractional periods
+    inputs: [1000, 0.01, 12.5]
+    expect: "#NUM!"
+  - name: text principal
+    inputs: ["x", 0.01, 12]
+    expect: "#VALUE!"
+  - name: boolean rate
+    inputs: [1000, true, 12]
+    expect: "#VALUE!"

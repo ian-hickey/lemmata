@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --all-groups
+      - name: Spec check
+        run: uv run af check
+      - name: Module tests on IronCalc
+        run: uv run af test
+      - name: Tooling tests
+        run: uv run pytest -q
+      - name: Build static registry
+        run: uv run af build-index --out dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: registry
+          path: dist/
