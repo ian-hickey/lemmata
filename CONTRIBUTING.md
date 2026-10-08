@@ -24,6 +24,8 @@ Cite the definition the formula implements and include at least one reference ca
 3. Any failed comparison fails the `review` check. The reviewer cannot pass past it.
 4. Within 15 minutes of a merge, `publish` builds the registry, attests each module tarball with Sigstore, and deploys to GitHub Pages.
 
+A pull request whose last commit was pushed by the bot (its review records) needs one more human push, or an update from main, before GitHub counts its checks, unless the repository has a `LEMMATA_BOT_TOKEN` secret for the records push.
+
 Declare the author in the pull request. Where the author is an AI model, the reviewer must run on a different model: a maintainer re-runs the `review` workflow with the `model` input.
 
 ## Fixing a published module

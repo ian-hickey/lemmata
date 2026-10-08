@@ -73,10 +73,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh pr comment "$PR" --body-file report.md
+      # Pushing with the Actions token raises no pull_request events and the
+      # dispatched checks below do not count toward required status checks, so
+      # a bot-pushed head needs a human push before it can merge. Set a
+      # LEMMATA_BOT_TOKEN secret (a fine-grained token with contents: write) and
+      # the records push triggers the checks like any other push.
       - name: Record approvals on the pull request branch
         if: steps.review.outputs.verdict != 'skip'
         env:
           GH_TOKEN: ${{ github.token }}
+          PUSH_TOKEN: ${{ secrets.LEMMATA_BOT_TOKEN || github.token }}
           HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           if [ -z "$HEAD_REF" ]; then
@@ -101,7 +107,7 @@ jobs:
           # main), so replay the records commit onto the current remote head.
           git -C ../prtree fetch -q origin "$HEAD_REF"
           git -C ../prtree rebase -q FETCH_HEAD
-          git -C ../prtree push origin "HEAD:refs/heads/$HEAD_REF"
+          git -C ../prtree push "https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$HEAD_REF"
           echo "records pushed for the approved modules"
           if [ "${{ steps.review.outputs.verdict }}" = "approve" ]; then
             # A push made with the Actions token raises no pull_request events, so
