@@ -1,0 +1,40 @@
+id: sum_of_years_digits_depreciation
+name: LEMMA.SUM_OF_YEARS_DIGITS_DEPRECIATION
+version: 0.1.0
+summary: Depreciation charged in a given period under the sum-of-years-digits method, which front-loads the charge over a whole-number life.
+definition:
+  source: Wikipedia, Depreciation, sum-of-years-digits method
+  url: https://en.wikipedia.org/wiki/Depreciation#Sum-of-years-digits_method
+  formula: (cost - salvage) * (life - period + 1) / (life * (life + 1) / 2)
+parameters:
+- name: cost
+  type: number
+  unit: currency
+  description: Initial cost of the asset. Must be at least the salvage value.
+- name: salvage
+  type: number
+  unit: currency
+  description: Value at the end of its life. Must be zero or greater.
+- name: life
+  type: number
+  unit: periods
+  description: Useful life in periods. Must be a positive whole number.
+- name: period
+  type: number
+  unit: periods
+  description: Which period, counting from 1. A whole number from 1 to life.
+returns:
+  type: number
+  unit: currency per period
+  description: Charge for that period.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': salvage is negative, cost is below salvage, life is not a positive whole number, or period is not a whole number from 1 to life.
+conventions:
+- Equals Excel SYD(cost, salvage, life, period) for a whole-number life.
+- The charges over all periods sum to cost minus salvage.
+tags:
+- accounting
+- depreciation
+dependencies: []
+license: MIT-0

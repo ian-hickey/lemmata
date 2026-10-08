@@ -1,0 +1,4 @@
+LAMBDA(old_value, new_value,
+  IF(NOT(AND(ISNUMBER(old_value), ISNUMBER(new_value))), #VALUE!,
+  IF(old_value = 0, #NUM!,
+  (new_value - old_value) / ABS(old_value))))

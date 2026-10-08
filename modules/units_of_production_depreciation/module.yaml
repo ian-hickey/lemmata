@@ -1,0 +1,40 @@
+id: units_of_production_depreciation
+name: LEMMA.UNITS_OF_PRODUCTION_DEPRECIATION
+version: 0.1.0
+summary: 'Depreciation charged in a period under the units-of-production method: (cost - salvage) times the share of total expected output produced in the period.'
+definition:
+  source: Wikipedia, Depreciation, units-of-production method
+  url: https://en.wikipedia.org/wiki/Depreciation#Units-of-production_depreciation_method
+  formula: (cost - salvage) * units_in_period / total_units
+parameters:
+- name: cost
+  type: number
+  unit: currency
+  description: Initial cost of the asset. Must be at least the salvage value.
+- name: salvage
+  type: number
+  unit: currency
+  description: Value at the end of its life. Must be zero or greater.
+- name: total_units
+  type: number
+  unit: units
+  description: Total output expected over the asset's life. Must be greater than zero.
+- name: units_in_period
+  type: number
+  unit: units
+  description: Output in the period. From 0 to total_units.
+returns:
+  type: number
+  unit: currency per period
+  description: Charge for that period.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': salvage is negative, cost is below salvage, total_units is not positive, or units_in_period is outside 0 to total_units.
+conventions:
+- Units can be hours, miles, or any output measure, used consistently in both unit arguments.
+- Charges over the life sum to cost minus salvage once total_units have been produced.
+tags:
+- accounting
+- depreciation
+dependencies: []
+license: MIT-0
