@@ -6,6 +6,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"   # backstop: a merge made by the Actions token does not trigger push events
 
 permissions:
   contents: read

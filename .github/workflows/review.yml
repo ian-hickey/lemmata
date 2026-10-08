@@ -1,7 +1,8 @@
 # The AI reviewer. Runs with the trusted tooling from the base branch and only
 # the pull request's modules/ folder, so a pull request can change what is
-# reviewed but not how it is reviewed. It posts its evidence as a comment and
-# fails this check when it denies.
+# reviewed but not how it is reviewed. It posts its evidence as a comment,
+# fails this check when it denies, and enables auto-merge when it approves so
+# the pull request lands once every required check passes.
 name: review
 
 on:
@@ -16,7 +17,7 @@ on:
         required: false
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -58,7 +59,11 @@ jobs:
         if: steps.review.outputs.verdict != 'skip'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr comment "$PR" --body-file report.md
+        run: |
+          gh pr comment "$PR" --body-file report.md
+          if [ "${{ steps.review.outputs.verdict }}" = "approve" ]; then
+            gh pr merge "$PR" --auto --squash || echo "could not enable auto-merge; merge once checks pass"
+          fi
       - name: Gate on the verdict
         if: steps.review.outputs.verdict == 'deny'
         run: |
