@@ -1,0 +1,63 @@
+cases:
+- name: quarters
+  inputs:
+  - &id001
+    range: [0.25, 0.25, 0.25, 0.25]
+  - 0
+  expect: true
+- name: thirds within rounding tolerance
+  inputs:
+  - range: [0.33, 0.33, 0.34]
+  - 0
+  expect: true
+- name: thirds rounded short
+  inputs:
+  - range: [0.33, 0.33, 0.33]
+  - 0
+  expect: false
+- name: thirds rounded short within a generous tolerance
+  inputs:
+  - range: [0.33, 0.33, 0.33]
+  - 0.02
+  expect: true
+- name: percentages instead of decimals
+  inputs:
+  - range: [25, 25, 50]
+  - 0
+  expect: false
+- name: row range
+  inputs:
+  - range:
+    - [0.5, 0.5]
+  - 0
+  expect: true
+- name: single weight of one
+  inputs:
+  - range: [1]
+  - 0
+  expect: true
+- name: negative weight that still sums to one
+  inputs:
+  - range: [1.5, -0.5]
+  - 0
+  expect: true
+- name: blank cell
+  inputs:
+  - range: [0.5, null, 0.5]
+  - 0
+  expect: '#VALUE!'
+- name: negative tolerance
+  inputs:
+  - range: [1]
+  - -0.1
+  expect: '#NUM!'
+- name: text tolerance
+  inputs:
+  - *id001
+  - x
+  expect: '#VALUE!'
+- name: boolean tolerance
+  inputs:
+  - *id001
+  - true
+  expect: '#VALUE!'

@@ -1,0 +1,44 @@
+cases:
+- name: august 2026 in a july fiscal year
+  inputs: [46249, 7]
+  expect: 2027
+  source: computed; FY2027 starts 1 July 2026
+- name: june 2026 in a july fiscal year
+  inputs: [46203, 7]
+  expect: 2026
+- name: first day of the fiscal year
+  inputs: [46204, 7]
+  expect: 2027
+- name: calendar year
+  inputs: [46249, 1]
+  expect: 2026
+- name: october start, september date
+  inputs: [46295, 10]
+  expect: 2026
+- name: october start, october date
+  inputs: [46296, 10]
+  expect: 2027
+- name: april start, march date
+  inputs: [46477, 4]
+  expect: 2027
+- name: december start
+  inputs: [46371, 12]
+  expect: 2027
+- name: zero date
+  inputs: [0, 7]
+  expect: '#NUM!'
+- name: serial below 61
+  inputs: [60, 7]
+  expect: '#NUM!'
+- name: month 13
+  inputs: [46249, 13]
+  expect: '#NUM!'
+- name: fractional month
+  inputs: [46249, 6.5]
+  expect: '#NUM!'
+- name: text date
+  inputs: [x, 7]
+  expect: '#VALUE!'
+- name: boolean start_month
+  inputs: [46249, true]
+  expect: '#VALUE!'

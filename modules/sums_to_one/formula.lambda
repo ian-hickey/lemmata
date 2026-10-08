@@ -1,0 +1,5 @@
+LAMBDA(weights, tolerance,
+  IF(NOT(ISNUMBER(tolerance)), #VALUE!,
+  IF(COUNT(weights) <> ROWS(weights) * COLUMNS(weights), #VALUE!,
+  IF(tolerance < 0, #NUM!,
+  ABS(SUM(weights) - 1) <= tolerance))))

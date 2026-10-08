@@ -1,0 +1,77 @@
+cases:
+- name: column adds up
+  inputs:
+  - &id001
+    range: [10, 20, 30]
+  - 60
+  - 0
+  expect: true
+- name: off by one cent beyond tolerance
+  inputs:
+  - range: [10, 20, 30.01]
+  - 60
+  - 0.001
+  expect: false
+- name: off by one cent within tolerance
+  inputs:
+  - range: [10, 20, 30.01]
+  - 60
+  - 0.01
+  expect: false
+- name: row range
+  inputs:
+  - range:
+    - [1, 2, 3, 4]
+  - 10
+  - 0
+  expect: true
+- name: two-dimensional range
+  inputs:
+  - range:
+    - [1, 2]
+    - [3, 4]
+  - 10
+  - 0
+  expect: true
+- name: negative entries
+  inputs:
+  - range: [100, -40, -60]
+  - 0
+  - 0
+  expect: true
+- name: single cell
+  inputs:
+  - range: [5]
+  - 5
+  - 0
+  expect: true
+- name: blank cell
+  inputs:
+  - range: [10, null, 30]
+  - 40
+  - 0
+  expect: '#VALUE!'
+- name: text cell
+  inputs:
+  - range: [10, x, 30]
+  - 40
+  - 0
+  expect: '#VALUE!'
+- name: negative tolerance
+  inputs:
+  - range: [1, 2]
+  - 3
+  - -1
+  expect: '#NUM!'
+- name: text expected_total
+  inputs:
+  - *id001
+  - x
+  - 0
+  expect: '#VALUE!'
+- name: boolean tolerance
+  inputs:
+  - *id001
+  - 60
+  - true
+  expect: '#VALUE!'
