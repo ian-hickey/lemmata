@@ -1,0 +1,31 @@
+cases:
+- name: half as much debt as equity
+  inputs: [50000, 100000]
+  expect: 0.5
+- name: equal debt and equity
+  inputs: [100, 100]
+  expect: 1
+- name: no debt
+  inputs: [0, 100]
+  expect: 0
+- name: highly leveraged
+  inputs: [300, 100]
+  expect: 3
+- name: fractional inputs
+  inputs: [1234.5, 678.9]
+  expect: 1.8183826778612462
+- name: zero equity
+  inputs: [100, 0]
+  expect: '#NUM!'
+- name: negative equity
+  inputs: [100, -10]
+  expect: '#NUM!'
+- name: negative debt
+  inputs: [-5, 100]
+  expect: '#NUM!'
+- name: text total_debt
+  inputs: [x, 100000]
+  expect: '#VALUE!'
+- name: boolean total_equity
+  inputs: [50000, true]
+  expect: '#VALUE!'

@@ -1,0 +1,4 @@
+LAMBDA(revenue, operating_income,
+  IF(NOT(AND(ISNUMBER(revenue), ISNUMBER(operating_income))), #VALUE!,
+  IF(revenue <= 0, #NUM!,
+  operating_income / revenue)))

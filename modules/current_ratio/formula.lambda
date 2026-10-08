@@ -1,0 +1,4 @@
+LAMBDA(current_assets, current_liabilities,
+  IF(NOT(AND(ISNUMBER(current_assets), ISNUMBER(current_liabilities))), #VALUE!,
+  IF(OR(current_assets < 0, current_liabilities <= 0), #NUM!,
+  current_assets / current_liabilities)))

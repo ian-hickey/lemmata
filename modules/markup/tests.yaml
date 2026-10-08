@@ -1,0 +1,31 @@
+cases:
+- name: 50 percent markup
+  inputs: [150, 100]
+  expect: 0.5
+- name: price equal to cost
+  inputs: [100, 100]
+  expect: 0
+- name: price below cost
+  inputs: [80, 100]
+  expect: -0.2
+- name: free item
+  inputs: [0, 100]
+  expect: -1
+- name: fractional inputs
+  inputs: [19.99, 12.5]
+  expect: 0.5991999999999998
+- name: zero cost
+  inputs: [100, 0]
+  expect: '#NUM!'
+- name: negative cost
+  inputs: [100, -10]
+  expect: '#NUM!'
+- name: negative price
+  inputs: [-5, 100]
+  expect: '#NUM!'
+- name: text price
+  inputs: [x, 100]
+  expect: '#VALUE!'
+- name: boolean cost
+  inputs: [150, true]
+  expect: '#VALUE!'

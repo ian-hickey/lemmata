@@ -1,0 +1,4 @@
+LAMBDA(total_debt, total_equity,
+  IF(NOT(AND(ISNUMBER(total_debt), ISNUMBER(total_equity))), #VALUE!,
+  IF(OR(total_debt < 0, total_equity <= 0), #NUM!,
+  total_debt / total_equity)))

@@ -1,0 +1,33 @@
+id: contribution_margin_ratio
+name: LEMMA.CONTRIBUTION_MARGIN_RATIO
+version: 0.1.0
+summary: 'Contribution margin as a share of price: (price - variable_cost) / price, returned as a decimal.'
+definition:
+  source: Wikipedia, Contribution margin
+  url: https://en.wikipedia.org/wiki/Contribution_margin
+  formula: (price - variable_cost) / price
+parameters:
+- name: price
+  type: number
+  unit: currency per unit
+  description: Selling price per unit. Must be greater than zero.
+- name: variable_cost
+  type: number
+  unit: currency per unit
+  description: Variable cost per unit. Must be zero or greater.
+returns:
+  type: number
+  unit: decimal share
+  description: Share of each sale left to cover fixed costs, where 0.4 means 40 percent.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': price is not positive, or variable_cost is negative.
+conventions:
+- Returns a decimal, not a percentage.
+- Negative when variable cost exceeds price.
+tags:
+- finance
+- pricing
+- ratios
+dependencies: []
+license: MIT-0

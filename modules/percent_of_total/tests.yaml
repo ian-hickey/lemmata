@@ -1,0 +1,31 @@
+cases:
+- name: a quarter
+  inputs: [25, 100]
+  expect: 0.25
+- name: the whole
+  inputs: [100, 100]
+  expect: 1
+- name: nothing
+  inputs: [0, 100]
+  expect: 0
+- name: more than the total
+  inputs: [150, 100]
+  expect: 1.5
+- name: negative part
+  inputs: [-20, 80]
+  expect: -0.25
+- name: fractional inputs
+  inputs: [3.5, 14]
+  expect: 0.25
+- name: zero total
+  inputs: [5, 0]
+  expect: '#NUM!'
+- name: negative total
+  inputs: [5, -10]
+  expect: '#NUM!'
+- name: text part
+  inputs: [x, 100]
+  expect: '#VALUE!'
+- name: boolean total
+  inputs: [25, true]
+  expect: '#VALUE!'

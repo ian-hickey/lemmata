@@ -1,0 +1,4 @@
+LAMBDA(part, total,
+  IF(NOT(AND(ISNUMBER(part), ISNUMBER(total))), #VALUE!,
+  IF(total <= 0, #NUM!,
+  part / total)))
