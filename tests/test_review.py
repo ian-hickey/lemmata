@@ -153,3 +153,16 @@ def test_records_are_keyed_by_hash(tmp_path):
     denied = review_module(m, REG, FakeClient(code=WRONG_CAGR), seed=1)
     write_record(tmp_path, m, denied)
     assert not has_approved_record(tmp_path, m)
+
+
+def test_generated_inputs_are_bounded_and_rounded():
+    from lemmata.review import shape_inputs
+
+    m = REG.get("cagr")
+    assert shape_inputs([1e-300, 100, 3], m) is None
+    assert shape_inputs([1e13, 100, 3], m) is None
+    assert shape_inputs([0, 100, 3], m) == [0, 100, 3]
+    assert shape_inputs([0.30000000000000004, 100, 3], m) == [0.3, 100, 3]
+    npv = REG.get("npv")
+    assert shape_inputs([0.1, {"range": [[1e-300], [5]]}, 0], npv) is None
+    assert shape_inputs([0.1, {"range": [[None], [5]]}, 0], npv) == [0.1, {"range": [[None], [5]]}, 0]
