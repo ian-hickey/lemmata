@@ -1,0 +1,4 @@
+LAMBDA(revenue, average_total_assets,
+  IF(NOT(AND(ISNUMBER(revenue), ISNUMBER(average_total_assets))), #VALUE!,
+  IF(OR(revenue < 0, average_total_assets <= 0), #NUM!,
+  revenue / average_total_assets)))
