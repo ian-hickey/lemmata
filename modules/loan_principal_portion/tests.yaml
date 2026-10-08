@@ -1,0 +1,35 @@
+cases:
+- name: first payment of a 30 year mortgage
+  inputs: [200000, 0.004166666666666667, 360, 1]
+  expect: 240.30991269094636
+  source: computed; equals -PPMT(0.05/12,1,360,200000) = 240.31
+- name: last payment is almost the whole payment
+  inputs: [200000, 0.004166666666666667, 360, 360]
+  expect: 1069.1882947959632
+- name: middle of a small loan
+  inputs: [1000, 0.01, 12, 6]
+  expect: 82.87086933914813
+- name: zero rate is an even split
+  inputs: [12000, 0, 12, 3]
+  expect: 1000
+- name: zero principal
+  inputs: [0, 0.01, 12, 1]
+  expect: 0
+- name: period zero
+  inputs: [1000, 0.01, 12, 0]
+  expect: '#NUM!'
+- name: period beyond the term
+  inputs: [1000, 0.01, 12, 13]
+  expect: '#NUM!'
+- name: fractional period
+  inputs: [1000, 0.01, 12, 1.5]
+  expect: '#NUM!'
+- name: negative rate
+  inputs: [1000, -0.01, 12, 1]
+  expect: '#NUM!'
+- name: text principal
+  inputs: [x, 0.004166666666666667, 360, 1]
+  expect: '#VALUE!'
+- name: boolean period
+  inputs: [200000, 0.004166666666666667, 360, true]
+  expect: '#VALUE!'

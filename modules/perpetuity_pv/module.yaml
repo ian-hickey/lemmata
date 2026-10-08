@@ -1,0 +1,37 @@
+id: perpetuity_pv
+name: LEMMA.PERPETUITY_PV
+version: 0.1.0
+summary: 'Present value of a payment that recurs forever, starting one period from now and growing at a constant rate: payment / (rate - growth).'
+definition:
+  source: Wikipedia, Perpetuity
+  url: https://en.wikipedia.org/wiki/Perpetuity
+  formula: payment / (rate - growth)
+parameters:
+- name: payment
+  type: number
+  unit: currency
+  description: The first payment, due one period from now. Any sign.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Discount rate per period. Must exceed growth.
+- name: growth
+  type: number
+  unit: decimal rate per period
+  description: Growth of the payment per period. Use 0 for a level perpetuity. Must be greater than -1.
+returns:
+  type: number
+  unit: currency
+  description: Value today of the whole stream.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': rate is not greater than growth, or growth is -1 or less.
+conventions:
+- The first payment is one period away. Add one payment for a stream that starts today.
+- This is the Gordon growth formula when payment is next period's dividend.
+tags:
+- finance
+- time value of money
+- valuation
+dependencies: []
+license: MIT-0

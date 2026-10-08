@@ -1,0 +1,32 @@
+cases:
+- name: 100 per period for ten periods at 5 percent
+  inputs: [100, 0.05, 10]
+  expect: 1257.789253554884
+  source: computed; Excel FV(0.05,10,-100) agrees
+- name: zero rate is the plain sum
+  inputs: [100, 0, 10]
+  expect: 1000
+- name: single payment
+  inputs: [100, 0.1, 1]
+  expect: 100.00000000000009
+- name: zero periods
+  inputs: [100, 0.1, 0]
+  expect: 0
+- name: monthly saving for 20 years
+  inputs: [200, 0.005, 240]
+  expect: 92408.17903229456
+- name: negative payment keeps sign
+  inputs: [-50, 0.05, 4]
+  expect: -215.50625000000025
+- name: rate of minus one
+  inputs: [100, -1, 5]
+  expect: '#NUM!'
+- name: negative periods
+  inputs: [100, 0.05, -1]
+  expect: '#NUM!'
+- name: text payment
+  inputs: [x, 0.05, 10]
+  expect: '#VALUE!'
+- name: boolean periods
+  inputs: [100, 0.05, true]
+  expect: '#VALUE!'

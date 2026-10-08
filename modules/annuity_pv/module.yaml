@@ -1,0 +1,37 @@
+id: annuity_pv
+name: LEMMA.ANNUITY_PV
+version: 0.1.0
+summary: Present value of a level payment made at the end of each period for a number of periods (an ordinary annuity).
+definition:
+  source: Wikipedia, Annuity, present value of an annuity-immediate
+  url: https://en.wikipedia.org/wiki/Annuity#Present_value_of_an_annuity-immediate
+  formula: payment * (1 - (1 + rate) ^ -periods) / rate, or payment * periods when rate is 0
+parameters:
+- name: payment
+  type: number
+  unit: currency per period
+  description: Amount paid at the end of each period. Any sign.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Discount rate for one period. Must be greater than -1.
+- name: periods
+  type: number
+  unit: periods
+  description: Number of payments. Must be zero or greater.
+returns:
+  type: number
+  unit: currency
+  description: Value today of all the payments.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': rate is -1 or less, or periods is negative.
+conventions:
+- Payments fall at the end of each period. Multiply by (1 + rate) for payments in advance.
+- Equals Excel PV(rate, periods, -payment).
+tags:
+- finance
+- time value of money
+- annuity
+dependencies: []
+license: MIT-0

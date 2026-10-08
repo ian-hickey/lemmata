@@ -1,0 +1,5 @@
+LAMBDA(payment, rate, periods,
+  IF(NOT(AND(ISNUMBER(payment), ISNUMBER(rate), ISNUMBER(periods))), #VALUE!,
+  IF(OR(rate <= -1, periods < 0), #NUM!,
+  IF(rate = 0, payment * periods,
+  payment * (1 - (1 + rate) ^ (-periods)) / rate))))

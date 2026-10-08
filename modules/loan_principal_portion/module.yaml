@@ -1,0 +1,45 @@
+id: loan_principal_portion
+name: LEMMA.LOAN_PRINCIPAL_PORTION
+version: 0.1.0
+summary: 'Principal repaid by one payment of a level-payment loan: the payment less the interest part of that payment.'
+definition:
+  source: Wikipedia, Amortization schedule
+  url: https://en.wikipedia.org/wiki/Amortization_schedule
+  formula: LEMMA.LOAN_PAYMENT(principal, rate, periods) - LEMMA.LOAN_INTEREST_PORTION(principal, rate, periods, period)
+parameters:
+- name: principal
+  type: number
+  unit: currency
+  description: Amount borrowed. Must be zero or greater.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Interest rate per period. Must be zero or greater.
+- name: periods
+  type: number
+  unit: periods
+  description: Total number of payments. Must be a positive whole number.
+- name: period
+  type: number
+  unit: periods
+  description: Which payment, counting from 1. A whole number from 1 to periods.
+returns:
+  type: number
+  unit: currency
+  description: Principal part of that payment, as a positive amount.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': principal or rate is negative, periods is not a positive whole number, or period is not a whole number from 1 to periods.
+conventions:
+- Equals -PPMT(rate, period, periods, principal) in Excel.
+- The principal portions over all periods sum to the principal.
+tags:
+- finance
+- loans
+- amortization
+dependencies:
+- id: loan_payment
+  module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
+- id: loan_interest_portion
+  module_hash: c1287ee1aa78afbea5227bd8d83ff1a408ec6af89c77530772a8d46ad41ea3e8
+license: MIT-0

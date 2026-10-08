@@ -1,0 +1,31 @@
+cases:
+- name: one period at 10 percent
+  inputs: [0.1, 1]
+  expect: 0.9090909090909091
+- name: ten periods at 5 percent
+  inputs: [0.05, 10]
+  expect: 0.6139132535407591
+- name: zero periods is one
+  inputs: [0.07, 0]
+  expect: 1
+- name: zero rate is one
+  inputs: [0, 15]
+  expect: 1
+- name: fractional periods
+  inputs: [0.06, 0.5]
+  expect: 0.9712858623572642
+- name: negative rate above minus one
+  inputs: [-0.01, 3]
+  expect: 1.0306101521283646
+- name: rate of minus one
+  inputs: [-1, 1]
+  expect: '#NUM!'
+- name: negative periods
+  inputs: [0.05, -2]
+  expect: '#NUM!'
+- name: text rate
+  inputs: [x, 1]
+  expect: '#VALUE!'
+- name: boolean periods
+  inputs: [0.1, true]
+  expect: '#VALUE!'

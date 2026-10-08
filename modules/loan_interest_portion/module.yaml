@@ -1,0 +1,43 @@
+id: loan_interest_portion
+name: LEMMA.LOAN_INTEREST_PORTION
+version: 0.1.0
+summary: 'Interest included in one payment of a level-payment loan: the balance before that payment times the rate per period.'
+definition:
+  source: Wikipedia, Amortization schedule
+  url: https://en.wikipedia.org/wiki/Amortization_schedule
+  formula: LEMMA.LOAN_BALANCE(principal, rate, periods, period - 1) * rate
+parameters:
+- name: principal
+  type: number
+  unit: currency
+  description: Amount borrowed. Must be zero or greater.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Interest rate per period. Must be zero or greater.
+- name: periods
+  type: number
+  unit: periods
+  description: Total number of payments. Must be a positive whole number.
+- name: period
+  type: number
+  unit: periods
+  description: Which payment, counting from 1. A whole number from 1 to periods.
+returns:
+  type: number
+  unit: currency
+  description: Interest part of that payment, as a positive amount.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': principal or rate is negative, periods is not a positive whole number, or period is not a whole number from 1 to periods.
+conventions:
+- Equals -IPMT(rate, period, periods, principal) in Excel.
+- Interest plus LEMMA.LOAN_PRINCIPAL_PORTION equals LEMMA.LOAN_PAYMENT.
+tags:
+- finance
+- loans
+- amortization
+dependencies:
+- id: loan_balance
+  module_hash: 285f851348bfed5d799e2ad68e284500999fe2dfa1890beca74ef79855f718de
+license: MIT-0

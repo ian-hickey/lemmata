@@ -1,0 +1,43 @@
+id: loan_balance
+name: LEMMA.LOAN_BALANCE
+version: 0.1.0
+summary: 'Principal still owed on a level-payment loan after a given number of payments: the present value of the payments that remain.'
+definition:
+  source: Wikipedia, Amortization calculator
+  url: https://en.wikipedia.org/wiki/Amortization_calculator
+  formula: payment * (1 - (1 + rate) ^ -(periods - payments_made)) / rate, with payment from LEMMA.LOAN_PAYMENT; principal * (1 - payments_made / periods) when rate is 0
+parameters:
+- name: principal
+  type: number
+  unit: currency
+  description: Amount borrowed. Must be zero or greater.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Interest rate per period. Must be zero or greater.
+- name: periods
+  type: number
+  unit: periods
+  description: Total number of payments. Must be a positive whole number.
+- name: payments_made
+  type: number
+  unit: periods
+  description: Payments already made. A whole number from 0 to periods.
+returns:
+  type: number
+  unit: currency
+  description: Balance after the given payment, as a positive amount.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': principal or rate is negative, periods is not a positive whole number, or payments_made is not a whole number from 0 to periods.
+conventions:
+- 'Same loan as LEMMA.LOAN_PAYMENT: end-of-period payments, fully amortizing.'
+- Returns exactly 0 after the last payment.
+tags:
+- finance
+- loans
+- amortization
+dependencies:
+- id: loan_payment
+  module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
+license: MIT-0

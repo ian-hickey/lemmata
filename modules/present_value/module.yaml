@@ -1,0 +1,37 @@
+id: present_value
+name: LEMMA.PRESENT_VALUE
+version: 0.1.0
+summary: 'Present value of a single amount received after a number of periods at a constant rate per period: future_value / (1 + rate) ^ periods.'
+definition:
+  source: Wikipedia, Present value
+  url: https://en.wikipedia.org/wiki/Present_value
+  formula: future_value / (1 + rate) ^ periods
+parameters:
+- name: future_value
+  type: number
+  unit: currency
+  description: Amount received at the end of the last period. Any sign.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Discount rate for one period. Must be greater than -1.
+- name: periods
+  type: number
+  unit: periods
+  description: Number of periods until the amount is received. Must be zero or greater. Fractions are allowed.
+returns:
+  type: number
+  unit: currency
+  description: Value today of the future amount.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': rate is -1 or less, or periods is negative.
+conventions:
+- 'rate and periods use the same period: a monthly rate needs a count of months.'
+- future_value keeps its sign.
+tags:
+- finance
+- time value of money
+- discounting
+dependencies: []
+license: MIT-0
