@@ -1,0 +1,40 @@
+id: loan_total_interest
+name: LEMMA.LOAN_TOTAL_INTEREST
+version: 0.1.0
+summary: 'Total interest paid over the life of a level-payment loan: payment times the number of payments, less the principal.'
+definition:
+  source: Wikipedia, Amortization calculator
+  url: https://en.wikipedia.org/wiki/Amortization_calculator
+  formula: LEMMA.LOAN_PAYMENT(principal, rate, periods) * periods - principal
+parameters:
+- name: principal
+  type: number
+  unit: currency
+  description: Amount borrowed. Must be zero or greater.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Interest rate per period. Must be 0 or at least 0.0005.
+- name: periods
+  type: number
+  unit: periods
+  description: Number of payments. Must be a positive whole number.
+returns:
+  type: number
+  unit: currency
+  description: Interest paid in total, as a positive amount.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': principal is negative, rate is negative or nonzero below 0.0005, or periods is not a positive whole number.
+conventions:
+- 'Same loan as LEMMA.LOAN_PAYMENT: end-of-period payments, fully amortizing.'
+- A zero rate returns 0.
+- 'Nonzero rates below 0.0005 are rejected: payment times periods minus principal cancels badly at small rates, and the result would be wrong in the ninth digit; use rate 0 for an interest-free loan.'
+tags:
+- finance
+- loans
+- amortization
+dependencies:
+- id: loan_payment
+  module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
+license: MIT-0

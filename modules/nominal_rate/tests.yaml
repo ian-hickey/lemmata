@@ -1,0 +1,33 @@
+cases:
+- name: 12.68 percent effective, monthly
+  inputs: [0.12682503013196977, 12]
+  expect: 0.1200000000000001
+  source: computed; the inverse of EFFECT(0.12,12)
+- name: 5.3543 percent effective, quarterly
+  inputs: [0.053543, 4]
+  expect: 0.052500319868356016
+  source: computed; the Excel NOMINAL documentation example gives 0.05250032
+- name: annual is unchanged
+  inputs: [0.08, 1]
+  expect: 0.08000000000000007
+- name: daily
+  inputs: [0.0618, 365]
+  expect: 0.05997050728775544
+- name: zero rate
+  inputs: [0, 12]
+  expect: 0
+- name: negative rate
+  inputs: [-0.01, 12]
+  expect: '#NUM!'
+- name: zero periods
+  inputs: [0.05, 0]
+  expect: '#NUM!'
+- name: fractional periods
+  inputs: [0.05, 1.5]
+  expect: '#NUM!'
+- name: text effective_rate
+  inputs: [x, 12]
+  expect: '#VALUE!'
+- name: boolean periods_per_year
+  inputs: [0.12682503013196977, true]
+  expect: '#VALUE!'

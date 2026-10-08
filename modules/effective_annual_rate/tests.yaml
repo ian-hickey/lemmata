@@ -1,0 +1,33 @@
+cases:
+- name: 12 percent monthly
+  inputs: [0.12, 12]
+  expect: 0.12682503013196977
+  source: computed; Excel EFFECT(0.12,12) agrees
+- name: 5.25 percent quarterly
+  inputs: [0.0525, 4]
+  expect: 0.05354266737075819
+  source: computed; the Excel EFFECT documentation example gives 0.0535427
+- name: annual compounding is unchanged
+  inputs: [0.08, 1]
+  expect: 0.08000000000000007
+- name: daily compounding
+  inputs: [0.06, 365]
+  expect: 0.061831310677852525
+- name: zero rate
+  inputs: [0, 12]
+  expect: 0
+- name: negative rate
+  inputs: [-0.01, 12]
+  expect: '#NUM!'
+- name: zero periods
+  inputs: [0.05, 0]
+  expect: '#NUM!'
+- name: fractional periods
+  inputs: [0.05, 2.5]
+  expect: '#NUM!'
+- name: text nominal_rate
+  inputs: [x, 12]
+  expect: '#VALUE!'
+- name: boolean periods_per_year
+  inputs: [0.12, true]
+  expect: '#VALUE!'

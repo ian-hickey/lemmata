@@ -1,0 +1,32 @@
+id: nominal_rate
+name: LEMMA.NOMINAL_RATE
+version: 0.1.0
+summary: 'Nominal annual rate that, compounded a given number of times per year, yields the stated effective annual rate: periods * ((1 + effective) ^ (1 / periods) - 1).'
+definition:
+  source: Wikipedia, Effective interest rate
+  url: https://en.wikipedia.org/wiki/Effective_interest_rate
+  formula: periods_per_year * ((1 + effective_rate) ^ (1 / periods_per_year) - 1)
+parameters:
+- name: effective_rate
+  type: number
+  unit: decimal rate per year
+  description: Effective annual rate. Must be zero or greater.
+- name: periods_per_year
+  type: number
+  unit: periods
+  description: Compounding periods per year. Must be a positive whole number.
+returns:
+  type: number
+  unit: decimal rate per year
+  description: Stated annual rate before compounding.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': effective_rate is negative, or periods_per_year is not a positive whole number.
+conventions:
+- Equals Excel NOMINAL(effective_rate, periods_per_year) for a positive effective rate.
+- The inverse of LEMMA.EFFECTIVE_ANNUAL_RATE.
+tags:
+- finance
+- interest rates
+dependencies: []
+license: MIT-0

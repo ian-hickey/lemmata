@@ -1,0 +1,32 @@
+cases:
+- name: 1,000 in ten years at 5 percent
+  inputs: [1000, 0.05, 10]
+  expect: 613.9132535407591
+  source: computed; Excel PV(0.05,10,0,-1000) agrees
+- name: zero periods is the amount itself
+  inputs: [500, 0.1, 0]
+  expect: 500
+- name: zero rate
+  inputs: [500, 0, 7]
+  expect: 500
+- name: fractional periods
+  inputs: [1000, 0.08, 2.5]
+  expect: 824.9746644799178
+- name: negative amount keeps sign
+  inputs: [-1000, 0.05, 3]
+  expect: -863.837598531476
+- name: negative rate above minus one
+  inputs: [100, -0.02, 2]
+  expect: 104.12328196584757
+- name: rate of minus one
+  inputs: [100, -1, 2]
+  expect: '#NUM!'
+- name: negative periods
+  inputs: [100, 0.05, -1]
+  expect: '#NUM!'
+- name: text future_value
+  inputs: [x, 0.05, 10]
+  expect: '#VALUE!'
+- name: boolean periods
+  inputs: [1000, 0.05, true]
+  expect: '#VALUE!'

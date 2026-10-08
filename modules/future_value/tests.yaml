@@ -1,0 +1,32 @@
+cases:
+- name: 1,000 for ten years at 5 percent
+  inputs: [1000, 0.05, 10]
+  expect: 1628.894626777442
+  source: computed; Excel FV(0.05,10,0,-1000) agrees
+- name: zero periods
+  inputs: [500, 0.1, 0]
+  expect: 500
+- name: zero rate
+  inputs: [500, 0, 7]
+  expect: 500
+- name: monthly compounding for a year
+  inputs: [1000, 0.01, 12]
+  expect: 1126.8250301319697
+- name: fractional periods
+  inputs: [1000, 0.08, 2.5]
+  expect: 1212.1584371690033
+- name: negative amount keeps sign
+  inputs: [-1000, 0.05, 3]
+  expect: -1157.6250000000002
+- name: rate of minus one
+  inputs: [100, -1, 2]
+  expect: '#NUM!'
+- name: negative periods
+  inputs: [100, 0.05, -1]
+  expect: '#NUM!'
+- name: text present_value
+  inputs: [x, 0.05, 10]
+  expect: '#VALUE!'
+- name: boolean periods
+  inputs: [1000, 0.05, true]
+  expect: '#VALUE!'

@@ -1,0 +1,4 @@
+LAMBDA(future_value, rate, periods,
+  IF(NOT(AND(ISNUMBER(future_value), ISNUMBER(rate), ISNUMBER(periods))), #VALUE!,
+  IF(OR(rate <= -1, periods < 0), #NUM!,
+  future_value / (1 + rate) ^ periods)))
