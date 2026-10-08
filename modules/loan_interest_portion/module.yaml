@@ -1,6 +1,6 @@
 id: loan_interest_portion
 name: LEMMA.LOAN_INTEREST_PORTION
-version: 0.1.0
+version: 0.1.1
 summary: 'Interest included in one payment of a level-payment loan: the balance before that payment times the rate per period.'
 definition:
   source: Wikipedia, Amortization schedule
@@ -40,5 +40,5 @@ tags:
 - amortization
 dependencies:
 - id: loan_balance
-  module_hash: d9fad67a4a3cc06b9f843d7b2445c53295e7397a2205d7b46549b8a8d1f73f98
+  module_hash: 1c1ce9087c318cedeaf3d7d2110424f98d8dddfbb82c567b5713762cf694ec30
 license: MIT-0

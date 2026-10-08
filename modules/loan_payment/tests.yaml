@@ -38,3 +38,10 @@ cases:
   - name: boolean rate
     inputs: [1000, true, 12]
     expect: "#VALUE!"
+  - name: tiny nonzero rate
+    inputs: [100000, 1.0e-09, 360]
+    expect: "#NUM!"
+  - name: rate at the floor
+    inputs: [100000, 1.0e-06, 360]
+    expect: 277.8279196894804
+    source: computed from the definition

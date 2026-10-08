@@ -1,6 +1,6 @@
 id: npv
 name: LEMMA.NPV
-version: 0.1.0
+version: 0.2.0
 summary: Net present value of a series of cash flows at a constant discount rate, with the timing of the first cash flow stated explicitly instead of assumed.
 definition:
   source: Microsoft Support, NPV function, with the first-period offset made an argument
@@ -31,6 +31,7 @@ conventions:
   - LEMMA.NPV(rate, cashflows, 0) treats the first cash flow as today, the usual case when the first entry is an initial investment.
   - Cash flows are evenly spaced. For dated cash flows use an XNPV-style module.
   - A blank cell is an error, not a zero. Write 0 for a period with no cash flow.
+  - Type errors, including a bad cell in cashflows, are reported as #VALUE! before any domain error.
 tags: [finance, discounting, valuation]
 dependencies: []
 license: MIT-0

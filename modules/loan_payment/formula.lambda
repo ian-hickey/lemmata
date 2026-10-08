@@ -1,5 +1,5 @@
 LAMBDA(principal, rate, periods,
   IF(NOT(AND(ISNUMBER(principal), ISNUMBER(rate), ISNUMBER(periods))), #VALUE!,
-  IF(OR(principal < 0, rate < 0, periods <= 0, periods <> INT(periods)), #NUM!,
+  IF(OR(principal < 0, rate < 0, AND(rate <> 0, rate < 0.000001), periods <= 0, periods <> INT(periods)), #NUM!,
   IF(rate = 0, principal / periods,
   principal * rate / (1 - (1 + rate) ^ (-periods))))))
