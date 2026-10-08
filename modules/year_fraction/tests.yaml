@@ -1,0 +1,34 @@
+cases:
+- name: 90 days on actual/360
+  inputs: [46023, 46113, 360]
+  expect: 0.25
+- name: 90 days on actual/365
+  inputs: [46023, 46113, 365]
+  expect: 0.2465753424657534
+- name: a full non-leap year on actual/365 is exactly 1
+  inputs: [45658, 46023, 365]
+  expect: 1
+- name: a leap year on actual/365 exceeds 1
+  inputs: [45292, 45658, 365]
+  expect: 1.0027397260273974
+- name: same day is zero
+  inputs: [46147, 46147, 360]
+  expect: 0
+- name: one day on actual/360
+  inputs: [46147, 46148, 360]
+  expect: 0.002777777777777778
+- name: end before start
+  inputs: [46148, 46147, 360]
+  expect: '#NUM!'
+- name: basis of 364
+  inputs: [46023, 46113, 364]
+  expect: '#NUM!'
+- name: zero start
+  inputs: [0, 46113, 365]
+  expect: '#NUM!'
+- name: text start_date
+  inputs: [x, 46113, 360]
+  expect: '#VALUE!'
+- name: boolean day_count_basis
+  inputs: [46023, 46113, true]
+  expect: '#VALUE!'

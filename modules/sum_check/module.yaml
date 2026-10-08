@@ -1,0 +1,36 @@
+id: sum_check
+name: LEMMA.SUM_CHECK
+version: 0.1.0
+summary: TRUE when the sum of a range is within a tolerance of an expected total, FALSE otherwise; every cell in the range must be a number.
+definition:
+  source: Wikipedia, Reconciliation (accounting)
+  url: https://en.wikipedia.org/wiki/Reconciliation_(accounting)
+  formula: ABS(SUM(values) - expected_total) <= tolerance
+parameters:
+- name: values
+  type: range
+  unit: any consistent unit
+  description: Cells to add up. Every cell must hold a number; a blank is an error.
+- name: expected_total
+  type: number
+  unit: same as values
+  description: The total the cells should add to.
+- name: tolerance
+  type: number
+  unit: same as values
+  description: Largest acceptable absolute difference. Must be zero or greater.
+returns:
+  type: boolean
+  unit: TRUE or FALSE
+  description: TRUE when the sum is within tolerance of the expected total.
+errors:
+  '#VALUE!': expected_total or tolerance is not a number, or a cell in values is blank or not a number.
+  '#NUM!': tolerance is negative.
+conventions:
+- A blank cell is an error, not a zero, because a blank usually means a missing figure.
+- Two-dimensional ranges are allowed.
+tags:
+- reconciliation
+- checks
+dependencies: []
+license: MIT-0

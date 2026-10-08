@@ -1,0 +1,32 @@
+id: fiscal_year
+name: LEMMA.FISCAL_YEAR
+version: 0.1.0
+summary: Fiscal year containing a date, named by the calendar year in which the fiscal year ends, for a fiscal year starting in a given month.
+definition:
+  source: Wikipedia, Fiscal year
+  url: https://en.wikipedia.org/wiki/Fiscal_year
+  formula: YEAR(date) + 1 if MONTH(date) >= start_month and start_month > 1, else YEAR(date)
+parameters:
+- name: date
+  type: number
+  unit: Excel date serial
+  description: The date. Must be a positive serial number such as DATE(2026, 8, 15).
+- name: start_month
+  type: number
+  unit: month number
+  description: First month of the fiscal year, 1 to 12. Use 1 for calendar years.
+returns:
+  type: number
+  unit: year
+  description: Fiscal year label, for example 2027 for August 2026 when the year starts in July.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': date is not positive, or start_month is not a whole number from 1 to 12.
+conventions:
+- Named by the ending year, the convention of most governments and companies. Subtract 1 for the starting-year convention.
+- Dates are Excel serial numbers; pass a date cell or DATE().
+tags:
+- calendar
+- fiscal periods
+dependencies: []
+license: MIT-0

@@ -1,0 +1,40 @@
+cases:
+- name: august in a july fiscal year is q1
+  inputs: [46249, 7]
+  expect: 1
+- name: june in a july fiscal year is q4
+  inputs: [46203, 7]
+  expect: 4
+- name: calendar q1
+  inputs: [46054, 1]
+  expect: 1
+- name: calendar q4
+  inputs: [46387, 1]
+  expect: 4
+- name: october start, december is q1
+  inputs: [46357, 10]
+  expect: 1
+- name: october start, september is q4
+  inputs: [46266, 10]
+  expect: 4
+- name: april start, july is q2
+  inputs: [46213, 4]
+  expect: 2
+- name: april start, january is q4
+  inputs: [46397, 4]
+  expect: 4
+- name: zero date
+  inputs: [0, 7]
+  expect: '#NUM!'
+- name: month 0
+  inputs: [46249, 0]
+  expect: '#NUM!'
+- name: fractional month
+  inputs: [46249, 2.5]
+  expect: '#NUM!'
+- name: text date
+  inputs: [x, 7]
+  expect: '#VALUE!'
+- name: boolean start_month
+  inputs: [46249, true]
+  expect: '#VALUE!'

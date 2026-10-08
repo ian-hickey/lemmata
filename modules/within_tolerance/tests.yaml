@@ -1,0 +1,31 @@
+cases:
+- name: within
+  inputs: [100.004, 100, 0.01]
+  expect: true
+- name: exactly at the edge
+  inputs: [100.01, 100, 0.01]
+  expect: false
+- name: outside
+  inputs: [100.02, 100, 0.01]
+  expect: false
+- name: exact match with zero tolerance
+  inputs: [5, 5, 0]
+  expect: true
+- name: exact mismatch with zero tolerance
+  inputs: [5, 5.0001, 0]
+  expect: false
+- name: negative values
+  inputs: [-50.5, -50, 1]
+  expect: true
+- name: large tolerance
+  inputs: [0, 1000, 1000]
+  expect: true
+- name: negative tolerance
+  inputs: [1, 1, -0.1]
+  expect: '#NUM!'
+- name: text value
+  inputs: [x, 100, 0.01]
+  expect: '#VALUE!'
+- name: boolean tolerance
+  inputs: [100.004, 100, true]
+  expect: '#VALUE!'

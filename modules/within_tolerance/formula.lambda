@@ -1,0 +1,4 @@
+LAMBDA(value, target, tolerance,
+  IF(NOT(AND(ISNUMBER(value), ISNUMBER(target), ISNUMBER(tolerance))), #VALUE!,
+  IF(tolerance < 0, #NUM!,
+  ABS(value - target) <= tolerance)))

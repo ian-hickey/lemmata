@@ -1,0 +1,41 @@
+id: balance_check
+name: LEMMA.BALANCE_CHECK
+version: 0.1.0
+summary: 'TRUE when assets equal liabilities plus equity within a tolerance, FALSE otherwise: ABS(assets - (liabilities + equity)) <= tolerance.'
+definition:
+  source: Wikipedia, Accounting equation
+  url: https://en.wikipedia.org/wiki/Accounting_equation
+  formula: ABS(assets - (liabilities + equity)) <= tolerance
+parameters:
+- name: assets
+  type: number
+  unit: currency
+  description: Total assets.
+- name: liabilities
+  type: number
+  unit: currency
+  description: Total liabilities.
+- name: equity
+  type: number
+  unit: currency
+  description: Total equity, any sign.
+- name: tolerance
+  type: number
+  unit: currency
+  description: Largest acceptable absolute difference. Must be zero or greater.
+returns:
+  type: boolean
+  unit: TRUE or FALSE
+  description: TRUE when the balance sheet balances within tolerance.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': tolerance is negative.
+conventions:
+- All three totals from the same balance sheet date and currency.
+- Use a small tolerance such as 1 to absorb rounding in presented figures.
+tags:
+- reconciliation
+- checks
+- accounting
+dependencies: []
+license: MIT-0

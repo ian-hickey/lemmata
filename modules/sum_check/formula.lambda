@@ -1,0 +1,5 @@
+LAMBDA(values, expected_total, tolerance,
+  IF(NOT(AND(ISNUMBER(expected_total), ISNUMBER(tolerance))), #VALUE!,
+  IF(tolerance < 0, #NUM!,
+  IF(COUNT(values) <> ROWS(values) * COLUMNS(values), #VALUE!,
+  ABS(SUM(values) - expected_total) <= tolerance))))

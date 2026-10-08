@@ -1,0 +1,37 @@
+id: year_fraction
+name: LEMMA.YEAR_FRACTION
+version: 0.1.0
+summary: 'Fraction of a year between two dates under an actual-day count with a 360 or 365 day year: (end_date - start_date) / basis.'
+definition:
+  source: Wikipedia, Day count convention, Actual/360 and Actual/365 Fixed
+  url: https://en.wikipedia.org/wiki/Day_count_convention
+  formula: (end_date - start_date) / day_count_basis
+parameters:
+- name: start_date
+  type: number
+  unit: Excel date serial
+  description: Start date. Must be a positive serial number.
+- name: end_date
+  type: number
+  unit: Excel date serial
+  description: End date. Must be on or after start_date.
+- name: day_count_basis
+  type: number
+  unit: days per year
+  description: 360 for Actual/360 or 365 for Actual/365 Fixed.
+returns:
+  type: number
+  unit: years
+  description: Elapsed time in years under the chosen convention.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': start_date is not positive, end_date is before start_date, or day_count_basis is not 360 or 365.
+conventions:
+- Actual days elapsed, so a leap day counts.
+- 30/360 and Actual/Actual conventions are not covered; see Excel YEARFRAC for those.
+tags:
+- calendar
+- day counts
+- interest
+dependencies: []
+license: MIT-0
