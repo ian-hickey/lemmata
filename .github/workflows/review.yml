@@ -97,6 +97,10 @@ jobs:
           for f in $new; do cp "$f" "../prtree/$f"; done
           git -C ../prtree add reviews/
           git -C ../prtree commit -q -m "Record AI review approval for $(tr '\n' ' ' < changed.txt | sed 's/ *$//')"
+          # The branch may have moved since the run began (GitHub updates it from
+          # main), so replay the records commit onto the current remote head.
+          git -C ../prtree fetch -q origin "$HEAD_REF"
+          git -C ../prtree rebase -q FETCH_HEAD
           git -C ../prtree push origin "HEAD:refs/heads/$HEAD_REF"
           echo "records pushed for the approved modules"
           if [ "${{ steps.review.outputs.verdict }}" = "approve" ]; then
