@@ -24,6 +24,7 @@ import random
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
@@ -389,6 +390,23 @@ def compare_case(name: str, inputs: list, formula: tuple[Any, str], reference: d
         expected = str(r_val)
     ok, message = matches(expected, f_val, f_kind, tolerance)
     return Comparison(name, inputs, f_val, f_kind, r_val, r_kind, "agree" if ok else "disagree", message)
+
+
+def record_path(records_dir: Path | str, module: Module) -> Path:
+    return Path(records_dir) / f"{module.module_hash}.md"
+
+
+def has_approved_record(records_dir: Path | str, module: Module) -> bool:
+    """True when an approved review report for exactly this module hash is on file."""
+    path = record_path(records_dir, module)
+    return path.exists() and "**Verdict: APPROVE**" in path.read_text(encoding="utf-8")
+
+
+def write_record(records_dir: Path | str, module: Module, review: Review) -> Path:
+    path = record_path(records_dir, module)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(review.to_markdown() + "\n", encoding="utf-8")
+    return path
 
 
 def review_module(module: Module, registry: Registry, client: ModelClient, seed: int = 0, random_count: int = 25) -> Review:

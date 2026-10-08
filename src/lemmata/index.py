@@ -37,6 +37,8 @@ def build_index(registry: Registry, out: Path | str) -> dict:
     entries = []
     for m in registry.modules:
         entry = m.to_index_entry()
+        if (registry.root / "reviews" / f"{m.module_hash}.md").exists():
+            entry["label"] = "ai-reviewed"
         entries.append(entry)
         dest = out / "modules" / m.module_hash
         if dest.exists():

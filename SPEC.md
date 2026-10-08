@@ -103,7 +103,7 @@ A verifier does not trust the label. It strips the file prefixes, canonicalizes 
 | AI-reviewed | Also matched the reviewer's independent implementation on generated cases |
 | Human-verified | A named person with domain knowledge also checked it |
 
-AI-reviewed is the bar for publishing. Nothing in the repo carries that label yet.
+AI-reviewed is the bar for publishing. A module carries it when `reviews/<module_hash>.md` holds an approved report; the review workflow writes that file onto the pull request branch when it approves, and the index labels the module from it. A new version is a new hash and needs a new record.
 
 ## Review
 

@@ -140,3 +140,16 @@ def compute(principal, rate, periods):
     data = json.loads(json.dumps(review.to_dict(), default=str))
     assert data["module"] == "loan_payment"
     assert data["approved"], data["failures"]
+
+
+def test_records_are_keyed_by_hash(tmp_path):
+    from lemmata.review import has_approved_record, write_record
+
+    m = REG.get("cagr")
+    review = review_module(m, REG, FakeClient(), seed=1)
+    assert not has_approved_record(tmp_path, m)
+    path = write_record(tmp_path, m, review)
+    assert path.name == f"{m.module_hash}.md" and has_approved_record(tmp_path, m)
+    denied = review_module(m, REG, FakeClient(code=WRONG_CAGR), seed=1)
+    write_record(tmp_path, m, denied)
+    assert not has_approved_record(tmp_path, m)

@@ -15,6 +15,9 @@ on:
       model:
         description: Reviewer model (use a different model from the author's)
         required: false
+      modules:
+        description: Space-separated module ids to review in addition to the changed ones
+        required: false
 
 permissions:
   contents: write
@@ -34,12 +37,13 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync --all-groups
-      - name: Bring in the pull request's modules only
+      - name: Bring in the pull request's modules and review records only
         run: |
           git fetch --no-tags origin "pull/$PR/head:pr"
-          git diff --name-only HEAD pr -- modules/ | sed -n 's|^modules/\([^/]*\)/.*|\1|p' | sort -u > changed.txt
+          { git diff --name-only HEAD pr -- modules/ | sed -n 's|^modules/\([^/]*\)/.*|\1|p'; echo "${{ inputs.modules }}" | tr ' ' '\n'; } | grep . | sort -u > changed.txt
           git checkout pr -- modules/
-          echo "changed modules: $(tr '\n' ' ' < changed.txt)"
+          git checkout pr -- reviews/ 2>/dev/null || true
+          echo "modules to review: $(tr '\n' ' ' < changed.txt)"
       - name: Review
         id: review
         env:
@@ -53,7 +57,7 @@ jobs:
             exit 0
           fi
           set +e
-          uv run lemma review $ids --markdown report.md
+          uv run lemma review $ids --markdown report.md --records-dir reviews --skip-recorded
           code=$?
           set -e
           [ -f report.md ] || printf '## Lemmata review\n\nThe reviewer could not run (exit %s). See the workflow log.\n' "$code" > report.md
@@ -62,11 +66,30 @@ jobs:
         if: steps.review.outputs.verdict != 'skip'
         env:
           GH_TOKEN: ${{ github.token }}
+        run: gh pr comment "$PR" --body-file report.md
+      - name: Record approvals on the pull request branch
+        if: steps.review.outputs.verdict == 'approve'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
-          gh pr comment "$PR" --body-file report.md
-          if [ "${{ steps.review.outputs.verdict }}" = "approve" ]; then
-            gh pr merge "$PR" --auto --squash || echo "could not enable auto-merge; merge once checks pass"
+          if [ -z "$(git status --porcelain reviews/)" ]; then
+            echo "no new records"
+          elif [ -z "$HEAD_REF" ]; then
+            echo "dispatch run: records not pushed; use the pull request event"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git stash push -q -- reviews/
+            git checkout -q pr
+            git stash pop -q
+            git add reviews/
+            git commit -q -m "Record AI review approval for $(tr '\n' ' ' < changed.txt | sed 's/ *$//')"
+            git push origin "HEAD:refs/heads/$HEAD_REF"
+            echo "records pushed; the next run will find them and enable auto-merge"
+            exit 0
           fi
+          gh pr merge "$PR" --auto --squash || echo "could not enable auto-merge; merge once checks pass"
       - name: Gate on the verdict
         if: steps.review.outputs.verdict == 'deny'
         run: |
