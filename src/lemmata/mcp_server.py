@@ -39,7 +39,8 @@ def _summary(m: Module) -> dict:
     }
 
 
-def score(module: Module, terms: list[str]) -> int:
+def score(module: Module, terms: list[str]) -> tuple[int, int]:
+    """(distinct query terms matched, weighted hits): a module matching every term outranks a heavier partial match."""
     haystacks = [
         (module.id.replace("_", " "), 6),
         (module.name.lower().replace("_", " ").replace(".", " "), 6),
@@ -49,11 +50,17 @@ def score(module: Module, terms: list[str]) -> int:
         (module.readme.lower(), 1),
     ]
     total = 0
+    matched = 0
     for term in terms:
+        hit = False
         for text, weight in haystacks:
             if term in text:
                 total += weight
-    return total
+                hit = True
+        matched += hit
+    if terms and " ".join(terms) in module.summary.lower():
+        total += 10
+    return matched, total
 
 
 def build_server(registry: Registry | None = None) -> MCPServer:
@@ -63,8 +70,8 @@ def build_server(registry: Registry | None = None) -> MCPServer:
     @server.tool(description="Search the registry for a calculation. Returns modules ranked by how well their name, tags, summary, and parameters match the query.")
     def search_modules(query: str, limit: int = 10) -> list[dict]:
         terms = WORD_RE.findall(query.lower())
-        ranked = sorted(((score(m, terms), m) for m in reg.modules), key=lambda x: (-x[0], x[1].id))
-        hits = [m for s, m in ranked if s > 0] if terms else list(reg.modules)
+        ranked = sorted(((score(m, terms), m) for m in reg.modules), key=lambda x: (-x[0][0], -x[0][1], x[1].id))
+        hits = [m for s, m in ranked if s[0] > 0] if terms else list(reg.modules)
         return [_summary(m) for m in hits[: max(1, limit)]]
 
     @server.tool(description="Fetch one module by id, defined name, or hash: its contract, formula, worked examples, hashes, and README.")

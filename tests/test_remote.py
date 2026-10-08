@@ -41,7 +41,7 @@ def test_remote_registry_rejects_tampered_download(served, tmp_path):
     _ = remote.modules
     folder = next((tmp_path / "cache" / "modules").iterdir())
     lam = folder / "formula.lambda"
-    lam.write_text(lam.read_text().replace("- 1", "- 2"))
+    lam.write_text(lam.read_text().rstrip() + " + 0\n")
     fresh = RemoteRegistry(served, cache_dir=tmp_path / "cache")
     with pytest.raises(RegistryError):
         _ = fresh.modules
