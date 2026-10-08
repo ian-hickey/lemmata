@@ -1,5 +1,5 @@
 LAMBDA(payment, rate, periods,
   IF(NOT(AND(ISNUMBER(payment), ISNUMBER(rate), ISNUMBER(periods))), #VALUE!,
-  IF(OR(rate <= -1, periods < 0), #NUM!,
+  IF(OR(rate <= -1, AND(rate <> 0, ABS(rate) < 0.000001), periods < 0), #NUM!,
   IF(rate = 0, payment * periods,
   payment * ((1 + rate) ^ periods - 1) / rate))))

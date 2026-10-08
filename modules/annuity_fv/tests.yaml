@@ -24,6 +24,9 @@ cases:
 - name: negative periods
   inputs: [100, 0.05, -1]
   expect: '#NUM!'
+- name: tiny nonzero rate
+  inputs: [100, 1.0e-09, 12]
+  expect: '#NUM!'
 - name: text payment
   inputs: [x, 0.05, 10]
   expect: '#VALUE!'

@@ -26,6 +26,9 @@ cases:
 - name: fractional periods
   inputs: [1000, 0.01, 12.5]
   expect: '#NUM!'
+- name: tiny nonzero rate
+  inputs: [1000, 1.0e-09, 12]
+  expect: '#NUM!'
 - name: text principal
   inputs: [x, 0.004166666666666667, 360]
   expect: '#VALUE!'

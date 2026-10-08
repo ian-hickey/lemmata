@@ -14,7 +14,7 @@ parameters:
 - name: rate
   type: number
   unit: decimal rate per period
-  description: Interest rate per period. Must be zero or greater.
+  description: Interest rate per period. Must be 0 or at least 0.000001.
 - name: periods
   type: number
   unit: periods
@@ -29,10 +29,11 @@ returns:
   description: Balance after the given payment, as a positive amount.
 errors:
   '#VALUE!': An argument is not a number.
-  '#NUM!': principal or rate is negative, periods is not a positive whole number, or payments_made is not a whole number from 0 to periods.
+  '#NUM!': principal is negative, rate is negative or nonzero below 0.000001, periods is not a positive whole number, or payments_made is not a whole number from 0 to periods.
 conventions:
 - 'Same loan as LEMMA.LOAN_PAYMENT: end-of-period payments, fully amortizing.'
 - Returns exactly 0 after the last payment.
+- Nonzero rates below 0.000001 are rejected because the closed form loses precision there; use rate 0 for an interest-free loan.
 tags:
 - finance
 - loans

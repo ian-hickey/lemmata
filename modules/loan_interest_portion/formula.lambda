@@ -1,4 +1,4 @@
 LAMBDA(principal, rate, periods, period,
   IF(NOT(AND(ISNUMBER(principal), ISNUMBER(rate), ISNUMBER(periods), ISNUMBER(period))), #VALUE!,
-  IF(OR(principal < 0, rate < 0, periods <= 0, periods <> INT(periods), period < 1, period > periods, period <> INT(period)), #NUM!,
+  IF(OR(principal < 0, rate < 0, AND(rate <> 0, rate < 0.000001), periods <= 0, periods <> INT(periods), period < 1, period > periods, period <> INT(period)), #NUM!,
   LEMMA.LOAN_BALANCE(principal, rate, periods, period - 1) * rate)))

@@ -14,7 +14,7 @@ parameters:
 - name: rate
   type: number
   unit: decimal rate per period
-  description: Interest rate per period. Must be zero or greater.
+  description: Interest rate per period. Must be 0 or at least 0.000001.
 - name: periods
   type: number
   unit: periods
@@ -29,10 +29,11 @@ returns:
   description: Principal part of that payment, as a positive amount.
 errors:
   '#VALUE!': An argument is not a number.
-  '#NUM!': principal or rate is negative, periods is not a positive whole number, or period is not a whole number from 1 to periods.
+  '#NUM!': principal is negative, rate is negative or nonzero below 0.000001, periods is not a positive whole number, or period is not a whole number from 1 to periods.
 conventions:
 - Equals -PPMT(rate, period, periods, principal) in Excel.
 - The principal portions over all periods sum to the principal.
+- Nonzero rates below 0.000001 are rejected because the closed form loses precision there; use rate 0 for an interest-free loan.
 tags:
 - finance
 - loans
@@ -41,5 +42,5 @@ dependencies:
 - id: loan_payment
   module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
 - id: loan_interest_portion
-  module_hash: c1287ee1aa78afbea5227bd8d83ff1a408ec6af89c77530772a8d46ad41ea3e8
+  module_hash: 2ddb61ea40d36c74078c776f709a2532e4d71ff5d69ba3b9ce8a263ae697f097
 license: MIT-0

@@ -1,5 +1,5 @@
 LAMBDA(principal, rate, periods, payments_made,
   IF(NOT(AND(ISNUMBER(principal), ISNUMBER(rate), ISNUMBER(periods), ISNUMBER(payments_made))), #VALUE!,
-  IF(OR(principal < 0, rate < 0, periods <= 0, periods <> INT(periods), payments_made < 0, payments_made > periods, payments_made <> INT(payments_made)), #NUM!,
+  IF(OR(principal < 0, rate < 0, AND(rate <> 0, rate < 0.000001), periods <= 0, periods <> INT(periods), payments_made < 0, payments_made > periods, payments_made <> INT(payments_made)), #NUM!,
   IF(rate = 0, principal * (1 - payments_made / periods),
   LEMMA.LOAN_PAYMENT(principal, rate, periods) * (1 - (1 + rate) ^ (-(periods - payments_made))) / rate))))

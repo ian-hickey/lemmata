@@ -14,7 +14,7 @@ parameters:
 - name: rate
   type: number
   unit: decimal rate per period
-  description: Growth rate for one period. Must be greater than -1.
+  description: Growth rate for one period. Must be greater than -1, and either 0 or at least 0.000001 in magnitude.
 - name: periods
   type: number
   unit: periods
@@ -25,10 +25,11 @@ returns:
   description: Accumulated value when the last payment is made.
 errors:
   '#VALUE!': An argument is not a number.
-  '#NUM!': rate is -1 or less, or periods is negative.
+  '#NUM!': rate is -1 or less, rate is nonzero but smaller than 0.000001 in magnitude, or periods is negative.
 conventions:
 - Payments fall at the end of each period. Multiply by (1 + rate) for payments in advance.
 - Equals Excel FV(rate, periods, -payment).
+- Nonzero rates below 0.000001 in magnitude are rejected because the closed form loses precision there; use rate 0 for a zero-interest stream.
 tags:
 - finance
 - time value of money
