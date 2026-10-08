@@ -1,0 +1,4 @@
+LAMBDA(revenue, cost_of_goods_sold,
+  IF(NOT(AND(ISNUMBER(revenue), ISNUMBER(cost_of_goods_sold))), #VALUE!,
+  IF(OR(revenue <= 0, cost_of_goods_sold < 0), #NUM!,
+  (revenue - cost_of_goods_sold) / revenue)))
