@@ -239,16 +239,45 @@ def random_cases(module: Module, rng: random.Random, count: int = 25) -> list[di
     return cases
 
 
+def shape_inputs(inputs: list, module: Module) -> list | None:
+    """Make model-proposed inputs match the declared parameter types, or return None.
+
+    A range given for a scalar parameter is unwrapped when it is one cell and
+    rejected otherwise, because Excel and IronCalc disagree on what a one-cell
+    range means inside a LAMBDA, and the contract promised a scalar anyway.
+    """
+    if not isinstance(inputs, list) or len(inputs) != len(module.parameters):
+        return None
+    shaped = []
+    for value, param in zip(inputs, module.parameters):
+        is_range = isinstance(value, dict) and "range" in value
+        if param.get("type") == "range":
+            if not is_range:
+                return None
+            shaped.append({"range": _rows(value["range"])})
+        elif is_range:
+            rows = _rows(value["range"])
+            if len(rows) == 1 and len(rows[0]) == 1:
+                shaped.append(rows[0][0])
+            else:
+                return None
+        elif isinstance(value, dict):
+            return None
+        else:
+            shaped.append(value)
+    return shaped
+
+
 def parse_model_cases(raw: dict, module: Module) -> list[dict]:
     cases = []
-    n = len(module.parameters)
     for c in raw.get("cases", []):
         try:
             inputs = json.loads(c["inputs_json"])
         except (KeyError, ValueError, TypeError):
             continue
-        if isinstance(inputs, list) and len(inputs) == n:
-            cases.append({"name": f"edge: {c.get('name', '')}".strip(), "inputs": inputs})
+        shaped = shape_inputs(inputs, module)
+        if shaped is not None:
+            cases.append({"name": f"edge: {c.get('name', '')}".strip(), "inputs": shaped})
     return cases
 
 

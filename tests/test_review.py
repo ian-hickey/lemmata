@@ -70,6 +70,21 @@ def test_reference_classifies_results():
     assert out[4]["value"] == "#DIV/0!"
 
 
+def test_model_cases_are_shaped_by_parameter_type():
+    from lemmata.review import parse_model_cases
+
+    raw = {"cases": [
+        {"name": "one-cell range for a number", "inputs_json": '[{"range": [[1000]]}, 600]'},
+        {"name": "multi-cell range for a number", "inputs_json": '[{"range": [[1000], [2000]]}, 600]'},
+        {"name": "wrong arity", "inputs_json": "[1]"},
+        {"name": "plain", "inputs_json": "[100, 60]"},
+    ]}
+    m = REG.get("cagr")
+    raw3 = {"cases": [dict(c, inputs_json=c["inputs_json"][:-1] + ", 3]") for c in raw["cases"]]}
+    shaped = parse_model_cases(raw3, m)
+    assert [c["inputs"] for c in shaped] == [[1000, 600, 3], [100, 60, 3]]
+
+
 def test_random_cases_follow_parameter_types():
     cases = random_cases(REG.get("npv"), __import__("random").Random(1), 10)
     assert len(cases) == 10

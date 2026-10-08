@@ -64,6 +64,7 @@ The test suite runs on IronCalc 0.8.3. Excel is the reference engine. Difference
 
 - `ISNUMBER(range)` is not lifted over arrays in IronCalc, so modules validate ranges with `COUNT(range) = ROWS(range) * COLUMNS(range)` instead.
 - `ROWS(scalar)` returns an error in IronCalc where Excel returns 1. Range parameters must be given a range, not a single number.
+- A one-cell range passed where a LAMBDA expects a number is treated as its value by Excel but fails `ISNUMBER` in IronCalc. The reviewer's case generator therefore unwraps one-cell ranges for scalar parameters.
 
 ## License
 
