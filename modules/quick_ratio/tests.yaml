@@ -1,0 +1,37 @@
+cases:
+- name: covered 1.2 times
+  inputs: [150000, 30000, 100000]
+  expect: 1.2
+- name: no inventory equals the current ratio
+  inputs: [150000, 0, 100000]
+  expect: 1.5
+- name: all assets are inventory
+  inputs: [100, 100, 100]
+  expect: 0
+- name: exactly covered
+  inputs: [120, 20, 100]
+  expect: 1
+- name: under one
+  inputs: [90, 30, 100]
+  expect: 0.6
+- name: fractional inputs
+  inputs: [1234.5, 234.5, 678.9]
+  expect: 1.4729709824716453
+- name: zero assets and inventory
+  inputs: [0, 0, 100]
+  expect: 0
+- name: inventory above assets
+  inputs: [100, 150, 100]
+  expect: '#NUM!'
+- name: zero liabilities
+  inputs: [100, 10, 0]
+  expect: '#NUM!'
+- name: negative inventory
+  inputs: [100, -1, 100]
+  expect: '#NUM!'
+- name: text current_assets
+  inputs: [x, 30000, 100000]
+  expect: '#VALUE!'
+- name: boolean current_liabilities
+  inputs: [150000, 30000, true]
+  expect: '#VALUE!'

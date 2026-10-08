@@ -1,0 +1,38 @@
+id: quick_ratio
+name: LEMMA.QUICK_RATIO
+version: 0.1.0
+summary: 'Quick ratio: (current_assets - inventory) / current_liabilities, a liquidity measure that excludes inventory.'
+definition:
+  source: Wikipedia, Quick ratio
+  url: https://en.wikipedia.org/wiki/Quick_ratio
+  formula: (current_assets - inventory) / current_liabilities
+parameters:
+- name: current_assets
+  type: number
+  unit: currency
+  description: Assets expected to turn into cash within a year. Must be zero or greater.
+- name: inventory
+  type: number
+  unit: currency
+  description: Inventory included in current assets. From 0 to current_assets.
+- name: current_liabilities
+  type: number
+  unit: currency
+  description: Obligations due within a year. Must be greater than zero.
+returns:
+  type: number
+  unit: number
+  description: Times current liabilities are covered without selling inventory, where 1.2 means covered 1.2 times.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': current_assets is negative, inventory is negative or exceeds current_assets, or current_liabilities is not positive.
+conventions:
+- A ratio, not a percentage.
+- All three figures come from the same balance sheet date.
+- Prepaid expenses are not deducted; subtract them from current_assets first if your convention excludes them.
+tags:
+- finance
+- ratios
+- liquidity
+dependencies: []
+license: MIT-0
