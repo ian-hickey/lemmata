@@ -1,0 +1,36 @@
+id: within_tolerance
+name: LEMMA.WITHIN_TOLERANCE
+version: 0.1.0
+summary: 'TRUE when a value is within a tolerance of its target, FALSE otherwise: ABS(value - target) <= tolerance.'
+definition:
+  source: Wikipedia, Approximation error
+  url: https://en.wikipedia.org/wiki/Approximation_error
+  formula: ABS(value - target) <= tolerance
+parameters:
+- name: value
+  type: number
+  unit: any consistent unit
+  description: The figure being checked.
+- name: target
+  type: number
+  unit: same as value
+  description: What it should equal.
+- name: tolerance
+  type: number
+  unit: same as value
+  description: Largest acceptable absolute difference. Must be zero or greater.
+returns:
+  type: boolean
+  unit: TRUE or FALSE
+  description: TRUE when the difference is within tolerance.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': tolerance is negative.
+conventions:
+- Absolute tolerance, in the same units as the values. Use value * rate for a relative one.
+- A tolerance of 0 requires exact equality.
+tags:
+- reconciliation
+- checks
+dependencies: []
+license: MIT-0

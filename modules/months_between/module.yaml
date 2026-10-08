@@ -1,0 +1,32 @@
+id: months_between
+name: LEMMA.MONTHS_BETWEEN
+version: 0.1.0
+summary: Whole calendar months from a start date to an end date, counting month boundaries crossed and ignoring the day of month.
+definition:
+  source: Wikipedia, Month
+  url: https://en.wikipedia.org/wiki/Month
+  formula: (YEAR(end_date) - YEAR(start_date)) * 12 + MONTH(end_date) - MONTH(start_date)
+parameters:
+- name: start_date
+  type: number
+  unit: Excel date serial
+  description: Start date as a serial number. Must be at least 61, which is 1 March 1900.
+- name: end_date
+  type: number
+  unit: Excel date serial
+  description: End date as a serial number. Must be at least 61, which is 1 March 1900.
+returns:
+  type: number
+  unit: months
+  description: Signed count of month boundaries from start to end; negative when end is earlier.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': Either date is below 61.
+conventions:
+- 31 January to 1 February is 1 month; 1 January to 31 January is 0.
+- Negative when end_date is before start_date.
+tags:
+- calendar
+- periods
+dependencies: []
+license: MIT-0

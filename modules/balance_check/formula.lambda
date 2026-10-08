@@ -1,0 +1,4 @@
+LAMBDA(assets, liabilities, equity, tolerance,
+  IF(NOT(AND(ISNUMBER(assets), ISNUMBER(liabilities), ISNUMBER(equity), ISNUMBER(tolerance))), #VALUE!,
+  IF(tolerance < 0, #NUM!,
+  ABS(assets - (liabilities + equity)) <= tolerance)))
