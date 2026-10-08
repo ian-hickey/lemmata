@@ -1,0 +1,66 @@
+# The AI reviewer. Runs with the trusted tooling from the base branch and only
+# the pull request's modules/ folder, so a pull request can change what is
+# reviewed but not how it is reviewed. It posts its evidence as a comment and
+# fails this check when it denies.
+name: review
+
+on:
+  pull_request_target:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number to review
+        required: true
+      model:
+        description: Reviewer model (use a different model from the author's)
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    env:
+      PR: ${{ github.event.pull_request.number || inputs.pr }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --all-groups
+      - name: Bring in the pull request's modules only
+        run: |
+          git fetch --no-tags origin "pull/$PR/head:pr"
+          git diff --name-only HEAD pr -- modules/ | sed -n 's|^modules/\([^/]*\)/.*|\1|p' | sort -u > changed.txt
+          git checkout pr -- modules/
+          echo "changed modules: $(tr '\n' ' ' < changed.txt)"
+      - name: Review
+        id: review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LEMMATA_REVIEW_MODEL: ${{ inputs.model || vars.LEMMATA_REVIEW_MODEL }}
+        run: |
+          ids=$(tr '\n' ' ' < changed.txt)
+          if [ -z "$ids" ]; then
+            echo "verdict=skip" >> "$GITHUB_OUTPUT"
+            echo "No module changed; nothing to review."
+            exit 0
+          fi
+          set +e
+          uv run lemma review $ids --markdown report.md
+          code=$?
+          set -e
+          [ -f report.md ] || printf '## Lemmata review\n\nThe reviewer could not run (exit %s). See the workflow log.\n' "$code" > report.md
+          if [ "$code" -eq 0 ]; then echo "verdict=approve" >> "$GITHUB_OUTPUT"; else echo "verdict=deny" >> "$GITHUB_OUTPUT"; fi
+      - name: Post the report
+        if: steps.review.outputs.verdict != 'skip'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr comment "$PR" --body-file report.md
+      - name: Gate on the verdict
+        if: steps.review.outputs.verdict == 'deny'
+        run: |
+          echo "The reviewer denied this module. See the report comment."
+          exit 1

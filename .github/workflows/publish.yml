@@ -1,0 +1,49 @@
+# Publish the registry on every merge: build index.json and one folder plus one
+# tarball per module hash, attest them with Sigstore, and deploy to GitHub Pages.
+name: publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  attestations: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --all-groups
+      - run: uv run lemma check
+      - run: uv run lemma test
+      - run: uv run lemma build-index --out dist
+      - name: Attest every module tarball and the index
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/index.json
+            dist/modules/*.tar.gz
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

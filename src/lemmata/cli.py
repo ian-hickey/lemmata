@@ -1,4 +1,4 @@
-"""The lemma command: list, check, test, hash, show, add, verify, build-index."""
+"""The lemma command: list, check, test, hash, show, add, verify, review, build-index."""
 
 from __future__ import annotations
 
@@ -84,6 +84,18 @@ def cmd_verify(args, reg: Registry) -> int:
     return 0 if report["ok"] else 1
 
 
+def cmd_review(args, reg: Registry) -> int:
+    from .review import ClaudeClient, review_module
+
+    client = ClaudeClient(args.model)
+    reviews = [review_module(reg.get(i), reg, client, seed=args.seed) for i in args.ids]
+    markdown = "\n\n".join(r.to_markdown() for r in reviews)
+    if args.markdown:
+        Path(args.markdown).write_text(markdown + "\n", encoding="utf-8")
+    print(json.dumps([r.to_dict() for r in reviews], indent=2, default=str) if args.json else markdown)
+    return 0 if all(r.approved for r in reviews) else 1
+
+
 def cmd_build_index(args, reg: Registry) -> int:
     index = build_index(reg, args.out)
     print(f"wrote {args.out}/index.json with {len(index['modules'])} module(s)")
@@ -102,6 +114,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("show", help="print a module's metadata and formula"); s.add_argument("id"); s.set_defaults(fn=cmd_show)
     s = sub.add_parser("add", help="inject modules into a workbook"); s.add_argument("workbook"); s.add_argument("ids", nargs="+"); s.add_argument("--out"); s.set_defaults(fn=cmd_add)
     s = sub.add_parser("verify", help="re-hash the LEMMA.* names in a workbook"); s.add_argument("workbook"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_verify)
+    s = sub.add_parser("review", help="AI review of modules: evidence, then approve or deny"); s.add_argument("ids", nargs="+"); s.add_argument("--model"); s.add_argument("--seed", type=int, default=0); s.add_argument("--markdown", help="also write the report here"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_review)
     s = sub.add_parser("build-index", help="write the static registry"); s.add_argument("--out", default="dist"); s.set_defaults(fn=cmd_build_index)
     return p
 

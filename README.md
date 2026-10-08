@@ -43,11 +43,20 @@ A cell can then call a module like any function: `=LEMMA.CAGR(100, 200, 10)`.
 - Everything is served as static files. No account, no server, no blockchain.
 - Labels say exactly what review a module has had.
 
+## How a module gets in
+
+Every pull request is tested on IronCalc and reviewed by an AI reviewer that writes its own implementation from the cited definition, compares the two on generated cases, and posts the evidence. A failed comparison fails the check. On merge, the registry is rebuilt, each module tarball is attested with Sigstore, and the result is deployed to GitHub Pages as `index.json`, `llms.txt`, and one folder per module hash. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+```sh
+uv run lemma review cagr               # run the reviewer locally (needs ANTHROPIC_API_KEY)
+gh attestation verify modules/<hash>.tar.gz -R ian-hickey/lemmata   # check a published module
+```
+
 ## Status
 
-Phase 0. Three modules exist (CAGR, loan payment, NPV with explicit timing), an injector writes them into `.xlsx` files, and their tests run on [IronCalc](https://www.ironcalc.com). Excel conformance is checked by hand for now: run `uv run python scripts/phase0_demo.py` and open `examples/phase0.xlsx`.
+Phase 1. Three modules exist (CAGR, loan payment, NPV with explicit timing), the injector, verifier, test runner, AI reviewer, and publish pipeline are built. Excel conformance is still checked by hand: run `uv run python scripts/phase0_demo.py` and open `examples/phase0.xlsx`.
 
-Nothing here has been through AI review yet, so no module carries a label above Tested.
+No module has yet passed a live AI review, so none carries a label above Tested.
 
 ## Known engine differences
 

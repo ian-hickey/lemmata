@@ -2,13 +2,33 @@
 
 from __future__ import annotations
 
+import gzip
+import io
 import json
 import shutil
+import tarfile
 from datetime import datetime, timezone
 from pathlib import Path
 
 from .registry import Registry
 from .xlsx import to_file_formula
+
+
+def deterministic_tarball(folder: Path, dest: Path, arcname: str) -> None:
+    """A .tar.gz whose bytes depend only on the folder's contents, so its digest is stable."""
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w") as tar:
+        for path in sorted(p for p in folder.rglob("*") if p.is_file()):
+            info = tar.gettarinfo(path, arcname=f"{arcname}/{path.relative_to(folder).as_posix()}")
+            info.uid = info.gid = 0
+            info.uname = info.gname = ""
+            info.mtime = 0
+            info.mode = 0o644
+            with path.open("rb") as fh:
+                tar.addfile(info, fh)
+    with dest.open("wb") as fh:
+        with gzip.GzipFile(fileobj=fh, mode="wb", mtime=0) as gz:
+            gz.write(buf.getvalue())
 
 
 def build_index(registry: Registry, out: Path | str) -> dict:
@@ -27,6 +47,8 @@ def build_index(registry: Registry, out: Path | str) -> dict:
             json.dumps({"formula_hash": m.formula_hash, "module_hash": m.module_hash}, indent=2) + "\n",
             encoding="utf-8",
         )
+        deterministic_tarball(dest, out / "modules" / f"{m.module_hash}.tar.gz", m.module_hash)
+        entry["archive"] = f"modules/{m.module_hash}.tar.gz"
     index = {
         "spec": "0.1",
         "prefix": registry.prefix,

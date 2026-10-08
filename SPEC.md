@@ -105,6 +105,22 @@ A verifier does not trust the label. It strips the file prefixes, canonicalizes 
 
 AI-reviewed is the bar for publishing. Nothing in the repo carries that label yet.
 
+## Review
+
+The reviewer's verdict rests on evidence it produces. For each module in a pull request it:
+
+1. Runs the submitted tests on IronCalc.
+2. Writes its own implementation in Python from the contract alone: `definition`, `parameters`, `returns`, `errors`, and `conventions` from `module.yaml`. It never sees the formula, the tests, the summary, or the README.
+3. Generates edge cases (model) and random inputs (code), then compares the formula on IronCalc against its implementation. Numbers must agree to 1e-9 relative; errors must carry the same code.
+4. Checks the spec rules, that every numeric parameter declares a unit, that conventions are stated, and that no text an agent will read contains instructions.
+5. Posts a report listing every case it ran.
+
+It approves only when every submitted test passes, no case disagrees, at least 10 cases agree, no more than a quarter of cases are unverified, and every rule passes. The model-written implementation runs in a subprocess with an empty environment, so contract text cannot steer it into reading secrets.
+
+## Publishing
+
+On every merge to `main`, CI builds `index.json`, `llms.txt`, and for each module both a folder and a deterministic tarball named by `module_hash`. A GitHub artifact attestation is created for the index and every tarball. The result is served from GitHub Pages. A consumer verifies a tarball with `gh attestation verify <file> -R <owner>/<repo>` and a formula with the hash rules above.
+
 ## tests.yaml
 
 ```yaml
