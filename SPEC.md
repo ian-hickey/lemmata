@@ -137,6 +137,10 @@ cases:
 
 A `range` value is a list of rows. A flat list is one column. `null` leaves a cell blank. The runner writes the range into a sheet and passes a reference to it.
 
+## The published index
+
+`index.json` lists every module with `id`, `name`, `version`, `summary`, `parameters`, `returns`, `errors`, `conventions`, `tags`, `dependencies`, `formula` (source form), `formula_xlsx` (file form, prefixed), up to five `examples`, both hashes, and the `archive` path of its tarball. A client needs nothing else to insert a module. The folder at `modules/<module_hash>/` holds the four source files plus `hashes.json` and `formula.xlsx.txt`.
+
 ## Open points
 
 - Version history. Older hashes will live in the published `index.json`, so a verifier can report `outdated`. The repo holds only the current version of each module.

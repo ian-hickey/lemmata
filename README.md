@@ -22,7 +22,24 @@ Each module is one folder under [modules/](modules/) with four files: `module.ya
 2. Insert the module into the workbook.
 3. Run verify before returning the file.
 
-An MCP server and JavaScript library are planned. The Python library (`lemmata`) and CLI (`lemma`) exist today.
+Four ways in, all reading the same published registry:
+
+| Path | Use |
+| --- | --- |
+| MCP server | `uvx --from git+https://github.com/ian-hickey/lemmata lemma mcp` gives any MCP client four tools: `search_modules`, `get_module`, `insert_modules`, `verify_workbook` |
+| Python | `from lemmata.registry import Registry` then `Registry.default()`, `lemmata.xlsx.inject`, `lemmata.verify.verify_workbook` |
+| JavaScript | the [`lemmata`](js/) package: `injectModules`, `createWorkbook`, `verifyWorkbook` against `index.json` |
+| HTTP only | `https://ian-hickey.github.io/lemmata/index.json` and `llms.txt`; each entry carries the formula in source and file form |
+
+MCP client configuration:
+
+```json
+{"mcpServers": {"lemmata": {"command": "uvx", "args": ["--from", "git+https://github.com/ian-hickey/lemmata", "lemma", "mcp"]}}}
+```
+
+Two lines for an agent's instructions: check Lemmata before writing a financial formula, and run `verify_workbook` before returning a file. See [AGENTS.md](AGENTS.md).
+
+The registry is resolved from `LEMMATA_REGISTRY` (a checkout path or a URL), else this checkout, else the public site. Downloads are cached and re-hashed; a module whose files do not hash to the index entry is rejected.
 
 ## Quick start
 
@@ -54,9 +71,9 @@ gh attestation verify modules/<hash>.tar.gz -R ian-hickey/lemmata   # check a pu
 
 ## Status
 
-Phase 1. Three modules exist (CAGR, loan payment, NPV with explicit timing), the injector, verifier, test runner, AI reviewer, and publish pipeline are built. Excel conformance is still checked by hand: run `uv run python scripts/phase0_demo.py` and open `examples/phase0.xlsx`.
+Phase 2. Four modules are published. The MCP server, CLI, Python and JavaScript injectors, and verifier exist, and the pipeline has merged one module on the AI reviewer's verdict alone. Excel conformance is still checked by hand: run `uv run python scripts/phase0_demo.py` and open `examples/phase0.xlsx`.
 
-No module has yet passed a live AI review, so none carries a label above Tested.
+Labels are not yet recorded per module, so every module still shows Tested even where it passed AI review.
 
 ## Known engine differences
 

@@ -96,6 +96,13 @@ def cmd_review(args, reg: Registry) -> int:
     return 0 if all(r.approved for r in reviews) else 1
 
 
+def cmd_mcp(args, reg: Registry) -> int:
+    from .mcp_server import build_server
+
+    build_server(reg).run("stdio")
+    return 0
+
+
 def cmd_build_index(args, reg: Registry) -> int:
     index = build_index(reg, args.out)
     print(f"wrote {args.out}/index.json with {len(index['modules'])} module(s)")
@@ -104,7 +111,7 @@ def cmd_build_index(args, reg: Registry) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="lemma", description="Lemmata registry tools")
-    p.add_argument("--registry", help="path to a registry checkout (default: this package's repo)")
+    p.add_argument("--registry", help="registry checkout path or published URL (default: LEMMATA_REGISTRY, this checkout, or the public site)")
     sub = p.add_subparsers(dest="command", required=True)
 
     s = sub.add_parser("list", help="list modules"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_list)
@@ -115,13 +122,19 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("add", help="inject modules into a workbook"); s.add_argument("workbook"); s.add_argument("ids", nargs="+"); s.add_argument("--out"); s.set_defaults(fn=cmd_add)
     s = sub.add_parser("verify", help="re-hash the LEMMA.* names in a workbook"); s.add_argument("workbook"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_verify)
     s = sub.add_parser("review", help="AI review of modules: evidence, then approve or deny"); s.add_argument("ids", nargs="+"); s.add_argument("--model"); s.add_argument("--seed", type=int, default=0); s.add_argument("--markdown", help="also write the report here"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_review)
+    s = sub.add_parser("mcp", help="run the MCP server on stdio"); s.set_defaults(fn=cmd_mcp)
     s = sub.add_parser("build-index", help="write the static registry"); s.add_argument("--out", default="dist"); s.set_defaults(fn=cmd_build_index)
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    reg = Registry(args.registry) if args.registry else Registry.default()
+    if args.registry:
+        from .registry import RemoteRegistry
+
+        reg = RemoteRegistry(args.registry) if args.registry.startswith(("http://", "https://")) else Registry(args.registry)
+    else:
+        reg = Registry.default()
     try:
         return args.fn(args, reg)
     except (RegistryError, FileNotFoundError) as ex:

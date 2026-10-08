@@ -1,0 +1,19 @@
+{
+  "name": "lemmata",
+  "version": "0.0.1",
+  "description": "Reviewed, tested, hash-pinned spreadsheet formulas for AI agents: inject and verify Lemmata modules in .xlsx files.",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
+  "files": ["src"],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": ["excel", "xlsx", "lambda", "formulas", "agents", "mcp"],
+  "license": "Apache-2.0",
+  "repository": "github:ian-hickey/lemmata",
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "fflate": "^0.8.3"
+  }
+}

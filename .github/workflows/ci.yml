@@ -18,6 +18,14 @@ jobs:
         run: uv run lemma check
       - name: Module tests on IronCalc
         run: uv run lemma test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+        working-directory: js
+      - name: JavaScript tests
+        run: npm test
+        working-directory: js
       - name: Tooling tests
         run: uv run pytest -q
       - name: Build static registry

@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
+import io
+import json
 import os
+import tarfile
+import urllib.request
 from functools import cached_property
 from pathlib import Path
 
 import yaml
 
 from .module import Module
+
+DEFAULT_REGISTRY_URL = "https://ian-hickey.github.io/lemmata/"
 
 
 class RegistryError(KeyError):
@@ -24,10 +30,14 @@ class Registry:
 
     @classmethod
     def default(cls) -> "Registry":
-        root = os.environ.get("LEMMATA_REGISTRY_ROOT")
-        if root:
-            return cls(root)
-        return cls(Path(__file__).resolve().parents[2])
+        """The registry to use: LEMMATA_REGISTRY (a path or URL), else this checkout, else the public site."""
+        setting = os.environ.get("LEMMATA_REGISTRY") or os.environ.get("LEMMATA_REGISTRY_ROOT")
+        if setting:
+            return RemoteRegistry(setting) if setting.startswith(("http://", "https://")) else cls(setting)
+        checkout = Path(__file__).resolve().parents[2]
+        if (checkout / "modules").is_dir():
+            return cls(checkout)
+        return RemoteRegistry(DEFAULT_REGISTRY_URL)
 
     @cached_property
     def modules(self) -> list[Module]:
@@ -38,6 +48,9 @@ class Registry:
             if (folder / "module.yaml").exists():
                 found.append(Module.load(folder))
         return found
+
+    def describe(self) -> str:
+        return str(self.root)
 
     def get(self, key: str) -> Module:
         """Find by id, by defined name, or by a prefix of either hash."""
@@ -95,3 +108,54 @@ class Registry:
 
     def advisories_for(self, module_hash: str) -> list[dict]:
         return [a for a in self.advisories if a.get("module_hash") == module_hash]
+
+
+class RemoteRegistry(Registry):
+    """A published registry (index.json plus one tarball per module hash), cached on disk.
+
+    Every downloaded module is re-hashed and must match the hash it was fetched by.
+    """
+
+    def __init__(self, url: str, cache_dir: Path | str | None = None, prefix: str = "LEMMA."):
+        self.url = url.rstrip("/") + "/"
+        cache = Path(cache_dir or os.environ.get("LEMMATA_CACHE") or Path.home() / ".cache" / "lemmata")
+        super().__init__(cache, prefix=prefix)
+
+    def describe(self) -> str:
+        return self.url
+
+    def _fetch(self, path: str) -> bytes:
+        with urllib.request.urlopen(self.url + path, timeout=30) as resp:  # noqa: S310 (fixed https base)
+            return resp.read()
+
+    @cached_property
+    def index(self) -> dict:
+        data = json.loads(self._fetch("index.json").decode("utf-8"))
+        if data.get("prefix"):
+            self.prefix = data["prefix"]
+        return data
+
+    def _materialize(self, entry: dict) -> Path:
+        dest = self.modules_dir / entry["module_hash"]
+        if (dest / "module.yaml").exists():
+            return dest
+        archive = entry.get("archive") or f"modules/{entry['module_hash']}.tar.gz"
+        data = self._fetch(archive)
+        self.modules_dir.mkdir(parents=True, exist_ok=True)
+        with tarfile.open(fileobj=io.BytesIO(data), mode="r:gz") as tar:
+            tar.extractall(self.modules_dir, filter="data")
+        return dest
+
+    @cached_property
+    def modules(self) -> list[Module]:
+        found = []
+        for entry in self.index.get("modules", []):
+            mod = Module.load(self._materialize(entry))
+            if mod.module_hash != entry["module_hash"]:
+                raise RegistryError(f"{entry['id']}: downloaded module hashes to {mod.module_hash[:12]}, index says {entry['module_hash'][:12]}")
+            found.append(mod)
+        return found
+
+    @cached_property
+    def advisories(self) -> list[dict]:
+        return list(self.index.get("advisories", []))

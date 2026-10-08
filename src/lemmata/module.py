@@ -178,6 +178,21 @@ class Module:
             "returns": self.meta.get("returns"),
             "tags": self.meta.get("tags") or [],
             "dependencies": self.dependencies,
+            "errors": self.meta.get("errors") or {},
+            "conventions": self.meta.get("conventions") or [],
+            "formula": self.formula.strip(),
+            "formula_xlsx": _to_file_formula(self.formula),
+            "examples": [
+                {"inputs": c.get("inputs"), "expect": c.get("expect")}
+                for c in self.cases
+                if not (isinstance(c.get("expect"), str) and str(c.get("expect")).startswith("#"))
+            ][:5],
             "label": "tested",
             "path": f"modules/{self.module_hash}/",
         }
+
+
+def _to_file_formula(formula: str) -> str:
+    from .xlsx import to_file_formula
+
+    return to_file_formula(formula)
