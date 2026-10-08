@@ -1,0 +1,31 @@
+cases:
+- name: 15 percent return
+  inputs: [150000, 1000000]
+  expect: 0.15
+- name: net loss
+  inputs: [-50000, 1000000]
+  expect: -0.05
+- name: break-even
+  inputs: [0, 500000]
+  expect: 0
+- name: fractional inputs
+  inputs: [1234.56, 9876.54]
+  expect: 0.12499924062475319
+- name: income above equity
+  inputs: [200, 100]
+  expect: 2
+- name: zero equity
+  inputs: [100, 0]
+  expect: '#NUM!'
+- name: negative equity
+  inputs: [100, -500]
+  expect: '#NUM!'
+- name: text net_income
+  inputs: [x, 1000000]
+  expect: '#VALUE!'
+- name: boolean average_equity
+  inputs: [150000, true]
+  expect: '#VALUE!'
+- name: text average_equity
+  inputs: [150000, x]
+  expect: '#VALUE!'

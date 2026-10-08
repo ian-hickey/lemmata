@@ -1,0 +1,4 @@
+LAMBDA(net_income, average_equity,
+  IF(NOT(AND(ISNUMBER(net_income), ISNUMBER(average_equity))), #VALUE!,
+  IF(average_equity <= 0, #NUM!,
+  net_income / average_equity)))

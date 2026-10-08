@@ -1,0 +1,35 @@
+id: return_on_equity
+name: LEMMA.RETURN_ON_EQUITY
+version: 0.1.0
+summary: 'Return on equity: net_income / average_equity for the period, returned as a decimal rate.'
+definition:
+  source: Wikipedia, Return on equity
+  url: https://en.wikipedia.org/wiki/Return_on_equity
+  formula: net_income / average_equity
+parameters:
+- name: net_income
+  type: number
+  unit: currency
+  description: Net income for the period. Any sign.
+- name: average_equity
+  type: number
+  unit: currency
+  description: Average shareholders' equity over the period, or opening equity if that is the convention used. Must be greater than zero.
+returns:
+  type: number
+  unit: decimal rate per period
+  description: Return where 0.15 means 15 percent of equity earned in the period.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': average_equity is not positive.
+conventions:
+- Returns a decimal, not a percentage.
+- State whether equity is averaged or opening; both conventions exist.
+- Negative equity makes the ratio meaningless, so it is rejected.
+tags:
+- finance
+- ratios
+- returns
+- profitability
+dependencies: []
+license: MIT-0
