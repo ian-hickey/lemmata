@@ -73,11 +73,11 @@ gh attestation verify modules/<hash>.tar.gz -R ian-hickey/lemmata   # check a pu
 
 Phase 3. Forty modules are published across time value of money, loans and amortization, depreciation, growth and returns, margins and ratios, fiscal periods and day counts, and reconciliation checks. Each one cites its definition, carries at least ten computed test cases, and passed the AI reviewer, whose report is kept in [reviews/](reviews/) under the module's hash. The MCP server, CLI, Python and JavaScript injectors, and verifier are built.
 
-Excel conformance is still checked by hand: run `uv run python scripts/phase0_demo.py` and open `examples/phase0.xlsx`.
+Every module also passes on real Excel for Mac: `uv run lemma test --engine excel` writes one workbook with every case, has Excel open and calculate it through AppleScript, and reads the results back. In CI that runs on a self-hosted Mac runner labelled `excel`, by dispatch and on release tags only, never on pull request code, and releases wait for it.
 
 ## Known engine differences
 
-The test suite runs on IronCalc 0.8.3. Excel is the reference engine. Differences found so far:
+Pull requests are tested on IronCalc 0.8.3; Excel is the reference engine and runs before a release. Differences found so far:
 
 - `ISNUMBER(range)` is not lifted over arrays in IronCalc, so modules validate ranges with `COUNT(range) = ROWS(range) * COLUMNS(range)` instead.
 - `ROWS(scalar)` returns an error in IronCalc where Excel returns 1. Range parameters must be given a range, not a single number.

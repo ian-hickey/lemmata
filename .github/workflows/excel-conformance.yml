@@ -1,0 +1,30 @@
+# Run every module's tests on real Excel for Mac, on a self-hosted runner with
+# Excel installed. It never runs pull request code: only main by dispatch, and
+# release tags, so untrusted changes never reach the machine.
+name: excel-conformance
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  excel:
+    runs-on: [self-hosted, macOS, excel]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --all-groups
+      - name: Every module on Excel
+        run: |
+          uv run lemma test --engine excel --json > excel-results.json
+          uv run lemma test --engine excel | tail -1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: excel-results
+          path: excel-results.json

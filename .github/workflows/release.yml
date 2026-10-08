@@ -12,7 +12,11 @@ permissions:
   id-token: write
 
 jobs:
+  # Nothing is released until every module has passed on real Excel.
+  excel:
+    uses: ./.github/workflows/excel-conformance.yml
   pypi:
+    needs: excel
     runs-on: ubuntu-latest
     environment: pypi
     steps:
@@ -21,6 +25,7 @@ jobs:
       - run: uv build
       - uses: pypa/gh-action-pypi-publish@release/v1
   npm:
+    needs: excel
     runs-on: ubuntu-latest
     defaults:
       run:

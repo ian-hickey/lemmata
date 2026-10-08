@@ -28,6 +28,10 @@ A pull request whose last commit was pushed by the bot (its review records) need
 
 Declare the author in the pull request. Where the author is an AI model, the reviewer must run on a different model: a maintainer re-runs the `review` workflow with the `model` input.
 
+## Running the suite on Excel
+
+With Excel for Mac installed, `uv run lemma test --engine excel` runs every case through the real application in about a second. The first run may ask macOS to let your terminal control Excel; allow it. The conformance workflow needs a self-hosted runner on a Mac with Excel: register one from the repository's Actions settings with the label `excel`, run it as a launchd service in a logged-in session, and keep the machine awake.
+
 ## Fixing a published module
 
 A published version is never edited. Bump `version`, change the formula, add the failing case to `tests.yaml`, and add an advisory under `advisories/` naming the old hash.

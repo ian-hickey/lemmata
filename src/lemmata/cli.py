@@ -39,7 +39,12 @@ def cmd_check(args, reg: Registry) -> int:
 
 
 def cmd_test(args, reg: Registry) -> int:
-    results = run_all(reg, args.ids or None)
+    if args.engine == "excel":
+        from .excel_mac import run_all_excel
+
+        results = run_all_excel(reg, args.ids or None, keep=Path(args.keep) if args.keep else None)
+    else:
+        results = run_all(reg, args.ids or None)
     if args.json:
         print(json.dumps([r.to_dict() for r in results], indent=2, default=str))
     else:
@@ -127,7 +132,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("list", help="list modules"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_list)
     s = sub.add_parser("check", help="validate modules against the spec"); s.add_argument("ids", nargs="*"); s.set_defaults(fn=cmd_check)
-    s = sub.add_parser("test", help="run module tests on IronCalc"); s.add_argument("ids", nargs="*"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_test)
+    s = sub.add_parser("test", help="run module tests on IronCalc, or on Excel for Mac with --engine excel"); s.add_argument("ids", nargs="*"); s.add_argument("--engine", choices=["ironcalc", "excel"], default="ironcalc"); s.add_argument("--keep", help="with --engine excel, keep the calculated workbook at this path"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_test)
     s = sub.add_parser("hash", help="print a module's hashes"); s.add_argument("id"); s.set_defaults(fn=cmd_hash)
     s = sub.add_parser("show", help="print a module's metadata and formula"); s.add_argument("id"); s.set_defaults(fn=cmd_show)
     s = sub.add_parser("add", help="inject modules into a workbook"); s.add_argument("workbook"); s.add_argument("ids", nargs="+"); s.add_argument("--out"); s.set_defaults(fn=cmd_add)
