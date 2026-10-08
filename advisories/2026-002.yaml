@@ -2,5 +2,5 @@ id: 2026-002
 module_id: npv
 module_hash: 25f1aa18c949a8b22c29371a24c27577a0df9d85e3174c9ea3a8809f6ad58838
 severity: low
-summary: npv@0.1.0 reports #NUM! instead of #VALUE! when a bad cell in cashflows coincides with an out-of-domain rate. Both are errors; only the code differs. Found by AI review.
+summary: "npv@0.1.0 reports #NUM! instead of #VALUE! when a bad cell in cashflows coincides with an out-of-domain rate. Both are errors; only the code differs. Found by AI review."
 fixed_version: 0.2.0
