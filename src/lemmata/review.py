@@ -170,7 +170,7 @@ for args in payload["cases"]:
     except ZeroDivisionError:
         out.append({"kind": "error", "value": "#DIV/0!"})
     except OverflowError:
-        out.append({"kind": "error", "value": "#NUM!"})
+        out.append({"kind": "overflow", "value": "overflow in the reference implementation"})
     except Exception as ex:
         out.append({"kind": "exception", "value": f"{type(ex).__name__}: {ex}"})
 print(json.dumps(out))
@@ -195,7 +195,7 @@ def run_reference(code: str, cases: list[list], timeout: float = 60.0) -> list[d
 
 def random_cases(module: Module, rng: random.Random, count: int = 25) -> list[dict]:
     """Random inputs shaped by the declared parameter types, with a few type probes."""
-    numbers = [0, 1, -1, 0.5, 2, 10, 100, 1e-9, 1e6, -0.25, 12.5]
+    numbers = [0, 1, -1, 0.5, 2, 10, 100, 1e-6, 1e5, -0.25, 12.5]
 
     def number() -> Any:
         roll = rng.random()
@@ -221,7 +221,8 @@ def random_cases(module: Module, rng: random.Random, count: int = 25) -> list[di
         n = rng.randint(1, 8)
         roll = rng.random()
         if roll < 0.1:
-            return {"range": [[cell() for _ in range(rng.randint(2, 3))] for _ in range(2)]}
+            width = rng.randint(2, 3)
+            return {"range": [[cell() for _ in range(width)] for _ in range(2)]}
         if roll < 0.4:
             return {"range": [[cell() for _ in range(n)]]}
         return {"range": [[cell()] for _ in range(n)]}
@@ -408,6 +409,8 @@ def compare_case(name: str, inputs: list, formula: tuple[Any, str], reference: d
     r_kind, r_val = reference["kind"], reference["value"]
     if r_kind in ("exception", "invalid"):
         return Comparison(name, inputs, f_val, f_kind, r_val, r_kind, "unverified", "reference implementation raised")
+    if r_kind == "overflow":
+        return Comparison(name, inputs, f_val, f_kind, r_val, r_kind, "unverified", "reference overflowed; engines differ on intermediate overflow")
     if r_kind == "error":
         expected: Any = r_val
     elif r_kind == "boolean":

@@ -7,7 +7,10 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: "17 * * * *"   # backstop: a merge made by the Actions token does not trigger push events
+    # A merge performed by the Actions token raises no push event, and a job that
+    # waits for the merge holds the pull request's checks open, so merged modules
+    # publish on this schedule instead.
+    - cron: "*/15 * * * *"
 
 permissions:
   contents: read
