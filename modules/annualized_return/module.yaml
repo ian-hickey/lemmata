@@ -1,0 +1,32 @@
+id: annualized_return
+name: LEMMA.ANNUALIZED_RETURN
+version: 0.1.0
+summary: 'Return per year equivalent to a total return earned over a number of years: (1 + total_return) ^ (1 / years) - 1.'
+definition:
+  source: Wikipedia, Rate of return, annualisation
+  url: https://en.wikipedia.org/wiki/Rate_of_return#Annualisation
+  formula: (1 + total_return) ^ (1 / years) - 1
+parameters:
+- name: total_return
+  type: number
+  unit: decimal rate for the whole period
+  description: Return over the whole period, where 0.5 means 50 percent. Must be -1 or greater.
+- name: years
+  type: number
+  unit: years
+  description: Length of the period in years. Must be greater than zero. Fractions are allowed.
+returns:
+  type: number
+  unit: decimal rate per year
+  description: Geometric average return per year.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': total_return is below -1, or years is not positive.
+conventions:
+- 'Geometric, not arithmetic: it assumes the return compounds.'
+- A total return of -1 returns -1.
+tags:
+- finance
+- returns
+dependencies: []
+license: MIT-0

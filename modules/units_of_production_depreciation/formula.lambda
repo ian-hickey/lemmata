@@ -1,0 +1,4 @@
+LAMBDA(cost, salvage, total_units, units_in_period,
+  IF(NOT(AND(ISNUMBER(cost), ISNUMBER(salvage), ISNUMBER(total_units), ISNUMBER(units_in_period))), #VALUE!,
+  IF(OR(salvage < 0, cost < salvage, total_units <= 0, units_in_period < 0, units_in_period > total_units), #NUM!,
+  (cost - salvage) * units_in_period / total_units)))

@@ -1,0 +1,5 @@
+LAMBDA(cost, salvage, life, period, factor,
+  IF(NOT(AND(ISNUMBER(cost), ISNUMBER(salvage), ISNUMBER(life), ISNUMBER(period), ISNUMBER(factor))), #VALUE!,
+  IF(OR(salvage < 0, cost < salvage, life <= 0, period < 1, period > life, period <> INT(period), factor <= 0, factor > life), #NUM!,
+  LET(rate, factor / life, book, cost * (1 - rate) ^ (period - 1),
+    MAX(0, MIN(book * rate, book - salvage))))))

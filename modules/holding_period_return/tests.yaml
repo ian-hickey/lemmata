@@ -1,0 +1,31 @@
+cases:
+- name: price gain plus dividend
+  inputs: [100, 110, 3]
+  expect: 0.13
+- name: no income
+  inputs: [100, 120, 0]
+  expect: 0.2
+- name: loss
+  inputs: [100, 80, 0]
+  expect: -0.2
+- name: income only
+  inputs: [100, 100, 5]
+  expect: 0.05
+- name: total loss
+  inputs: [100, 0, 0]
+  expect: -1
+- name: negative income such as fees
+  inputs: [100, 105, -2]
+  expect: 0.03
+- name: zero start value
+  inputs: [0, 100, 0]
+  expect: '#NUM!'
+- name: negative end value
+  inputs: [100, -5, 0]
+  expect: '#NUM!'
+- name: text start_value
+  inputs: [x, 110, 3]
+  expect: '#VALUE!'
+- name: boolean income
+  inputs: [100, 110, true]
+  expect: '#VALUE!'

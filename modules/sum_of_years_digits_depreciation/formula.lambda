@@ -1,0 +1,4 @@
+LAMBDA(cost, salvage, life, period,
+  IF(NOT(AND(ISNUMBER(cost), ISNUMBER(salvage), ISNUMBER(life), ISNUMBER(period))), #VALUE!,
+  IF(OR(salvage < 0, cost < salvage, life <= 0, life <> INT(life), period < 1, period > life, period <> INT(period)), #NUM!,
+  (cost - salvage) * (life - period + 1) / (life * (life + 1) / 2))))

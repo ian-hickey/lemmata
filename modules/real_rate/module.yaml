@@ -1,0 +1,33 @@
+id: real_rate
+name: LEMMA.REAL_RATE
+version: 0.1.0
+summary: 'Real rate of return from a nominal rate and an inflation rate using the exact Fisher relation: (1 + nominal) / (1 + inflation) - 1.'
+definition:
+  source: Wikipedia, Fisher equation
+  url: https://en.wikipedia.org/wiki/Fisher_equation
+  formula: (1 + nominal_rate) / (1 + inflation_rate) - 1
+parameters:
+- name: nominal_rate
+  type: number
+  unit: decimal rate per period
+  description: Stated rate. Must be greater than -1.
+- name: inflation_rate
+  type: number
+  unit: decimal rate per period
+  description: Inflation over the same period. Must be greater than -1.
+returns:
+  type: number
+  unit: decimal rate per period
+  description: Rate after removing inflation.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': Either rate is -1 or less.
+conventions:
+- Exact form, not the approximation nominal minus inflation.
+- Both rates must cover the same period.
+tags:
+- finance
+- interest rates
+- inflation
+dependencies: []
+license: MIT-0

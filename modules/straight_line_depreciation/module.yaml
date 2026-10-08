@@ -1,0 +1,36 @@
+id: straight_line_depreciation
+name: LEMMA.STRAIGHT_LINE_DEPRECIATION
+version: 0.1.0
+summary: 'Depreciation charged in each period under the straight-line method: (cost - salvage) / life.'
+definition:
+  source: Wikipedia, Depreciation, straight-line method
+  url: https://en.wikipedia.org/wiki/Depreciation#Straight-line_depreciation
+  formula: (cost - salvage) / life
+parameters:
+- name: cost
+  type: number
+  unit: currency
+  description: Initial cost of the asset. Must be at least the salvage value.
+- name: salvage
+  type: number
+  unit: currency
+  description: Value at the end of its life. Must be zero or greater.
+- name: life
+  type: number
+  unit: periods
+  description: Number of periods over which the asset is depreciated. Must be greater than zero.
+returns:
+  type: number
+  unit: currency per period
+  description: The same charge for every period.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': salvage is negative, cost is below salvage, or life is not positive.
+conventions:
+- Equals Excel SLN(cost, salvage, life).
+- Partial first periods are not prorated.
+tags:
+- accounting
+- depreciation
+dependencies: []
+license: MIT-0

@@ -1,0 +1,40 @@
+cases:
+- name: microsoft ddb example, first year
+  inputs: [2400, 300, 10, 1, 2]
+  expect: 480
+  source: computed; https://support.microsoft.com/en-us/office/ddb-function-519a2a37-cd49-4e4f-a0a5-1bd1b2a1b8ea shows 480.00
+- name: microsoft ddb example, second year
+  inputs: [2400, 300, 10, 2, 2]
+  expect: 384
+  source: computed; the same page shows 384.00
+- name: microsoft ddb example, tenth year is capped at salvage
+  inputs: [2400, 300, 10, 10, 2]
+  expect: 22.122547200000156
+  source: computed; the same page shows 22.12
+- name: factor of 1.5
+  inputs: [2400, 300, 10, 1, 1.5]
+  expect: 360
+- name: no salvage
+  inputs: [1000, 0, 5, 3, 2]
+  expect: 144
+- name: charge stops once salvage is reached
+  inputs: [1000, 900, 5, 3, 2]
+  expect: 0
+- name: period zero
+  inputs: [1000, 100, 5, 0, 2]
+  expect: '#NUM!'
+- name: factor above life
+  inputs: [1000, 100, 5, 1, 6]
+  expect: '#NUM!'
+- name: zero factor
+  inputs: [1000, 100, 5, 1, 0]
+  expect: '#NUM!'
+- name: cost below salvage
+  inputs: [100, 200, 5, 1, 2]
+  expect: '#NUM!'
+- name: text cost
+  inputs: [x, 300, 10, 1, 2]
+  expect: '#VALUE!'
+- name: boolean factor
+  inputs: [2400, 300, 10, 1, true]
+  expect: '#VALUE!'
