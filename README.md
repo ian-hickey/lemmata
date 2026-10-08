@@ -71,9 +71,9 @@ gh attestation verify modules/<hash>.tar.gz -R ian-hickey/lemmata   # check a pu
 
 ## Status
 
-Phase 2. Four modules are published. The MCP server, CLI, Python and JavaScript injectors, and verifier exist, and the pipeline has merged one module on the AI reviewer's verdict alone. Excel conformance is still checked by hand: run `uv run python scripts/phase0_demo.py` and open `examples/phase0.xlsx`.
+Phase 3. Forty modules are published across time value of money, loans and amortization, depreciation, growth and returns, margins and ratios, fiscal periods and day counts, and reconciliation checks. Each one cites its definition, carries at least ten computed test cases, and passed the AI reviewer, whose report is kept in [reviews/](reviews/) under the module's hash. The MCP server, CLI, Python and JavaScript injectors, and verifier are built.
 
-Labels are not yet recorded per module, so every module still shows Tested even where it passed AI review.
+Excel conformance is still checked by hand: run `uv run python scripts/phase0_demo.py` and open `examples/phase0.xlsx`.
 
 ## Known engine differences
 
