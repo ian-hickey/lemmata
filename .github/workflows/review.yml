@@ -1,8 +1,10 @@
-# The AI reviewer. Runs with the trusted tooling from the base branch and only
-# the pull request's modules/ folder, so a pull request can change what is
-# reviewed but not how it is reviewed. It posts its evidence as a comment,
-# fails this check when it denies, and enables auto-merge when it approves so
-# the pull request lands once every required check passes.
+# The AI reviewer. Runs with the trusted tooling from main and only the pull
+# request's modules/ folder, so a pull request can change what is reviewed but
+# not how. It posts its evidence as a comment, stores an approved module's
+# report on the review-records branch (which only this workflow writes, keyed
+# by module hash and attested), fails this check on a deny, and enables
+# auto-merge only when every changed file is a module file. Anything else
+# needs a code owner's approval.
 name: review
 
 on:
@@ -20,41 +22,60 @@ on:
         required: false
 
 permissions:
-  contents: write
+  contents: write        # enabling auto-merge; the checkout keeps no credential
   pull-requests: write
-  actions: write
+  id-token: write        # attestations for review records
+  attestations: write
 
 concurrency:
   group: review-${{ github.event.pull_request.number || inputs.pr }}
-  cancel-in-progress: false   # a run dispatches a successor after pushing records; it must not cancel itself
+  cancel-in-progress: false
+
+env:
+  RECORDS_BRANCH: review-records
 
 jobs:
   review:
     runs-on: ubuntu-latest
-    outputs:
-      verdict: ${{ steps.review.outputs.verdict }}
     env:
       PR: ${{ github.event.pull_request.number || inputs.pr }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main   # the tooling always comes from main, whatever triggered the run
+          ref: main
+          persist-credentials: false
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
       - run: uv sync --all-groups
-      - name: Bring in the pull request's modules and review records only
+      - name: Sandbox image for the reference implementation
+        run: docker pull -q python:3.12-slim
+      - name: Bring in the pull request's modules and the trusted review records
+        id: prep
         run: |
-          git fetch --no-tags origin "pull/$PR/head:pr"
+          git fetch --no-tags "https://github.com/$GITHUB_REPOSITORY" "pull/$PR/head:pr"
           { git diff --name-only HEAD pr -- modules/ | sed -n 's|^modules/\([^/]*\)/.*|\1|p'; echo "${{ inputs.modules }}" | tr ' ' '\n'; } | grep . | sort -u > changed.txt
           git checkout pr -- modules/
-          git checkout pr -- reviews/ 2>/dev/null || true
+          mkdir -p records/reviews
+          if git fetch --no-tags "https://github.com/$GITHUB_REPOSITORY" "$RECORDS_BRANCH:records-branch" 2>/dev/null; then
+            git archive records-branch | tar -x -C records
+          fi
+          ls records/reviews | grep -c '\.md$' | xargs -I{} echo "{} trusted records"
+          gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json files -q '.files[].path' > files.txt
+          if grep -vqE '^modules/[a-z][a-z0-9_]*/(module\.yaml|formula\.lambda|tests\.yaml|README\.md)$' files.txt; then
+            echo "module_only=false" >> "$GITHUB_OUTPUT"
+            echo "pull request changes files outside module folders; a code owner must approve it"
+          else
+            echo "module_only=true" >> "$GITHUB_OUTPUT"
+          fi
           echo "modules to review: $(tr '\n' ' ' < changed.txt)"
       - name: Review
         id: review
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           LEMMATA_REVIEW_MODEL: ${{ inputs.model || vars.LEMMATA_REVIEW_MODEL }}
+          LEMMATA_SANDBOX: docker
         run: |
           ids=$(tr '\n' ' ' < changed.txt)
           if [ -z "$ids" ]; then
@@ -62,70 +83,64 @@ jobs:
             echo "No module changed; nothing to review."
             exit 0
           fi
+          ls records/reviews > before.txt
           set +e
-          uv run lemma review $ids --markdown report.md --records-dir reviews --skip-recorded
+          uv run lemma review $ids --markdown report.md --records-dir records/reviews --skip-recorded --verify-records "$GITHUB_REPOSITORY"
           code=$?
           set -e
           [ -f report.md ] || printf '## Lemmata review\n\nThe reviewer could not run (exit %s). See the workflow log.\n' "$code" > report.md
+          ls records/reviews > after.txt
+          mkdir -p new-records
+          comm -13 before.txt after.txt | while read -r f; do [ -n "$f" ] && cp "records/reviews/$f" new-records/; done
+          echo "new=$(ls new-records | wc -l | tr -d ' ')" >> "$GITHUB_OUTPUT"
           if [ "$code" -eq 0 ]; then echo "verdict=approve" >> "$GITHUB_OUTPUT"; else echo "verdict=deny" >> "$GITHUB_OUTPUT"; fi
       - name: Post the report
         if: steps.review.outputs.verdict != 'skip'
+        run: gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body-file report.md
+      - name: Attest the new review records
+        if: steps.review.outputs.new != '0' && steps.review.outputs.new != ''
+        uses: actions/attest@v2
+        with:
+          subject-path: new-records/*.md
+          predicate-type: https://lemmata.dev/review-record/v1
+          predicate: '{"workflow":"review","trigger":"${{ github.event_name }}"}'
+      - name: Store the new records on the review-records branch
+        if: steps.review.outputs.new != '0' && steps.review.outputs.new != ''
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh pr comment "$PR" --body-file report.md
-      # Pushing with the Actions token raises no pull_request events and the
-      # dispatched checks below do not count toward required status checks, so
-      # a bot-pushed head needs a human push before it can merge. Set a
-      # LEMMATA_BOT_TOKEN secret (a fine-grained token with contents: write) and
-      # the records push triggers the checks like any other push.
-      - name: Record approvals on the pull request branch
-        if: steps.review.outputs.verdict != 'skip'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          PUSH_TOKEN: ${{ secrets.LEMMATA_BOT_TOKEN || github.token }}
-          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PUSH_TOKEN: ${{ secrets.LEMMATA_BOT_TOKEN }}
         run: |
-          if [ -z "$HEAD_REF" ]; then
-            HEAD_REF=$(gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json headRefName -q .headRefName)
-          fi
-          new=$(git status --porcelain reviews/ | sed -n 's/^?? //p')
-          if [ -z "$new" ]; then
-            if [ "${{ steps.review.outputs.verdict }}" = "approve" ]; then
-              echo "no new records; enabling auto-merge"
-              gh pr merge "$PR" --auto --squash || echo "could not enable auto-merge; merge once checks pass"
-            fi
+          if [ -z "$PUSH_TOKEN" ]; then
+            echo "LEMMATA_BOT_TOKEN is not set; records were attested but not stored"
             exit 0
           fi
-          if [ "$PUSH_TOKEN" != "$GH_TOKEN" ]; then
-            # Commit as the token's owner: a push authored by the bot leaves the
-            # resulting pull_request run waiting for approval.
-            login=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .login)
-            uid=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .id)
-            git config user.name "$login"
-            git config user.email "${uid}+${login}@users.noreply.github.com"
+          login=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .login)
+          uid=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .id)
+          url="https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git show-ref --quiet refs/heads/records-branch; then
+            git worktree add -q rec records-branch
           else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git worktree add -q --detach rec
+            git -C rec checkout -q --orphan "$RECORDS_BRANCH"
+            git -C rec rm -rfq . 2>/dev/null || true
+            printf '# Review records\n\nWritten only by the review workflow. One report per approved module hash under reviews/, and history.json listing every published hash.\n' > rec/README.md
           fi
-          git worktree add -q ../prtree pr
-          mkdir -p ../prtree/reviews
-          for f in $new; do cp "$f" "../prtree/$f"; done
-          git -C ../prtree add reviews/
-          git -C ../prtree commit -q -m "Record AI review approval for $(tr '\n' ' ' < changed.txt | sed 's/ *$//')"
-          # The branch may have moved since the run began (GitHub updates it from
-          # main), so replay the records commit onto the current remote head.
-          git -C ../prtree fetch -q origin "$HEAD_REF"
-          git -C ../prtree rebase -q FETCH_HEAD
-          # actions/checkout stores the Actions token as an http.extraheader, which
-          # would override the credential in the URL; clear it for this push.
-          git -C ../prtree -c "http.https://github.com/.extraheader=" push "https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$HEAD_REF"
-          echo "records pushed for the approved modules"
-          if [ "${{ steps.review.outputs.verdict }}" = "approve" ]; then
-            # A push made with the Actions token raises no pull_request events, so
-            # start the checks on the new head by dispatch, which the token may do.
-            gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref "$HEAD_REF"
-            gh workflow run review.yml --repo "$GITHUB_REPOSITORY" --ref "$HEAD_REF" -f pr="$PR"
-            echo "checks dispatched on $HEAD_REF; the next review run will enable auto-merge"
+          mkdir -p rec/reviews
+          cp new-records/*.md rec/reviews/
+          git -C rec config user.name "$login"
+          git -C rec config user.email "${uid}+${login}@users.noreply.github.com"
+          git -C rec add -A
+          git -C rec commit -q -m "Review records for $(tr '\n' ' ' < changed.txt | sed 's/ *$//') (PR #$PR)"
+          for attempt in 1 2 3; do
+            if git -C rec push -q "$url" "HEAD:refs/heads/$RECORDS_BRANCH"; then echo "records stored"; break; fi
+            git -C rec fetch -q "$url" "$RECORDS_BRANCH" && git -C rec rebase -q FETCH_HEAD || true
+          done
+      - name: Enable auto-merge for a module-only pull request
+        if: steps.review.outputs.verdict == 'approve'
+        run: |
+          if [ "${{ steps.prep.outputs.module_only }}" = "true" ]; then
+            gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --auto --squash || echo "could not enable auto-merge; merge once checks pass"
+          else
+            gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "The reviewer approved the module changes, but this pull request also changes files outside module folders, so a code owner must approve it before it merges."
           fi
       - name: Gate on the verdict
         if: steps.review.outputs.verdict == 'deny'

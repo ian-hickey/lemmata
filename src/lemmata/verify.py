@@ -10,7 +10,7 @@ from .canonical import formula_hash, mask_strings, split_args
 from .registry import Registry
 from .xlsx import from_file_formula, parse_label, read_defined_names
 
-OK_STATUSES = {"current"}
+OK_STATUSES = {"current", "outdated"}
 
 
 def find_uses(path: Path | str, prefix: str) -> list[dict]:
@@ -56,7 +56,20 @@ def verify_workbook(path: Path | str, registry: Registry) -> dict:
             "version": matched.version if matched else (label["version"] if label else None),
         }
         if matched is None:
-            if label and registry.by_module_hash(label["hash"]):
+            old = registry.historical_by_formula_hash(fh)
+            if old is not None:
+                advisories = registry.advisories_for(old["module_hash"])
+                current = next((m for m in registry.modules if m.id == old["id"]), None)
+                entry["module_id"], entry["version"] = old["id"], old["version"]
+                latest = f"; current version is {current.version}" if current else ""
+                if advisories:
+                    entry["status"] = "advisory"
+                    entry["message"] = "; ".join(f"{a['id']}: {a.get('summary', '')}" for a in advisories) + latest
+                    entry["advisories"] = advisories
+                else:
+                    entry["status"] = "outdated"
+                    entry["message"] = f"{old['id']}@{old['version']} was published and later superseded{latest}"
+            elif label and (registry.by_module_hash(label["hash"]) or any(e.get("module_hash") == label["hash"] for e in registry.history)):
                 entry["status"] = "modified"
                 entry["message"] = f"label claims {label['id']}@{label['version']} but the formula text differs"
             else:

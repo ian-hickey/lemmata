@@ -31,13 +31,25 @@ def deterministic_tarball(folder: Path, dest: Path, arcname: str) -> None:
             gz.write(buf.getvalue())
 
 
-def build_index(registry: Registry, out: Path | str) -> dict:
+def updated_history(registry: Registry, now: str) -> dict:
+    """The published-hash history with every current module appended if new."""
+    published = list(registry.history)
+    known = {e["module_hash"] for e in published}
+    for m in registry.modules:
+        if m.module_hash not in known:
+            published.append({"id": m.id, "name": m.name, "version": m.version, "formula_hash": m.formula_hash, "module_hash": m.module_hash, "published": now})
+    return {"published": published}
+
+
+def build_index(registry: Registry, out: Path | str, records_dir: Path | str | None = None) -> dict:
     out = Path(out)
     (out / "modules").mkdir(parents=True, exist_ok=True)
+    records = Path(records_dir) if records_dir else registry.root / "reviews"
+    now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     entries = []
     for m in registry.modules:
         entry = m.to_index_entry()
-        if (registry.root / "reviews" / f"{m.module_hash}.md").exists():
+        if (records / f"{m.module_hash}.md").exists():
             entry["label"] = "ai-reviewed"
         entries.append(entry)
         dest = out / "modules" / m.module_hash
@@ -51,12 +63,15 @@ def build_index(registry: Registry, out: Path | str) -> dict:
         )
         deterministic_tarball(dest, out / "modules" / f"{m.module_hash}.tar.gz", m.module_hash)
         entry["archive"] = f"modules/{m.module_hash}.tar.gz"
+    history = updated_history(registry, now)
+    (out / "history.json").write_text(json.dumps(history, indent=2) + "\n", encoding="utf-8")
     index = {
         "spec": "0.1",
         "prefix": registry.prefix,
-        "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated": now,
         "modules": entries,
         "advisories": registry.advisories,
+        "history": "history.json",
     }
     (out / "index.json").write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
     lines = [

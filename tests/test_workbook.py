@@ -78,3 +78,40 @@ def test_verify_flags_advisory(workbook, tmp_path, monkeypatch):
     reg.advisories_dir = advisories_dir
     statuses = {e["name"]: e["status"] for e in verify_workbook(workbook, reg)["names"]}
     assert statuses["LEMMA.NPV"] == "advisory"
+
+
+def test_verify_reports_outdated_and_advisory_from_history(workbook, tmp_path):
+    """A superseded formula is recognised from the published-hash history, and an advised one is flagged."""
+    import json
+
+    from lemmata.canonical import formula_hash
+
+    reg = Registry(REG.root)
+    cagr = reg.get("cagr")
+    old_formula = cagr.formula.replace("- 1", "- 1 + 0")  # a different canonical form, as an old version would have
+    old_fh = formula_hash(old_formula)
+    old_mh = "ab" * 32
+    (tmp_path / "history.json").write_text(json.dumps({"published": [
+        {"id": "cagr", "name": "LEMMA.CAGR", "version": "0.0.9", "formula_hash": old_fh, "module_hash": old_mh, "published": "2026-01-01T00:00:00+00:00"},
+    ]}))
+    reg.root = tmp_path  # history lives beside the registry root
+    reg.modules_dir = REG.modules_dir
+    reg.advisories_dir = tmp_path / "advisories"
+    reg.advisories_dir.mkdir()
+
+    wb = openpyxl.load_workbook(workbook)
+    dn = wb.defined_names["LEMMA.CAGR"]
+    from lemmata.xlsx import to_file_formula
+
+    wb.defined_names["LEMMA.CAGR"] = DefinedName("LEMMA.CAGR", attr_text=to_file_formula(old_formula), comment=f"cagr@0.0.9 sha256:{old_mh}")
+    wb.save(workbook)
+    statuses = {e["name"]: e for e in verify_workbook(workbook, reg)["names"]}
+    assert statuses["LEMMA.CAGR"]["status"] == "outdated"
+    assert "current version is 0.1.0" in statuses["LEMMA.CAGR"]["message"]
+
+    (reg.advisories_dir / "2026-009.yaml").write_text(f"module_id: cagr\nmodule_hash: {old_mh}\nseverity: high\nsummary: old cagr is wrong\nfixed_version: 0.1.0\n")
+    reg2 = Registry(REG.root)
+    reg2.root, reg2.modules_dir, reg2.advisories_dir = tmp_path, REG.modules_dir, reg.advisories_dir
+    report = verify_workbook(workbook, reg2)
+    assert {e["name"]: e["status"] for e in report["names"]}["LEMMA.CAGR"] == "advisory"
+    assert not report["ok"]

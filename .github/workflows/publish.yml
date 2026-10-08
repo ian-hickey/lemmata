@@ -27,13 +27,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
       - run: uv sync --all-groups
       - run: uv run lemma check
       - run: uv run lemma test
-      - run: uv run lemma build-index --out dist
+      - name: Trusted review records and the published-hash history
+        run: |
+          mkdir -p records
+          if git fetch --no-tags origin review-records; then git archive FETCH_HEAD | tar -x -C records; fi
+          [ -f records/history.json ] && cp records/history.json history.json || true
+          echo "$(ls records/reviews 2>/dev/null | grep -c '\.md$') records, $(python3 -c 'import json,sys; print(len(json.load(open("history.json"))["published"]))' 2>/dev/null || echo 0) published hashes on record"
+      - run: uv run lemma build-index --out dist --records-dir records/reviews
+      - name: Store the updated history on the review-records branch
+        env:
+          PUSH_TOKEN: ${{ secrets.LEMMATA_BOT_TOKEN }}
+        run: |
+          if [ -z "$PUSH_TOKEN" ] || ! git show-ref --quiet FETCH_HEAD; then echo "no bot token or no records branch; history not stored"; exit 0; fi
+          if cmp -s dist/history.json records/history.json; then echo "history unchanged"; exit 0; fi
+          login=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .login); uid=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .id)
+          git worktree add -q rec FETCH_HEAD
+          cp dist/history.json rec/history.json
+          git -C rec config user.name "$login"; git -C rec config user.email "${uid}+${login}@users.noreply.github.com"
+          git -C rec add history.json && git -C rec commit -q -m "Published-hash history $(date -u +%Y-%m-%dT%H:%MZ)"
+          git -C rec push -q "https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:refs/heads/review-records && echo "history stored"
       - name: Attest every module tarball and the index
         uses: actions/attest-build-provenance@v2
         with:

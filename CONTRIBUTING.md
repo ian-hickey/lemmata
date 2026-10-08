@@ -22,9 +22,9 @@ Cite the definition the formula implements and include at least one reference ca
    - checks the spec rules and whether any text aimed at agents contains instructions;
    - posts a report listing every case it ran, then passes or fails the check.
 3. Any failed comparison fails the `review` check. The reviewer cannot pass past it.
-4. Within 15 minutes of a merge, `publish` builds the registry, attests each module tarball with Sigstore, and deploys to GitHub Pages.
-
-A pull request whose last commit was pushed by the bot (its review records) needs one more human push, or an update from main, before GitHub counts its checks, unless the repository has a `LEMMATA_BOT_TOKEN` secret for the records push.
+4. An approved module's report is stored on the `review-records` branch, keyed by its hash and attested. The pull request itself is never pushed to.
+5. If every changed file is a module file, the pull request auto-merges once checks pass. Any other change needs the maintainer's approval.
+6. Within 15 minutes of a merge, `publish` builds the registry, attests each module tarball with Sigstore, and deploys to GitHub Pages.
 
 Declare the author in the pull request. Where the author is an AI model, the reviewer must run on a different model: a maintainer re-runs the `review` workflow with the `model` input.
 

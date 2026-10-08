@@ -62,7 +62,7 @@ A cell can then call a module like any function: `=LEMMA.CAGR(100, 200, 10)`.
 
 ## How a module gets in
 
-Every pull request is tested on IronCalc and reviewed by an AI reviewer that writes its own implementation from the cited definition, compares the two on generated cases, and posts the evidence. A failed comparison fails the check. On merge, the registry is rebuilt, each module tarball is attested with Sigstore, and the result is deployed to GitHub Pages as `index.json`, `llms.txt`, and one folder per module hash. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Every pull request is tested on IronCalc and reviewed by an AI reviewer that writes its own implementation from the cited definition, compares the two on generated cases, and posts the evidence. A failed comparison fails the check. Approved reports are stored, attested, on a branch only the workflow writes, and a pull request that changes only module files merges on its own; anything else needs the maintainer. On merge, the registry is rebuilt, each module tarball is attested with Sigstore, and the result is deployed to GitHub Pages as `index.json`, `history.json`, `llms.txt`, and one folder per module hash. See [CONTRIBUTING.md](CONTRIBUTING.md) and the trust boundaries in [SPEC.md](SPEC.md).
 
 ```sh
 uv run lemma review cagr               # run the reviewer locally (needs ANTHROPIC_API_KEY)

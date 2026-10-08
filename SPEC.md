@@ -94,7 +94,8 @@ A verifier does not trust the label. It strips the file prefixes, canonicalizes 
 | `label_mismatch` | Formula matches one module, the label names another |
 | `modified` | Label names a known module but the formula no longer matches it |
 | `unknown` | Neither the formula nor the label is known to the registry |
-| `advisory` | Formula matches a module that has an open advisory |
+| `outdated` | Formula matches a hash that was published and later superseded; the message names the current version |
+| `advisory` | Formula matches a module, current or superseded, that has an open advisory |
 
 ## Labels
 
@@ -116,7 +117,14 @@ The reviewer's verdict rests on evidence it produces. For each module in a pull 
 4. Checks the spec rules, that every numeric parameter declares a unit, that conventions are stated, and that no text an agent will read contains instructions.
 5. Posts a report listing every case it ran.
 
-It approves only when every submitted test passes, no case disagrees, at least 10 cases agree, no more than a quarter of cases are unverified, and every rule passes. The model-written implementation runs in a subprocess with an empty environment, so contract text cannot steer it into reading secrets.
+It approves only when every submitted test passes, no case disagrees, at least 10 cases agree, no more than a quarter of cases are unverified, and every rule passes. The model-written implementation runs in a Docker container with no network, a read-only filesystem, no capabilities, and no secrets, so contract text cannot steer it into reading anything.
+
+### Trust boundaries in the pipeline
+
+- The review workflow runs the tooling from `main` and takes only `modules/` from the pull request. Nothing else in the pull request can change how it is reviewed.
+- Review records live on the `review-records` branch, which only the review workflow writes, keyed by module hash. A record in a pull request is ignored. Each record is also attested with Sigstore by the workflow, and `lemma review --verify-records` trusts a record only if `gh attestation verify` accepts it as signed by this repository's review workflow.
+- An approved pull request auto-merges only when every changed file is one of the four module files. Any other path needs a code owner's approval (see `.github/CODEOWNERS`).
+- The checkout keeps no credential, so neither the reference code nor a module can reach a token.
 
 ## Publishing
 
@@ -140,9 +148,10 @@ A `range` value is a list of rows. A flat list is one column. `null` leaves a ce
 
 ## The published index
 
+`history.json` beside it lists every hash ever published, with its id, version, and formula hash, so a verifier can recognise a superseded module as `outdated` or `advisory` rather than `unknown`. The publish workflow appends new hashes and stores the file on the `review-records` branch.
+
 `index.json` lists every module with `id`, `name`, `version`, `summary`, `parameters`, `returns`, `errors`, `conventions`, `tags`, `dependencies`, `formula` (source form), `formula_xlsx` (file form, prefixed), up to five `examples`, both hashes, and the `archive` path of its tarball. A client needs nothing else to insert a module. The folder at `modules/<module_hash>/` holds the four source files plus `hashes.json` and `formula.xlsx.txt`.
 
 ## Open points
 
-- Version history. Older hashes will live in the published `index.json`, so a verifier can report `outdated`. The repo holds only the current version of each module.
 - A companion `.CHECK` function that returns a text reason for an error is planned but not yet specified.

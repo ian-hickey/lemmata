@@ -1,0 +1,12 @@
+# Module folders have no owner: the AI reviewer is their gate and an approved
+# module-only pull request merges on its own. Everything else needs the
+# maintainer's approval before it can merge.
+/*                @ian-hickey
+/.github/         @ian-hickey
+/src/             @ian-hickey
+/js/              @ian-hickey
+/tests/           @ian-hickey
+/scripts/         @ian-hickey
+/advisories/      @ian-hickey
+/examples/        @ian-hickey
+/modules/LICENSE  @ian-hickey

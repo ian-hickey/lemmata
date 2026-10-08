@@ -93,7 +93,7 @@ def cmd_review(args, reg: Registry) -> int:
     from .review import ClaudeClient, has_approved_record, record_path, review_module, write_record
 
     modules = [reg.get(i) for i in args.ids]
-    recorded = [m for m in modules if args.records_dir and args.skip_recorded and has_approved_record(args.records_dir, m)]
+    recorded = [m for m in modules if args.records_dir and args.skip_recorded and has_approved_record(args.records_dir, m, verify_repo=args.verify_records)]
     todo = [m for m in modules if m not in recorded]
     reviews = []
     if todo:
@@ -120,7 +120,7 @@ def cmd_mcp(args, reg: Registry) -> int:
 
 
 def cmd_build_index(args, reg: Registry) -> int:
-    index = build_index(reg, args.out)
+    index = build_index(reg, args.out, records_dir=args.records_dir)
     print(f"wrote {args.out}/index.json with {len(index['modules'])} module(s)")
     return 0
 
@@ -137,9 +137,9 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("show", help="print a module's metadata and formula"); s.add_argument("id"); s.set_defaults(fn=cmd_show)
     s = sub.add_parser("add", help="inject modules into a workbook"); s.add_argument("workbook"); s.add_argument("ids", nargs="+"); s.add_argument("--out"); s.set_defaults(fn=cmd_add)
     s = sub.add_parser("verify", help="re-hash the LEMMA.* names in a workbook"); s.add_argument("workbook"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_verify)
-    s = sub.add_parser("review", help="AI review of modules: evidence, then approve or deny"); s.add_argument("ids", nargs="+"); s.add_argument("--model"); s.add_argument("--seed", type=int, default=0); s.add_argument("--markdown", help="also write the report here"); s.add_argument("--records-dir", help="write an approved module's report to <dir>/<module_hash>.md"); s.add_argument("--skip-recorded", action="store_true", help="treat a module with an approved record for its current hash as approved without re-running"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_review)
+    s = sub.add_parser("review", help="AI review of modules: evidence, then approve or deny"); s.add_argument("ids", nargs="+"); s.add_argument("--model"); s.add_argument("--seed", type=int, default=0); s.add_argument("--markdown", help="also write the report here"); s.add_argument("--records-dir", help="write an approved module's report to <dir>/<module_hash>.md"); s.add_argument("--skip-recorded", action="store_true", help="treat a module with an approved record for its current hash as approved without re-running"); s.add_argument("--verify-records", metavar="OWNER/REPO", help="with --skip-recorded, trust a record only if gh attestation verify accepts it as signed by that repo's review workflow"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_review)
     s = sub.add_parser("mcp", help="run the MCP server on stdio"); s.set_defaults(fn=cmd_mcp)
-    s = sub.add_parser("build-index", help="write the static registry"); s.add_argument("--out", default="dist"); s.set_defaults(fn=cmd_build_index)
+    s = sub.add_parser("build-index", help="write the static registry"); s.add_argument("--out", default="dist"); s.add_argument("--records-dir", help="directory of review records (default: <registry>/reviews)"); s.set_defaults(fn=cmd_build_index)
     return p
 
 

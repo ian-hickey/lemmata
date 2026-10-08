@@ -53,6 +53,19 @@ class Registry:
     def describe(self) -> str:
         return str(self.root)
 
+    @cached_property
+    def history(self) -> list[dict]:
+        """Every hash ever published: [{id, name, version, formula_hash, module_hash, published}]."""
+        path = self.root / "history.json"
+        if not path.exists():
+            return []
+        return list(json.loads(path.read_text(encoding="utf-8")).get("published", []))
+
+    def historical_by_formula_hash(self, h: str) -> dict | None:
+        """The most recent published entry whose formula hashes to h, if it is not a current module."""
+        matches = [e for e in self.history if e.get("formula_hash") == h]
+        return matches[-1] if matches else None
+
     def get(self, key: str) -> Module:
         """Find by id, by defined name, or by a prefix of either hash."""
         k = key.strip()
@@ -171,3 +184,11 @@ class RemoteRegistry(Registry):
     @cached_property
     def advisories(self) -> list[dict]:
         return list(self.index.get("advisories", []))
+
+    @cached_property
+    def history(self) -> list[dict]:
+        try:
+            data = json.loads(self._fetch("history.json").decode("utf-8"))
+        except Exception:  # an older registry without a history file
+            return []
+        return list(data.get("published", []))

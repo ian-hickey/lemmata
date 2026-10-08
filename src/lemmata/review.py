@@ -12,8 +12,10 @@ On each module it:
 5. writes a report listing every case it ran, and approves only when every
    check passed.
 
-The model-written code runs in a subprocess with an empty environment, so it
-cannot read secrets even if a contract's text tried to steer it to.
+The model-written code runs in a Docker container with no network, a
+read-only filesystem, and no secrets. Without Docker it falls back to a
+subprocess with an empty environment, which is weaker: on Linux a subprocess
+can still read its parent's environment through /proc. CI uses Docker.
 """
 
 from __future__ import annotations
@@ -21,9 +23,11 @@ from __future__ import annotations
 import json
 import os
 import random
+import shutil
 import subprocess
 import sys
 import tempfile
+import warnings
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Any, Protocol
@@ -177,17 +181,42 @@ print(json.dumps(out))
 """
 
 
-def run_reference(code: str, cases: list[list], timeout: float = 60.0) -> list[dict]:
-    """Run compute(*args) for each case in an isolated subprocess with an empty environment."""
+SANDBOX_IMAGE = os.environ.get("LEMMATA_SANDBOX_IMAGE", "python:3.12-slim")
+
+
+def sandbox_mode() -> str:
+    """'docker' when a daemon answers (or LEMMATA_SANDBOX forces it), else 'subprocess'."""
+    forced = os.environ.get("LEMMATA_SANDBOX")
+    if forced in ("docker", "subprocess"):
+        return forced
+    if shutil.which("docker"):
+        probe = subprocess.run(["docker", "info"], capture_output=True, text=True)
+        if probe.returncode == 0:
+            return "docker"
+    return "subprocess"
+
+
+def run_reference(code: str, cases: list[list], timeout: float = 120.0, mode: str | None = None) -> list[dict]:
+    """Run compute(*args) for each case in a sandbox and return the typed results."""
     args = [[_rows(v["range"]) if isinstance(v, dict) and "range" in v else v for v in case] for case in cases]
     payload = json.dumps({"code": code, "cases": args})
-    with tempfile.TemporaryDirectory() as cwd:
-        proc = subprocess.run(
-            [sys.executable, "-I", "-S", "-c", HARNESS],
-            input=payload, capture_output=True, text=True, timeout=timeout, cwd=cwd, env={},
-        )
+    mode = mode or sandbox_mode()
+    if mode == "docker":
+        cmd = [
+            "docker", "run", "--rm", "-i", "--network", "none", "--read-only", "--tmpfs", "/tmp:size=16m",
+            "--cpus", "1", "--memory", "256m", "--pids-limit", "64", "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
+            "--user", "65534:65534", "-e", "PYTHONDONTWRITEBYTECODE=1", SANDBOX_IMAGE, "python", "-I", "-S", "-c", HARNESS,
+        ]
+        proc = subprocess.run(cmd, input=payload, capture_output=True, text=True, timeout=timeout)
+    else:
+        warnings.warn("running the reference implementation in a subprocess, not Docker; set up Docker for isolation", stacklevel=2)
+        with tempfile.TemporaryDirectory() as cwd:
+            proc = subprocess.run(
+                [sys.executable, "-I", "-S", "-c", HARNESS],
+                input=payload, capture_output=True, text=True, timeout=timeout, cwd=cwd, env={},
+            )
     if proc.returncode != 0:
-        raise RuntimeError(f"reference implementation failed to load: {proc.stderr.strip()[-500:]}")
+        raise RuntimeError(f"reference implementation failed to load ({mode}): {proc.stderr.strip()[-500:]}")
     return json.loads(proc.stdout)
 
 
@@ -427,10 +456,27 @@ def record_path(records_dir: Path | str, module: Module) -> Path:
     return Path(records_dir) / f"{module.module_hash}.md"
 
 
-def has_approved_record(records_dir: Path | str, module: Module) -> bool:
-    """True when an approved review report for exactly this module hash is on file."""
+def has_approved_record(records_dir: Path | str, module: Module, verify_repo: str | None = None) -> bool:
+    """True when an approved review report for exactly this module hash is on file.
+
+    Records must come from a place only the review workflow writes (the
+    review-records branch), never from a pull request. With verify_repo set,
+    the record must also carry a GitHub attestation signed by that repo's
+    review workflow, checked with `gh attestation verify`.
+    """
     path = record_path(records_dir, module)
-    return path.exists() and "**Verdict: APPROVE**" in path.read_text(encoding="utf-8")
+    if not path.exists() or "**Verdict: APPROVE**" not in path.read_text(encoding="utf-8"):
+        return False
+    if f"module hash `{module.module_hash[:12]}`" not in path.read_text(encoding="utf-8"):
+        return False
+    if verify_repo:
+        proc = subprocess.run(
+            ["gh", "attestation", "verify", str(path), "-R", verify_repo,
+             "--signer-workflow", f"{verify_repo}/.github/workflows/review.yml"],
+            capture_output=True, text=True,
+        )
+        return proc.returncode == 0
+    return True
 
 
 def write_record(records_dir: Path | str, module: Module, review: Review) -> Path:
