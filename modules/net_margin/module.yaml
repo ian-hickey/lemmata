@@ -1,0 +1,33 @@
+id: net_margin
+name: LEMMA.NET_MARGIN
+version: 0.1.0
+summary: 'Net profit margin as a share of revenue: net_income / revenue, returned as a decimal.'
+definition:
+  source: Wikipedia, Profit margin
+  url: https://en.wikipedia.org/wiki/Profit_margin
+  formula: net_income / revenue
+parameters:
+- name: revenue
+  type: number
+  unit: currency
+  description: Net revenue for the period. Must be greater than zero.
+- name: net_income
+  type: number
+  unit: currency
+  description: Net income after interest and tax for the same period. Any sign.
+returns:
+  type: number
+  unit: decimal share
+  description: Net margin where 0.08 means 8 percent. Negative when there is a net loss.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': revenue is not positive.
+conventions:
+- Returns a decimal share, not a percentage.
+- Both inputs cover the same period in the same currency.
+tags:
+- finance
+- margins
+- ratios
+dependencies: []
+license: MIT-0

@@ -1,0 +1,37 @@
+id: break_even_units
+name: LEMMA.BREAK_EVEN_UNITS
+version: 0.1.0
+summary: 'Units that must be sold for revenue to cover fixed and variable costs: fixed_costs / (price - variable_cost).'
+definition:
+  source: Wikipedia, Break-even (economics)
+  url: https://en.wikipedia.org/wiki/Break-even_(economics)
+  formula: fixed_costs / (price - variable_cost)
+parameters:
+- name: fixed_costs
+  type: number
+  unit: currency per period
+  description: Costs that do not change with volume. Must be zero or greater.
+- name: price
+  type: number
+  unit: currency per unit
+  description: Selling price per unit. Must exceed variable_cost.
+- name: variable_cost
+  type: number
+  unit: currency per unit
+  description: Variable cost per unit. Must be zero or greater.
+returns:
+  type: number
+  unit: units per period
+  description: Break-even volume, not rounded up.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': fixed_costs or variable_cost is negative, or price is not above variable_cost.
+conventions:
+- Not rounded. Round up for whole units.
+- Multiply by price for break-even revenue.
+tags:
+- finance
+- pricing
+- planning
+dependencies: []
+license: MIT-0

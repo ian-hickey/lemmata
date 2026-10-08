@@ -1,0 +1,33 @@
+id: current_ratio
+name: LEMMA.CURRENT_RATIO
+version: 0.1.0
+summary: 'Current ratio: current_assets / current_liabilities, a liquidity measure.'
+definition:
+  source: Wikipedia, Current ratio
+  url: https://en.wikipedia.org/wiki/Current_ratio
+  formula: current_assets / current_liabilities
+parameters:
+- name: current_assets
+  type: number
+  unit: currency
+  description: Assets expected to turn into cash within a year. Must be zero or greater.
+- name: current_liabilities
+  type: number
+  unit: currency
+  description: Obligations due within a year. Must be greater than zero.
+returns:
+  type: number
+  unit: decimal share
+  description: Times current liabilities are covered, where 1.5 means covered one and a half times.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': current_assets is negative, or current_liabilities is not positive.
+conventions:
+- A ratio, not a percentage.
+- Both figures come from the same balance sheet date.
+tags:
+- finance
+- ratios
+- liquidity
+dependencies: []
+license: MIT-0

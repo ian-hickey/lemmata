@@ -1,0 +1,32 @@
+id: percent_of_total
+name: LEMMA.PERCENT_OF_TOTAL
+version: 0.1.0
+summary: 'Share of a total represented by a part: part / total, returned as a decimal.'
+definition:
+  source: Wikipedia, Percentage
+  url: https://en.wikipedia.org/wiki/Percentage
+  formula: part / total
+parameters:
+- name: part
+  type: number
+  unit: any consistent unit
+  description: The part. Any sign.
+- name: total
+  type: number
+  unit: same as part
+  description: The total. Must be greater than zero.
+returns:
+  type: number
+  unit: decimal share
+  description: Share where 0.25 means 25 percent.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': total is not positive.
+conventions:
+- Returns a decimal, not a percentage.
+- A part larger than the total returns more than 1.
+tags:
+- analysis
+- ratios
+dependencies: []
+license: MIT-0

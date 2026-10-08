@@ -1,0 +1,31 @@
+cases:
+- name: 8 percent margin
+  inputs: [1000000, 80000]
+  expect: 0.08
+- name: net loss
+  inputs: [500000, -40000]
+  expect: -0.08
+- name: break-even
+  inputs: [800, 0]
+  expect: 0
+- name: fractional inputs
+  inputs: [1234.56, 12.34]
+  expect: 0.009995463970969414
+- name: income above revenue is allowed
+  inputs: [100, 120]
+  expect: 1.2
+- name: zero revenue
+  inputs: [0, 10]
+  expect: '#NUM!'
+- name: negative revenue
+  inputs: [-100, 10]
+  expect: '#NUM!'
+- name: text revenue
+  inputs: [x, 80000]
+  expect: '#VALUE!'
+- name: boolean net_income
+  inputs: [1000000, true]
+  expect: '#VALUE!'
+- name: text net_income
+  inputs: [1000000, x]
+  expect: '#VALUE!'

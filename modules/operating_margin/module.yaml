@@ -1,0 +1,33 @@
+id: operating_margin
+name: LEMMA.OPERATING_MARGIN
+version: 0.1.0
+summary: 'Operating margin as a share of revenue: operating_income / revenue, returned as a decimal.'
+definition:
+  source: Wikipedia, Operating margin
+  url: https://en.wikipedia.org/wiki/Operating_margin
+  formula: operating_income / revenue
+parameters:
+- name: revenue
+  type: number
+  unit: currency
+  description: Net revenue for the period. Must be greater than zero.
+- name: operating_income
+  type: number
+  unit: currency
+  description: Operating income (EBIT) for the same period. Any sign.
+returns:
+  type: number
+  unit: decimal share
+  description: Operating margin where 0.15 means 15 percent. Negative when there is an operating loss.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': revenue is not positive.
+conventions:
+- Returns a decimal share, not a percentage.
+- Both inputs cover the same period in the same currency.
+tags:
+- finance
+- margins
+- ratios
+dependencies: []
+license: MIT-0

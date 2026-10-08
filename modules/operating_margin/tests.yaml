@@ -1,0 +1,31 @@
+cases:
+- name: 15 percent margin
+  inputs: [1000000, 150000]
+  expect: 0.15
+- name: operating loss
+  inputs: [500000, -25000]
+  expect: -0.05
+- name: break-even
+  inputs: [800, 0]
+  expect: 0
+- name: fractional inputs
+  inputs: [1234.56, 98.76]
+  expect: 0.07999611197511665
+- name: margin above 100 percent is allowed
+  inputs: [100, 150]
+  expect: 1.5
+- name: zero revenue
+  inputs: [0, 10]
+  expect: '#NUM!'
+- name: negative revenue
+  inputs: [-100, 10]
+  expect: '#NUM!'
+- name: text revenue
+  inputs: [x, 150000]
+  expect: '#VALUE!'
+- name: boolean operating_income
+  inputs: [1000000, true]
+  expect: '#VALUE!'
+- name: text operating_income
+  inputs: [1000000, x]
+  expect: '#VALUE!'
