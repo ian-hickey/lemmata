@@ -1,0 +1,31 @@
+cases:
+- name: turns over 0.8 times
+  inputs: [800000, 1000000]
+  expect: 0.8
+- name: turns over twice
+  inputs: [200, 100]
+  expect: 2
+- name: no revenue
+  inputs: [0, 1000]
+  expect: 0
+- name: fractional inputs
+  inputs: [1234.56, 9876.54]
+  expect: 0.12499924062475319
+- name: large figures
+  inputs: [5000000000, 12500000000]
+  expect: 0.4
+- name: zero assets
+  inputs: [100, 0]
+  expect: '#NUM!'
+- name: negative assets
+  inputs: [100, -500]
+  expect: '#NUM!'
+- name: negative revenue
+  inputs: [-5, 100]
+  expect: '#NUM!'
+- name: text revenue
+  inputs: [x, 1000000]
+  expect: '#VALUE!'
+- name: boolean average_total_assets
+  inputs: [800000, true]
+  expect: '#VALUE!'

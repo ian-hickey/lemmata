@@ -1,0 +1,34 @@
+id: asset_turnover
+name: LEMMA.ASSET_TURNOVER
+version: 0.1.0
+summary: 'Asset turnover: revenue / average_total_assets for the period, the revenue generated per unit of assets.'
+definition:
+  source: Wikipedia, Asset turnover
+  url: https://en.wikipedia.org/wiki/Asset_turnover
+  formula: revenue / average_total_assets
+parameters:
+- name: revenue
+  type: number
+  unit: currency
+  description: Net revenue for the period. Must be zero or greater.
+- name: average_total_assets
+  type: number
+  unit: currency
+  description: Average total assets over the period, or opening assets if that is the convention used. Must be greater than zero.
+returns:
+  type: number
+  unit: number
+  description: Times assets turned over in the period, where 0.8 means revenue was 80 percent of assets.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': revenue is negative, or average_total_assets is not positive.
+conventions:
+- A ratio, not a percentage.
+- State whether assets are averaged or opening; both conventions exist.
+- Revenue and assets must cover the same period and currency.
+tags:
+- finance
+- ratios
+- efficiency
+dependencies: []
+license: MIT-0
