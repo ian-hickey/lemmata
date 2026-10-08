@@ -1,0 +1,4 @@
+LAMBDA(cost_of_goods_sold, average_inventory,
+  IF(NOT(AND(ISNUMBER(cost_of_goods_sold), ISNUMBER(average_inventory))), #VALUE!,
+  IF(OR(cost_of_goods_sold < 0, average_inventory <= 0), #NUM!,
+  cost_of_goods_sold / average_inventory)))

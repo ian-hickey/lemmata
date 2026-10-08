@@ -1,0 +1,35 @@
+id: inventory_turnover
+name: LEMMA.INVENTORY_TURNOVER
+version: 0.1.0
+summary: 'Inventory turnover: cost_of_goods_sold / average_inventory for the period, the number of times inventory was sold through.'
+definition:
+  source: Wikipedia, Inventory turnover
+  url: https://en.wikipedia.org/wiki/Inventory_turnover
+  formula: cost_of_goods_sold / average_inventory
+parameters:
+- name: cost_of_goods_sold
+  type: number
+  unit: currency
+  description: Cost of goods sold for the period. Must be zero or greater.
+- name: average_inventory
+  type: number
+  unit: currency
+  description: Average inventory over the period at cost. Must be greater than zero.
+returns:
+  type: number
+  unit: number
+  description: Turns per period, where 6 means inventory was replaced six times.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': cost_of_goods_sold is negative, or average_inventory is not positive.
+conventions:
+- A ratio, not a percentage.
+- Divide the period's days by the result for days of inventory on hand.
+- Use cost of goods sold, not revenue, so both figures are at cost.
+tags:
+- finance
+- ratios
+- efficiency
+- inventory
+dependencies: []
+license: MIT-0
