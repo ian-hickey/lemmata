@@ -1,0 +1,364 @@
+{
+  "published": [
+    {
+      "id": "npv",
+      "name": "LEMMA.NPV",
+      "version": "0.1.0",
+      "formula_hash": "1438c587899cec5b3ac29357610f646f5982894a961bda86dc71d28b0d275428",
+      "module_hash": "25f1aa18c949a8b22c29371a24c27577a0df9d85e3174c9ea3a8809f6ad58838",
+      "published": "2026-10-08T19:40:00+00:00"
+    },
+    {
+      "id": "loan_payment",
+      "name": "LEMMA.LOAN_PAYMENT",
+      "version": "0.1.0",
+      "formula_hash": "50136c948b797e41f8e2265d801bb5e4c1f08428273664d5b5354f01b34c0ef1",
+      "module_hash": "4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa",
+      "published": "2026-10-08T19:40:00+00:00"
+    },
+    {
+      "id": "annualized_return",
+      "name": "LEMMA.ANNUALIZED_RETURN",
+      "version": "0.1.0",
+      "formula_hash": "35fb6d83e6c546f0730e4627d0863769ad8a6b262ff568d5a62237b6a45f5203",
+      "module_hash": "d87a80705e196d255fb5b089bd94e197ded7672adb752898e53f8f3f001c0e04",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "annuity_fv",
+      "name": "LEMMA.ANNUITY_FV",
+      "version": "0.1.0",
+      "formula_hash": "f9ebb7a383da66c5b84096a0873eae7f174435d9cdef3e6541e618b00a5bba12",
+      "module_hash": "087f2b0e724456d5f866e94826ec751e71686a1bbee81805b6ee59d7217f311e",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "annuity_pv",
+      "name": "LEMMA.ANNUITY_PV",
+      "version": "0.1.0",
+      "formula_hash": "f9d880bba97d40a8a7c6de9e118ca830169ca489a23191f30675f3ef3c99bd33",
+      "module_hash": "674e08999797453bb8bdd07c13d64d4b9f81b07ce2f3c04d5b50cd17ed4badc3",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "asset_turnover",
+      "name": "LEMMA.ASSET_TURNOVER",
+      "version": "0.1.0",
+      "formula_hash": "03616aa37b927f69f959982efbab8e85af862cce26545f67b7aba71e9fabd67b",
+      "module_hash": "fc732e85742bcdca7d51763a55a8895fabb8527cf07c6dd1034782da9948945d",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "balance_check",
+      "name": "LEMMA.BALANCE_CHECK",
+      "version": "0.1.0",
+      "formula_hash": "59e89627642a8e1b7d75f3b6ce11b0118a8d78d9706a99daa4f83cb6ef89698c",
+      "module_hash": "ebd4725a8c272d6de5fd46667365493a9bf0b167f457a77888870459fbab12a6",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "break_even_units",
+      "name": "LEMMA.BREAK_EVEN_UNITS",
+      "version": "0.1.0",
+      "formula_hash": "68b86f3c19426c8f776aa04d1e1bc9a9b483cf9c8754a88f6f01122f725051a1",
+      "module_hash": "cba88aa5ca2ad53e3d67bba315cd5ccda61fd4dafebf813563d57b80f89a1227",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "cagr",
+      "name": "LEMMA.CAGR",
+      "version": "0.1.0",
+      "formula_hash": "8c6b047d7035265815fc900a6a22af1f2c28b4029137e52c9a44348bc6c501f9",
+      "module_hash": "8cc95aaee97a25818aab2294a3b5737408d7d642b461c9cbb0f3221f049a100a",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "contribution_margin_ratio",
+      "name": "LEMMA.CONTRIBUTION_MARGIN_RATIO",
+      "version": "0.1.0",
+      "formula_hash": "7221ad8567f70d641c556c9799de3c9c5c6a9bf05b6d1ac751819a3dcd472b49",
+      "module_hash": "6611979ce43ffeca0881ca816c2365e0ee5422acda71e3a7ef0a3d2279db1ecc",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "current_ratio",
+      "name": "LEMMA.CURRENT_RATIO",
+      "version": "0.1.0",
+      "formula_hash": "3da5d00e832e2646520fe6ec0e1df65e5a6b61bb14263bf9f14e07a879d2bf66",
+      "module_hash": "425780a0dcc4c2c9a9e2d5404a4a7087e252c620133c9c712815dead4c9c8a13",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "debt_to_equity",
+      "name": "LEMMA.DEBT_TO_EQUITY",
+      "version": "0.1.0",
+      "formula_hash": "d3d85ef133d486373f0e47cbbdac60407e22c4f46f4423cb5f2228e89195de83",
+      "module_hash": "9527bd750055b6b4ae64fdbabef648409f7b8d19c7f70dd31f8002a58aad5db2",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "declining_balance_depreciation",
+      "name": "LEMMA.DECLINING_BALANCE_DEPRECIATION",
+      "version": "0.1.0",
+      "formula_hash": "37a780a048c9c31ca7bc54e7f7175c7e1897cc826e1168a94753bc823ac82ae5",
+      "module_hash": "081ea5d36fcfb455bd4ca642384c74414b9c0a7a9379d4ef7c96b310df291030",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "discount_factor",
+      "name": "LEMMA.DISCOUNT_FACTOR",
+      "version": "0.1.0",
+      "formula_hash": "837eaacf0d1dfcacb2531dbc8a3566a5897a26717cbdc24e3591524035659d4d",
+      "module_hash": "b50a5f170406687857e5d327fc939812ff16159754232bc032b104a3ccbed5b8",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "effective_annual_rate",
+      "name": "LEMMA.EFFECTIVE_ANNUAL_RATE",
+      "version": "0.1.0",
+      "formula_hash": "cefc354af9f2aaf7f140126502e3133cbe4a8c8cb726250fb61ad963b960e83b",
+      "module_hash": "9127163ea6424387ee102e7f9a4ecb1994dce7356939e50647901896845537b1",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "fiscal_quarter",
+      "name": "LEMMA.FISCAL_QUARTER",
+      "version": "0.1.0",
+      "formula_hash": "cba3a9902979c12cf35bb08e9d7803406e63ab27275ae70d808378d83a1fe822",
+      "module_hash": "1aa43863ae44976204a2267ea622041bf1b417c87bff8f706587477126ecb85e",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "fiscal_year",
+      "name": "LEMMA.FISCAL_YEAR",
+      "version": "0.1.0",
+      "formula_hash": "2cd16497457c102390c3213f5df287aee5e002dc1e0c819f3df33d8979d481a2",
+      "module_hash": "56fffcec025e999aa2f20d151ed0352093e1c1aa4898ac411d1ebc1f508aeb35",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "future_value",
+      "name": "LEMMA.FUTURE_VALUE",
+      "version": "0.1.0",
+      "formula_hash": "d9415d95789397649f0d3af59f826f60d8d8131444577d1c474f09e793132f8e",
+      "module_hash": "64a497c50850b0b8e0a07e172d113faad98f3c6ffef13d45f7cbe1d58716d453",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "gross_margin",
+      "name": "LEMMA.GROSS_MARGIN",
+      "version": "0.1.0",
+      "formula_hash": "606294b35313b36c2a30e185225e19f1bf3d683b9b927ef4eefa3a77ca24eacf",
+      "module_hash": "a4338931bda548f0c65b87cfe933e23fd390a9521e4d7d00a9d86754b83e2ce4",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "holding_period_return",
+      "name": "LEMMA.HOLDING_PERIOD_RETURN",
+      "version": "0.1.0",
+      "formula_hash": "2af60599ed05b0373d01e3cff512a3716d0b8f9e1aa985b32a51fb75941cc0aa",
+      "module_hash": "3ec284b187c8fba04646fac1ac8e7d2cbc60851b15a435e72b525e30571af371",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "loan_balance",
+      "name": "LEMMA.LOAN_BALANCE",
+      "version": "0.1.1",
+      "formula_hash": "2b9155a89251eb1ef890d7ac874ca7627751ecc5deac5f1385857e26041bbe60",
+      "module_hash": "1c1ce9087c318cedeaf3d7d2110424f98d8dddfbb82c567b5713762cf694ec30",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "loan_interest_portion",
+      "name": "LEMMA.LOAN_INTEREST_PORTION",
+      "version": "0.1.1",
+      "formula_hash": "456a3f7fa165fde31d2e9f647d7df0ccd32e7a6d481b37785d58fa41c67acea3",
+      "module_hash": "2b4e5356ce5d0d5300f7b5bbbb2dea42acf544f9723417c627978075666828a5",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "loan_payment",
+      "name": "LEMMA.LOAN_PAYMENT",
+      "version": "0.2.0",
+      "formula_hash": "b73022b2612fa70d6f9c8b0af9794dae21de4508dbef66ac1cb859740119ebcc",
+      "module_hash": "36280cefe512d0393c8d606a94f1aeecf251af9e1292a68ebc9e5424961a189b",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "loan_principal_portion",
+      "name": "LEMMA.LOAN_PRINCIPAL_PORTION",
+      "version": "0.1.1",
+      "formula_hash": "0be8828285adb98a7bb1cd3fed23d3fb09923149de308d8332d1c547687d95a6",
+      "module_hash": "7a4f3d062b88001791b43a5d5b656621cb0c6da4a30c06dbf2bdcfbd7a31b871",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "loan_total_interest",
+      "name": "LEMMA.LOAN_TOTAL_INTEREST",
+      "version": "0.1.1",
+      "formula_hash": "d64a59ea305f3c29295efd4efa4f234fcc9e05494d54912f7d0992adb4328732",
+      "module_hash": "49efa0cd7ab0bce69132ee36a22a2e7a0a02e23d4b761106622a24f97941311d",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "markup",
+      "name": "LEMMA.MARKUP",
+      "version": "0.1.0",
+      "formula_hash": "e2fb09925df28f245bfcfb4cd23320e17dbf2bb071abbda013c0e87077103582",
+      "module_hash": "04e7bf6bea5e8980e22f2e905f38e033c694d9a887596ce77ee743b3448f2979",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "months_between",
+      "name": "LEMMA.MONTHS_BETWEEN",
+      "version": "0.1.0",
+      "formula_hash": "99babf680635d91dcdaac755f92a6c9da4262fa031d6f9ff73a21f44dffdab32",
+      "module_hash": "71ca0694ba6c0d3997bca061d1733a3c2de0bb86c9c415b07fb5fff33de8cc38",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "net_margin",
+      "name": "LEMMA.NET_MARGIN",
+      "version": "0.1.0",
+      "formula_hash": "11143387e751dfd1f0c99741cd9f27f9c7d3b9c7b40d96367b4389b5a803eb77",
+      "module_hash": "253f49df6dc056a9f0d82bf87e2f1e9f3ccdf7fcb8e180cb878805a407b1106b",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "nominal_rate",
+      "name": "LEMMA.NOMINAL_RATE",
+      "version": "0.1.0",
+      "formula_hash": "ab525cd201a202774ad85eec00528ad4a65766aa10e1a17b6d743d3125b76c28",
+      "module_hash": "bea838bb741d9ac3e8eb82d221d556691703a77f071e9e5d32d9c7bf3f0197f4",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "npv",
+      "name": "LEMMA.NPV",
+      "version": "0.2.0",
+      "formula_hash": "60c78410fdeebc24a1c45165891104f063d3c81906bc13dd9d799b23366e1864",
+      "module_hash": "62b1cd6d163cf4e016181baa98f9ac6cca297dc6af0351308c0ad02471afc586",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "operating_margin",
+      "name": "LEMMA.OPERATING_MARGIN",
+      "version": "0.1.0",
+      "formula_hash": "9fcd33d9b1f33decac2710f97b6b6dd11a6715d219d84b7f62335c6ace58d3f9",
+      "module_hash": "2211d459d9ed0a3b96464922bc06233697a43778206f7ab2cd7f2f0179491105",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "percent_change",
+      "name": "LEMMA.PERCENT_CHANGE",
+      "version": "0.1.0",
+      "formula_hash": "da2f1320143c77ba1b959cebdc55b9547a51e98ba3dff41916a6f8cc1db2f12a",
+      "module_hash": "80df88e3d1e29f270ecc93dbb56540b7041f65dd068598fa4ed28fa9b2d83106",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "percent_of_total",
+      "name": "LEMMA.PERCENT_OF_TOTAL",
+      "version": "0.1.0",
+      "formula_hash": "f0c6e418438ec33c8dba49136244109bb050075e472a9555033349dec82d59b8",
+      "module_hash": "6e511fff0a5e8bdb89d299cb67d2fe35726ea3ae6363f93050472afac7630fee",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "perpetuity_pv",
+      "name": "LEMMA.PERPETUITY_PV",
+      "version": "0.1.0",
+      "formula_hash": "be6467735a1fdead27028771ab616b94aaca4a88d79cd83bff7f63a0c898f1e7",
+      "module_hash": "6b2dc47c0ce4e1b3032c3c57e85647346cf32a9248389db3a1a2f5eb155fe271",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "present_value",
+      "name": "LEMMA.PRESENT_VALUE",
+      "version": "0.1.0",
+      "formula_hash": "e10a8180a5fa3b282ccb8fa5a95cd8addefeac6c12d91a24efea711867355431",
+      "module_hash": "ca17020dd8059c1a3fb215bda1fe9209dbcade40182a655bb7924ade0e62293c",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "quick_ratio",
+      "name": "LEMMA.QUICK_RATIO",
+      "version": "0.1.0",
+      "formula_hash": "afa05d7d596cbdae5fa61a5546f7febaed59de72147a0f13a4f836305c731c1a",
+      "module_hash": "2ded56ce64f1e9fdf1c3f854ec51ff03379416b1160fd9c575f61089277c3a2e",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "real_rate",
+      "name": "LEMMA.REAL_RATE",
+      "version": "0.1.0",
+      "formula_hash": "c0de396aa09a191dc1a294c5f59360ea442a0c010f650cda0fe2a028e51db634",
+      "module_hash": "8907efb3d6e25d2b7d948b4d9cb943ba8ad995f70ece43050e8262dae4d8a868",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "return_on_equity",
+      "name": "LEMMA.RETURN_ON_EQUITY",
+      "version": "0.1.0",
+      "formula_hash": "4b4aa8af55e62b8eced1fc5fcc1904d99d5761e287da4ce586ecafaeb9e557be",
+      "module_hash": "bf53f6f049db971fcafe3e170540365d7e156892e1b2b916aca10d3ceb06830e",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "straight_line_depreciation",
+      "name": "LEMMA.STRAIGHT_LINE_DEPRECIATION",
+      "version": "0.1.0",
+      "formula_hash": "419c240a186dd49a20937f7a3ac21fc8b4b0e3da928093a6f23ab0d03d3f3007",
+      "module_hash": "ed202e3e6c28a456ed51368e322dd12c80ab0141c9c896aef82bf9826e8d19d1",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "sum_check",
+      "name": "LEMMA.SUM_CHECK",
+      "version": "0.1.0",
+      "formula_hash": "b78f756be8f3ffffe224f67c2756ff9589275c93f19a4fbfe751542ef1832627",
+      "module_hash": "8d7a3d1fbb5c24279ec494ee7f127b5e669d602cc3e31caa807e08473b48abe8",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "sum_of_years_digits_depreciation",
+      "name": "LEMMA.SUM_OF_YEARS_DIGITS_DEPRECIATION",
+      "version": "0.1.0",
+      "formula_hash": "43b58d9bce2b064228743e7a24f1d6e3321044ab7735efbed26c2e49b32ff2b6",
+      "module_hash": "b3333fbdae72cde977ae3bd597ae2cb796316f333377f5dbd085b23cc700a0d6",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "sums_to_one",
+      "name": "LEMMA.SUMS_TO_ONE",
+      "version": "0.1.0",
+      "formula_hash": "ce084eeafc05aa740af1a5b205ce67aad098b2e3a328e6fa788dd8ea60d47cb5",
+      "module_hash": "8d5a03f5336c1c99015ee2b590e4d3fda99cebd10e4d474e5fc678ff7f984b76",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "units_of_production_depreciation",
+      "name": "LEMMA.UNITS_OF_PRODUCTION_DEPRECIATION",
+      "version": "0.1.0",
+      "formula_hash": "ca11d4dda62a73d42324ff413a3ef648188f8858382b8f7aa7d2361580d1fdfe",
+      "module_hash": "5c1c762b617488f31765d4a4b145b86673ba6cf99e9d70b2fc02c170851cd8bb",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "within_tolerance",
+      "name": "LEMMA.WITHIN_TOLERANCE",
+      "version": "0.1.0",
+      "formula_hash": "2654aae19b0e9781abb78fbac06d16692600c55937225400b047087c53e27f6f",
+      "module_hash": "4e395903cbbca59f242ec90f921dee9bae731e5ab6a1e682d0af2065e907d677",
+      "published": "2026-10-08T21:40:00+00:00"
+    },
+    {
+      "id": "year_fraction",
+      "name": "LEMMA.YEAR_FRACTION",
+      "version": "0.1.0",
+      "formula_hash": "a3217522c97c26c9ee4b151bf806f74d77c24ecfdc1fc28e2cb7a26af93727a6",
+      "module_hash": "a52cabfa9bde7970a15c5fc4b624e0562715dc11ca330422a2660506b119defa",
+      "published": "2026-10-08T21:40:00+00:00"
+    }
+  ]
+}
