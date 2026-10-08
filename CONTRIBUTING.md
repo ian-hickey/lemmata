@@ -22,7 +22,7 @@ Cite the definition the formula implements and include at least one reference ca
    - checks the spec rules and whether any text aimed at agents contains instructions;
    - posts a report listing every case it ran, then passes or fails the check.
 3. Any failed comparison fails the `review` check. The reviewer cannot pass past it.
-4. After a merge, `publish` builds the registry, attests each module tarball with Sigstore, and deploys to GitHub Pages.
+4. Within 15 minutes of a merge, `publish` builds the registry, attests each module tarball with Sigstore, and deploys to GitHub Pages.
 
 Declare the author in the pull request. Where the author is an AI model, the reviewer must run on a different model: a maintainer re-runs the `review` workflow with the `model` input.
 
