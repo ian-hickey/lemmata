@@ -1,0 +1,4 @@
+LAMBDA(nominal_rate, periods_per_year,
+  IF(NOT(AND(ISNUMBER(nominal_rate), ISNUMBER(periods_per_year))), #VALUE!,
+  IF(OR(nominal_rate < 0, periods_per_year < 1, periods_per_year <> INT(periods_per_year)), #NUM!,
+  (1 + nominal_rate / periods_per_year) ^ periods_per_year - 1)))

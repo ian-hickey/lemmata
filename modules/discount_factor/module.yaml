@@ -1,0 +1,33 @@
+id: discount_factor
+name: LEMMA.DISCOUNT_FACTOR
+version: 0.1.0
+summary: 'Factor that converts an amount at the end of a number of periods into its value today: 1 / (1 + rate) ^ periods.'
+definition:
+  source: Wikipedia, Discounting
+  url: https://en.wikipedia.org/wiki/Discounting
+  formula: 1 / (1 + rate) ^ periods
+parameters:
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Discount rate for one period. Must be greater than -1.
+- name: periods
+  type: number
+  unit: periods
+  description: Number of periods. Must be zero or greater. Fractions are allowed.
+returns:
+  type: number
+  unit: dimensionless
+  description: Multiply a future amount by it to get its present value.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': rate is -1 or less, or periods is negative.
+conventions:
+- A factor of 1 at zero periods.
+- Multiply, do not divide, by the factor.
+tags:
+- finance
+- time value of money
+- discounting
+dependencies: []
+license: MIT-0

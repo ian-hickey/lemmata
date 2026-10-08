@@ -1,0 +1,4 @@
+LAMBDA(present_value, rate, periods,
+  IF(NOT(AND(ISNUMBER(present_value), ISNUMBER(rate), ISNUMBER(periods))), #VALUE!,
+  IF(OR(rate <= -1, periods < 0), #NUM!,
+  present_value * (1 + rate) ^ periods)))

@@ -1,0 +1,36 @@
+cases:
+- name: 100 per period for ten periods at 5 percent
+  inputs: [100, 0.05, 10]
+  expect: 772.1734929184818
+  source: computed; Excel PV(0.05,10,-100) agrees
+- name: zero rate is the plain sum
+  inputs: [100, 0, 10]
+  expect: 1000
+- name: single payment
+  inputs: [100, 0.1, 1]
+  expect: 90.90909090909093
+- name: zero periods
+  inputs: [100, 0.1, 0]
+  expect: 0
+- name: monthly payments for 30 years
+  inputs: [1073.6432460242797, 0.004166666666666667, 360]
+  expect: 200000
+  source: computed; the loan it repays is 200,000
+- name: negative payment keeps sign
+  inputs: [-50, 0.05, 4]
+  expect: -177.29752520811815
+- name: rate of minus one
+  inputs: [100, -1, 5]
+  expect: '#NUM!'
+- name: negative periods
+  inputs: [100, 0.05, -1]
+  expect: '#NUM!'
+- name: tiny nonzero rate
+  inputs: [100, 1.0e-09, 12]
+  expect: '#NUM!'
+- name: text payment
+  inputs: [x, 0.05, 10]
+  expect: '#VALUE!'
+- name: boolean periods
+  inputs: [100, 0.05, true]
+  expect: '#VALUE!'

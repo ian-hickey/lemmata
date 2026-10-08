@@ -1,0 +1,37 @@
+id: future_value
+name: LEMMA.FUTURE_VALUE
+version: 0.1.0
+summary: 'Future value of a single amount compounded for a number of periods at a constant rate per period: present_value * (1 + rate) ^ periods.'
+definition:
+  source: Wikipedia, Future value
+  url: https://en.wikipedia.org/wiki/Future_value
+  formula: present_value * (1 + rate) ^ periods
+parameters:
+- name: present_value
+  type: number
+  unit: currency
+  description: Amount invested today. Any sign.
+- name: rate
+  type: number
+  unit: decimal rate per period
+  description: Growth rate for one period. Must be greater than -1.
+- name: periods
+  type: number
+  unit: periods
+  description: Number of compounding periods. Must be zero or greater. Fractions are allowed.
+returns:
+  type: number
+  unit: currency
+  description: Value at the end of the last period.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': rate is -1 or less, or periods is negative.
+conventions:
+- rate and periods use the same period.
+- present_value keeps its sign.
+tags:
+- finance
+- time value of money
+- compounding
+dependencies: []
+license: MIT-0

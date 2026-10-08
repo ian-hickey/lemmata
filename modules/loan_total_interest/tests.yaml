@@ -1,0 +1,40 @@
+cases:
+- name: 30 year mortgage at 5 percent on 200,000
+  inputs: [200000, 0.004166666666666667, 360]
+  expect: 186511.56856874068
+- name: one year at 1 percent per month
+  inputs: [1000, 0.01, 12]
+  expect: 66.18546414009916
+- name: single payment
+  inputs: [1000, 0.05, 1]
+  expect: 49.99999999999886
+- name: zero rate
+  inputs: [1000, 0, 12]
+  expect: 0
+- name: zero principal
+  inputs: [0, 0.01, 12]
+  expect: 0
+- name: negative principal
+  inputs: [-1000, 0.01, 12]
+  expect: '#NUM!'
+- name: negative rate
+  inputs: [1000, -0.01, 12]
+  expect: '#NUM!'
+- name: zero periods
+  inputs: [1000, 0.01, 0]
+  expect: '#NUM!'
+- name: fractional periods
+  inputs: [1000, 0.01, 12.5]
+  expect: '#NUM!'
+- name: rate below the floor
+  inputs: [1000, 0.0001, 12]
+  expect: '#NUM!'
+- name: rate at the floor
+  inputs: [100000, 0.0005, 12]
+  expect: 325.2978420429863
+- name: text principal
+  inputs: [x, 0.004166666666666667, 360]
+  expect: '#VALUE!'
+- name: boolean periods
+  inputs: [200000, 0.004166666666666667, true]
+  expect: '#VALUE!'

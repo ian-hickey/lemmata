@@ -1,0 +1,4 @@
+LAMBDA(payment, rate, growth,
+  IF(NOT(AND(ISNUMBER(payment), ISNUMBER(rate), ISNUMBER(growth))), #VALUE!,
+  IF(OR(rate <= growth, growth <= -1), #NUM!,
+  payment / (rate - growth))))

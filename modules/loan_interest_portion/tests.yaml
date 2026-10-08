@@ -1,0 +1,38 @@
+cases:
+- name: first payment of a 30 year mortgage
+  inputs: [200000, 0.004166666666666667, 360, 1]
+  expect: 833.3333333333334
+  source: computed; equals -IPMT(0.05/12,1,360,200000) = 833.33
+- name: last payment
+  inputs: [200000, 0.004166666666666667, 360, 360]
+  expect: 4.454951228316498
+- name: middle of a small loan
+  inputs: [1000, 0.01, 12, 6]
+  expect: 5.977919339193475
+- name: zero rate has no interest
+  inputs: [12000, 0, 12, 3]
+  expect: 0
+- name: zero principal
+  inputs: [0, 0.01, 12, 1]
+  expect: 0
+- name: period zero
+  inputs: [1000, 0.01, 12, 0]
+  expect: '#NUM!'
+- name: period beyond the term
+  inputs: [1000, 0.01, 12, 13]
+  expect: '#NUM!'
+- name: fractional period
+  inputs: [1000, 0.01, 12, 1.5]
+  expect: '#NUM!'
+- name: negative principal
+  inputs: [-1000, 0.01, 12, 1]
+  expect: '#NUM!'
+- name: tiny nonzero rate
+  inputs: [1000, 1.0e-09, 12, 1]
+  expect: '#NUM!'
+- name: text principal
+  inputs: [x, 0.004166666666666667, 360, 1]
+  expect: '#VALUE!'
+- name: boolean period
+  inputs: [200000, 0.004166666666666667, 360, true]
+  expect: '#VALUE!'
