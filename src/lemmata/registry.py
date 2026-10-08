@@ -5,6 +5,7 @@ from __future__ import annotations
 import io
 import json
 import os
+import ssl
 import tarfile
 import urllib.request
 from functools import cached_property
@@ -124,8 +125,19 @@ class RemoteRegistry(Registry):
     def describe(self) -> str:
         return self.url
 
+    @cached_property
+    def _ssl_context(self) -> ssl.SSLContext | None:
+        if not self.url.startswith("https://"):
+            return None
+        try:
+            import certifi
+
+            return ssl.create_default_context(cafile=certifi.where())
+        except ImportError:  # fall back to the interpreter's own store
+            return ssl.create_default_context()
+
     def _fetch(self, path: str) -> bytes:
-        with urllib.request.urlopen(self.url + path, timeout=30) as resp:  # noqa: S310 (fixed https base)
+        with urllib.request.urlopen(self.url + path, timeout=30, context=self._ssl_context) as resp:  # noqa: S310
             return resp.read()
 
     @cached_property
