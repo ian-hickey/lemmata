@@ -116,7 +116,9 @@ jobs:
           # main), so replay the records commit onto the current remote head.
           git -C ../prtree fetch -q origin "$HEAD_REF"
           git -C ../prtree rebase -q FETCH_HEAD
-          git -C ../prtree push "https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$HEAD_REF"
+          # actions/checkout stores the Actions token as an http.extraheader, which
+          # would override the credential in the URL; clear it for this push.
+          git -C ../prtree -c "http.https://github.com/.extraheader=" push "https://x-access-token:${PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$HEAD_REF"
           echo "records pushed for the approved modules"
           if [ "${{ steps.review.outputs.verdict }}" = "approve" ]; then
             # A push made with the Actions token raises no pull_request events, so
