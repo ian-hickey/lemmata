@@ -1,4 +1,4 @@
-"""Auditable Formulas: reviewed, tested, hash-pinned spreadsheet formulas."""
+"""Lemmata: reviewed, tested, hash-pinned spreadsheet formulas."""
 
 from .canonical import canonical_formula, formula_hash, module_hash
 from .module import Module

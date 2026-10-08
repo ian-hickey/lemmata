@@ -36,12 +36,12 @@ def build_index(registry: Registry, out: Path | str) -> dict:
     }
     (out / "index.json").write_text(json.dumps(index, indent=2) + "\n", encoding="utf-8")
     lines = [
-        "# Auditable Formulas",
+        "# Lemmata",
         "",
         "Reviewed, tested, hash-pinned spreadsheet formulas (Excel LAMBDA). Each module below is",
         "served at modules/<module_hash>/ with module.yaml, formula.lambda, tests.yaml, README.md,",
         "and formula.xlsx.txt (the formula as it must be stored in an .xlsx defined name).",
-        "Run verify on any workbook before returning it: every AF.* name must re-hash to a listed formula_hash.",
+        "Run verify on any workbook before returning it: every LEMMA.* name must re-hash to a listed formula_hash.",
         "",
     ]
     for e in entries:

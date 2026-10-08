@@ -17,7 +17,7 @@ One folder per module under `modules/`, named by the module id.
 
 ```yaml
 id: cagr                      # ^[a-z][a-z0-9_]*$, equals the folder name
-name: AF.CAGR                 # the defined name in the workbook; prefix + upper case
+name: LEMMA.CAGR                 # the defined name in the workbook; prefix + upper case
 version: 0.1.0                # semver
 summary: One line, 240 characters or fewer. Agents choose by this text.
 definition:
@@ -76,7 +76,7 @@ Test results are attached to a `module_hash` and are not part of it, so adding t
 
 ## Inside the workbook
 
-A module becomes a workbook-scoped defined name. In the file the formula is stored as Excel requires: `_xlfn.` before each function introduced after Excel 2007 (including `LAMBDA` and `LET`), and `_xlpm.` before each LAMBDA parameter and LET variable. The `af` library does this translation; writing the name by hand usually gets it wrong and opens as `#NAME?`.
+A module becomes a workbook-scoped defined name. In the file the formula is stored as Excel requires: `_xlfn.` before each function introduced after Excel 2007 (including `LAMBDA` and `LET`), and `_xlpm.` before each LAMBDA parameter and LET variable. The `lemmata` library does this translation; writing the name by hand usually gets it wrong and opens as `#NAME?`.
 
 The defined name's comment records the label:
 
@@ -123,6 +123,5 @@ A `range` value is a list of rows. A flat list is one column. `null` leaves a ce
 
 ## Open points
 
-- Function prefix. `AF.` is a placeholder until the project is named.
 - Version history. Older hashes will live in the published `index.json`, so a verifier can report `outdated`. The repo holds only the current version of each module.
 - A companion `.CHECK` function that returns a text reason for an error is planned but not yet specified.

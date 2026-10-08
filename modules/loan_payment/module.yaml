@@ -1,5 +1,5 @@
 id: loan_payment
-name: AF.LOAN_PAYMENT
+name: LEMMA.LOAN_PAYMENT
 version: 0.1.0
 summary: Level payment per period that fully repays a loan over a whole number of periods, with interest charged per period and payments at the end of each period.
 definition:

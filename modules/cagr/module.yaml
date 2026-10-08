@@ -1,5 +1,5 @@
 id: cagr
-name: AF.CAGR
+name: LEMMA.CAGR
 version: 0.1.0
 summary: Compound annual growth rate from a start value to an end value over a number of years, returned as a decimal rate per year.
 definition:

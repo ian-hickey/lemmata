@@ -1,5 +1,5 @@
 [project]
-name = "auditable-formulas"
+name = "lemmata"
 version = "0.0.1"
 description = "Reviewed, tested, hash-pinned spreadsheet formulas for AI agents and people."
 readme = "README.md"
@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-af = "af.cli:main"
+lemma = "lemmata.cli:main"
 
 [dependency-groups]
 dev = [
@@ -24,7 +24,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/af"]
+packages = ["src/lemmata"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

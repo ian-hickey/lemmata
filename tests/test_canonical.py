@@ -1,5 +1,5 @@
-from af import canonical
-from af.canonical import canonical_formula, formula_hash, lambda_parameters, function_calls
+from lemmata import canonical
+from lemmata.canonical import canonical_formula, formula_hash, lambda_parameters, function_calls
 
 
 def test_whitespace_and_case_do_not_change_identity():

@@ -1,4 +1,4 @@
-"""The af command: list, check, test, hash, show, add, verify, build-index."""
+"""The lemma command: list, check, test, hash, show, add, verify, build-index."""
 
 from __future__ import annotations
 
@@ -91,7 +91,7 @@ def cmd_build_index(args, reg: Registry) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="af", description="Auditable Formulas registry tools")
+    p = argparse.ArgumentParser(prog="lemma", description="Lemmata registry tools")
     p.add_argument("--registry", help="path to a registry checkout (default: this package's repo)")
     sub = p.add_subparsers(dest="command", required=True)
 
@@ -101,7 +101,7 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("hash", help="print a module's hashes"); s.add_argument("id"); s.set_defaults(fn=cmd_hash)
     s = sub.add_parser("show", help="print a module's metadata and formula"); s.add_argument("id"); s.set_defaults(fn=cmd_show)
     s = sub.add_parser("add", help="inject modules into a workbook"); s.add_argument("workbook"); s.add_argument("ids", nargs="+"); s.add_argument("--out"); s.set_defaults(fn=cmd_add)
-    s = sub.add_parser("verify", help="re-hash the AF.* names in a workbook"); s.add_argument("workbook"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_verify)
+    s = sub.add_parser("verify", help="re-hash the LEMMA.* names in a workbook"); s.add_argument("workbook"); s.add_argument("--json", action="store_true"); s.set_defaults(fn=cmd_verify)
     s = sub.add_parser("build-index", help="write the static registry"); s.add_argument("--out", default="dist"); s.set_defaults(fn=cmd_build_index)
     return p
 
@@ -112,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         return args.fn(args, reg)
     except (RegistryError, FileNotFoundError) as ex:
-        print(f"af: {ex}", file=sys.stderr)
+        print(f"lemma: {ex}", file=sys.stderr)
         return 2
 
 

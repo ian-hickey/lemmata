@@ -1,9 +1,9 @@
-# AF.NPV
+# LEMMA.NPV
 
 Net present value of evenly spaced cash flows, with the timing of the first cash flow stated as an argument.
 
 ```
-=AF.NPV(rate, cashflows, first_period)
+=LEMMA.NPV(rate, cashflows, first_period)
 ```
 
 ## Definition
@@ -16,7 +16,7 @@ The timing argument exists because the Excel default is a common source of error
 
 An investment of 40,000 today returning 8,000, 9,200, 10,000, 12,000, and 14,500 at the end of each of the next five years, discounted at 8 percent:
 
-`=AF.NPV(0.08, B1:B6, 0)` with B1:B6 holding -40000, 8000, 9200, 10000, 12000, 14500 returns 1922.06.
+`=LEMMA.NPV(0.08, B1:B6, 0)` with B1:B6 holding -40000, 8000, 9200, 10000, 12000, 14500 returns 1922.06.
 
 ## When not to use it
 

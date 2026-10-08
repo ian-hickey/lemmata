@@ -15,13 +15,13 @@ jobs:
           enable-cache: true
       - run: uv sync --all-groups
       - name: Spec check
-        run: uv run af check
+        run: uv run lemma check
       - name: Module tests on IronCalc
-        run: uv run af test
+        run: uv run lemma test
       - name: Tooling tests
         run: uv run pytest -q
       - name: Build static registry
-        run: uv run af build-index --out dist
+        run: uv run lemma build-index --out dist
       - uses: actions/upload-artifact@v4
         with:
           name: registry

@@ -1,7 +1,7 @@
 import pytest
 
-from af.registry import Registry
-from af.runner import IronCalcEngine, run_module
+from lemmata.registry import Registry
+from lemmata.runner import IronCalcEngine, run_module
 
 REG = Registry.default()
 ENGINE = IronCalcEngine()

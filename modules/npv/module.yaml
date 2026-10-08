@@ -1,5 +1,5 @@
 id: npv
-name: AF.NPV
+name: LEMMA.NPV
 version: 0.1.0
 summary: Net present value of a series of cash flows at a constant discount rate, with the timing of the first cash flow stated explicitly instead of assumed.
 definition:
@@ -27,8 +27,8 @@ errors:
   "#VALUE!": rate or first_period is not a number, cashflows spans more than one row and one column, or a cell in cashflows is blank or not a number.
   "#NUM!": rate is -1 or less, or first_period is negative or not a whole number.
 conventions:
-  - AF.NPV(rate, cashflows, 1) equals Excel's NPV(rate, cashflows).
-  - AF.NPV(rate, cashflows, 0) treats the first cash flow as today, the usual case when the first entry is an initial investment.
+  - LEMMA.NPV(rate, cashflows, 1) equals Excel's NPV(rate, cashflows).
+  - LEMMA.NPV(rate, cashflows, 0) treats the first cash flow as today, the usual case when the first entry is an initial investment.
   - Cash flows are evenly spaced. For dated cash flows use an XNPV-style module.
   - A blank cell is an error, not a zero. Write 0 for a period with no cash flow.
 tags: [finance, discounting, valuation]

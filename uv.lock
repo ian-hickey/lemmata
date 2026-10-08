@@ -3,31 +3,6 @@ revision = 3
 requires-python = ">=3.12"
 
 [[package]]
-name = "auditable-formulas"
-version = "0.0.1"
-source = { editable = "." }
-dependencies = [
-    { name = "ironcalc" },
-    { name = "openpyxl" },
-    { name = "pyyaml" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "ironcalc", specifier = ">=0.8.3" },
-    { name = "openpyxl", specifier = ">=3.1.5" },
-    { name = "pyyaml", specifier = ">=6.0.3" },
-]
-
-[package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=8" }]
-
-[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -94,6 +69,31 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a8/f9/866c71755e016d0befe042d39a3685666a283a5f1c1af0a57e12577a1be8/ironcalc-0.8.3-cp314-cp314t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d5cbfce4e799c6eb69fd0a168ac27368f520dcf6edb27e0a30322778ed48a7d3", size = 3641497, upload-time = "2026-07-31T18:50:20.705Z" },
     { url = "https://files.pythonhosted.org/packages/40/78/b31a21d6decad4ec4595319d36d0d6a01c85c91ffd0a49504bd136346d90/ironcalc-0.8.3-cp314-cp314t-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:25fb0d64cbc7dafead6a01a741751becc948ce109239d9e6ff662cbb8f566f7d", size = 3641847, upload-time = "2026-07-31T18:50:10.386Z" },
 ]
+
+[[package]]
+name = "lemmata"
+version = "0.0.1"
+source = { editable = "." }
+dependencies = [
+    { name = "ironcalc" },
+    { name = "openpyxl" },
+    { name = "pyyaml" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "ironcalc", specifier = ">=0.8.3" },
+    { name = "openpyxl", specifier = ">=3.1.5" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=8" }]
 
 [[package]]
 name = "openpyxl"

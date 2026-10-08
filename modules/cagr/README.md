@@ -1,9 +1,9 @@
-# AF.CAGR
+# LEMMA.CAGR
 
 Compound annual growth rate: the constant yearly rate that takes `start_value` to `end_value` in `years`.
 
 ```
-=AF.CAGR(start_value, end_value, years)
+=LEMMA.CAGR(start_value, end_value, years)
 ```
 
 ## Definition
@@ -12,7 +12,7 @@ CAGR = (end_value / start_value) ^ (1 / years) − 1, per [Investopedia](https:/
 
 ## Example
 
-`=AF.CAGR(10000, 19000, 3)` returns 0.2386, a growth rate of 23.86 percent per year.
+`=LEMMA.CAGR(10000, 19000, 3)` returns 0.2386, a growth rate of 23.86 percent per year.
 
 ## When not to use it
 

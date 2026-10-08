@@ -1,7 +1,7 @@
 import pytest
 
-from af.registry import Registry
-from af.xlsx import declared_names, from_file_formula, parse_label, to_file_formula
+from lemmata.registry import Registry
+from lemmata.xlsx import declared_names, from_file_formula, parse_label, to_file_formula
 
 
 def test_declared_names_cover_lambda_params_and_let_vars():

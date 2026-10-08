@@ -95,7 +95,7 @@ class Module:
 
     # Validation ---------------------------------------------------------
 
-    def validate(self, prefix: str = "AF.") -> list[str]:
+    def validate(self, prefix: str = "LEMMA.") -> list[str]:
         """Return spec violations. An empty list means the module conforms."""
         errors: list[str] = []
         meta = self.meta

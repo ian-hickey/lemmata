@@ -16,7 +16,7 @@ class RegistryError(KeyError):
 
 
 class Registry:
-    def __init__(self, root: Path | str, prefix: str = "AF."):
+    def __init__(self, root: Path | str, prefix: str = "LEMMA."):
         self.root = Path(root)
         self.prefix = prefix
         self.modules_dir = self.root / "modules"
@@ -24,7 +24,7 @@ class Registry:
 
     @classmethod
     def default(cls) -> "Registry":
-        root = os.environ.get("AF_REGISTRY_ROOT")
+        root = os.environ.get("LEMMATA_REGISTRY_ROOT")
         if root:
             return cls(root)
         return cls(Path(__file__).resolve().parents[2])

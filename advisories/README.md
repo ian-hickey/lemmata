@@ -11,4 +11,4 @@ summary: One line on what is wrong and who is affected.
 fixed_version: 0.2.0      # or null if no fix exists yet
 ```
 
-`af verify` flags any workbook that uses an affected hash.
+`lemma verify` flags any workbook that uses an affected hash.

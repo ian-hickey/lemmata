@@ -1,9 +1,9 @@
-# AF.LOAN_PAYMENT
+# LEMMA.LOAN_PAYMENT
 
 The level payment that repays a loan in full over a fixed number of periods.
 
 ```
-=AF.LOAN_PAYMENT(principal, rate, periods)
+=LEMMA.LOAN_PAYMENT(principal, rate, periods)
 ```
 
 ## Definition
@@ -14,7 +14,7 @@ The ordinary annuity payment: principal × rate / (1 − (1 + rate)^−periods).
 
 A 200,000 loan at 5 percent per year, repaid monthly over 30 years:
 
-`=AF.LOAN_PAYMENT(200000, 0.05 / 12, 360)` returns 1073.64.
+`=LEMMA.LOAN_PAYMENT(200000, 0.05 / 12, 360)` returns 1073.64.
 
 ## When not to use it
 

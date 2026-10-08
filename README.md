@@ -1,6 +1,8 @@
-# Auditable Formulas
+# Lemmata
 
 Reviewed, tested, hash-pinned spreadsheet formulas. Built for AI agents, usable by anyone.
+
+A lemma is a small result that is proven once and then cited by everything built on it. Each module here is one: a formula with a cited definition, a test suite, and a content hash, so an agent writes `=LEMMA.NPV(...)` instead of deriving net present value again and hoping. The registry is the lemmata.
 
 ## Why
 
@@ -20,19 +22,19 @@ Each module is one folder under [modules/](modules/) with four files: `module.ya
 2. Insert the module into the workbook.
 3. Run verify before returning the file.
 
-An MCP server and JavaScript library are planned. The Python library and CLI exist today.
+An MCP server and JavaScript library are planned. The Python library (`lemmata`) and CLI (`lemma`) exist today.
 
 ## Quick start
 
 ```sh
 uv sync
-uv run af list                          # modules in the registry
-uv run af test                          # run every module's tests on IronCalc
-uv run af add model.xlsx cagr npv       # inject modules into a workbook (creates it if missing)
-uv run af verify model.xlsx             # re-hash every AF.* name and report status
+uv run lemma list                          # modules in the registry
+uv run lemma test                          # run every module's tests on IronCalc
+uv run lemma add model.xlsx cagr npv       # inject modules into a workbook (creates it if missing)
+uv run lemma verify model.xlsx             # re-hash every LEMMA.* name and report status
 ```
 
-A cell can then call a module like any function: `=AF.CAGR(100, 200, 10)`.
+A cell can then call a module like any function: `=LEMMA.CAGR(100, 200, 10)`.
 
 ## Principles
 
