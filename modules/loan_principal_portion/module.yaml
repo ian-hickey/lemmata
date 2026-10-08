@@ -1,6 +1,6 @@
 id: loan_principal_portion
 name: LEMMA.LOAN_PRINCIPAL_PORTION
-version: 0.1.0
+version: 0.1.1
 summary: 'Principal repaid by one payment of a level-payment loan: the payment less the interest part of that payment.'
 definition:
   source: Wikipedia, Amortization schedule
@@ -40,7 +40,7 @@ tags:
 - amortization
 dependencies:
 - id: loan_payment
-  module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
+  module_hash: 36280cefe512d0393c8d606a94f1aeecf251af9e1292a68ebc9e5424961a189b
 - id: loan_interest_portion
-  module_hash: 2ddb61ea40d36c74078c776f709a2532e4d71ff5d69ba3b9ce8a263ae697f097
+  module_hash: 2b4e5356ce5d0d5300f7b5bbbb2dea42acf544f9723417c627978075666828a5
 license: MIT-0

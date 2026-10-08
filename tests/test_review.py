@@ -131,7 +131,7 @@ def compute(principal, rate, periods):
     for v in (principal, rate, periods):
         if isinstance(v, bool) or not isinstance(v, (int, float)):
             return "#VALUE!"
-    if principal < 0 or rate < 0 or periods <= 0 or periods != int(periods):
+    if principal < 0 or rate < 0 or (rate != 0 and rate < 1e-6) or periods <= 0 or periods != int(periods):
         return "#NUM!"
     if rate == 0:
         return principal / periods

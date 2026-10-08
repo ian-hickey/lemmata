@@ -1,6 +1,6 @@
 id: loan_total_interest
 name: LEMMA.LOAN_TOTAL_INTEREST
-version: 0.1.0
+version: 0.1.1
 summary: 'Total interest paid over the life of a level-payment loan: payment times the number of payments, less the principal.'
 definition:
   source: Wikipedia, Amortization calculator
@@ -36,5 +36,5 @@ tags:
 - amortization
 dependencies:
 - id: loan_payment
-  module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
+  module_hash: 36280cefe512d0393c8d606a94f1aeecf251af9e1292a68ebc9e5424961a189b
 license: MIT-0

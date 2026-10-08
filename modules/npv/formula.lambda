@@ -1,7 +1,7 @@
 LAMBDA(rate, cashflows, first_period,
   IF(NOT(AND(ISNUMBER(rate), ISNUMBER(first_period))), #VALUE!,
-  IF(OR(rate <= -1, first_period < 0, first_period <> INT(first_period)), #NUM!,
   LET(r, ROWS(cashflows), c, COLUMNS(cashflows),
     IF(AND(r > 1, c > 1), #VALUE!,
     IF(COUNT(cashflows) <> r * c, #VALUE!,
+    IF(OR(rate <= -1, first_period < 0, first_period <> INT(first_period)), #NUM!,
     SUMPRODUCT(cashflows / (1 + rate) ^ (first_period + SEQUENCE(r, c) - 1))))))))

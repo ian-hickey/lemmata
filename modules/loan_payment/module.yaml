@@ -1,6 +1,6 @@
 id: loan_payment
 name: LEMMA.LOAN_PAYMENT
-version: 0.1.0
+version: 0.2.0
 summary: Level payment per period that fully repays a loan over a whole number of periods, with interest charged per period and payments at the end of each period.
 definition:
   source: Microsoft Support, PMT function (ordinary annuity payment, pv = principal, fv = 0, type = 0)
@@ -14,7 +14,7 @@ parameters:
   - name: rate
     type: number
     unit: decimal rate per period
-    description: Interest rate for one period. For monthly payments on an annual rate, pass annual_rate / 12. Must be zero or greater.
+    description: Interest rate for one period. For monthly payments on an annual rate, pass annual_rate / 12. Must be 0 or at least 0.000001.
   - name: periods
     type: number
     unit: periods
@@ -25,12 +25,13 @@ returns:
   description: Payment per period as a positive amount.
 errors:
   "#VALUE!": An argument is not a number.
-  "#NUM!": principal is negative, rate is negative, or periods is not a positive whole number.
+  "#NUM!": principal is negative, rate is negative or nonzero below 0.000001, or periods is not a positive whole number.
 conventions:
   - Returns a positive payment. Excel's PMT returns a negative number for a positive loan amount.
   - Payments fall at the end of each period (an ordinary annuity). There is no option for payments in advance.
   - The loan is fully repaid. There is no balloon or residual value.
   - rate and periods must use the same period. Monthly payments need a monthly rate and a count of months.
+  - Nonzero rates below 0.000001 are rejected because the closed form loses precision there; use rate 0 for an interest-free loan.
 tags: [finance, loans, amortization, annuity]
 dependencies: []
 license: MIT-0

@@ -1,0 +1,6 @@
+id: 2026-001
+module_id: loan_payment
+module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
+severity: low
+summary: loan_payment@0.1.0 accepts nonzero rates below 0.000001 per period, where its closed form loses precision (about 1e-7 relative at 1e-9). Found by AI review. Realistic loan rates are unaffected.
+fixed_version: 0.2.0

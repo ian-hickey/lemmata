@@ -1,6 +1,6 @@
 id: loan_balance
 name: LEMMA.LOAN_BALANCE
-version: 0.1.0
+version: 0.1.1
 summary: 'Principal still owed on a level-payment loan after a given number of payments: the present value of the payments that remain.'
 definition:
   source: Wikipedia, Amortization calculator
@@ -40,5 +40,5 @@ tags:
 - amortization
 dependencies:
 - id: loan_payment
-  module_hash: 4bfe72dc102fce277814f695325b282fe6b01423a3c09f2edae22f64fde891aa
+  module_hash: 36280cefe512d0393c8d606a94f1aeecf251af9e1292a68ebc9e5424961a189b
 license: MIT-0

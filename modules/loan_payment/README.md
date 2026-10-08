@@ -22,3 +22,4 @@ A 200,000 loan at 5 percent per year, repaid monthly over 30 years:
 - A balloon or residual value at the end of the term.
 - A rate that changes during the term, or a part-period at the start.
 - A number of periods that is not a whole number. The module returns `#NUM!` rather than guess.
+- A nonzero rate below 0.000001 per period. The closed form loses precision there, so the module returns `#NUM!`.

@@ -55,3 +55,6 @@ cases:
   - name: text first period
     inputs: [0.1, {range: [-100, 30]}, "now"]
     expect: "#VALUE!"
+  - name: bad cell wins over a bad rate
+    inputs: [-1, {range: [-100, "x", 40]}, 0]
+    expect: "#VALUE!"
