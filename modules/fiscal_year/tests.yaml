@@ -27,6 +27,9 @@ cases:
 - name: zero date
   inputs: [0, 7]
   expect: '#NUM!'
+- name: serial below 61
+  inputs: [60, 7]
+  expect: '#NUM!'
 - name: month 13
   inputs: [46249, 13]
   expect: '#NUM!'

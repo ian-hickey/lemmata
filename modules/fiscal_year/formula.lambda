@@ -1,4 +1,4 @@
 LAMBDA(date, start_month,
   IF(NOT(AND(ISNUMBER(date), ISNUMBER(start_month))), #VALUE!,
-  IF(OR(date <= 0, start_month < 1, start_month > 12, start_month <> INT(start_month)), #NUM!,
+  IF(OR(date < 61, start_month < 1, start_month > 12, start_month <> INT(start_month)), #NUM!,
   IF(AND(start_month > 1, MONTH(date) >= start_month), YEAR(date) + 1, YEAR(date)))))

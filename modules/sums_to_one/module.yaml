@@ -25,6 +25,7 @@ errors:
 conventions:
 - Weights are decimals, not percentages; 25 and 75 do not sum to 1.
 - A blank cell is an error, not a zero.
+- 'A bad cell in weights is reported as #VALUE! even when tolerance is also invalid.'
 tags:
 - reconciliation
 - checks

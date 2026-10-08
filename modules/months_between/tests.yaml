@@ -23,6 +23,9 @@ cases:
 - name: zero start date
   inputs: [0, 46023]
   expect: '#NUM!'
+- name: start serial below 61
+  inputs: [60, 46023]
+  expect: '#NUM!'
 - name: negative end date
   inputs: [46023, -5]
   expect: '#NUM!'

@@ -10,11 +10,11 @@ parameters:
 - name: start_date
   type: number
   unit: Excel date serial
-  description: Start date. Must be a positive serial number.
+  description: Start date as a serial number. Must be at least 61, which is 1 March 1900.
 - name: end_date
   type: number
   unit: Excel date serial
-  description: End date. Must be on or after start_date.
+  description: End date as a serial number. Must be on or after start_date.
 - name: day_count_basis
   type: number
   unit: days per year
@@ -25,7 +25,7 @@ returns:
   description: Elapsed time in years under the chosen convention.
 errors:
   '#VALUE!': An argument is not a number.
-  '#NUM!': start_date is not positive, end_date is before start_date, or day_count_basis is not 360 or 365.
+  '#NUM!': start_date is below 61, end_date is before start_date, or day_count_basis is not 360 or 365.
 conventions:
 - Actual days elapsed, so a leap day counts.
 - 30/360 and Actual/Actual conventions are not covered; see Excel YEARFRAC for those.

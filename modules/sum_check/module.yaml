@@ -29,6 +29,7 @@ errors:
 conventions:
 - A blank cell is an error, not a zero, because a blank usually means a missing figure.
 - Two-dimensional ranges are allowed.
+- 'A bad cell in values is reported as #VALUE! even when tolerance is also invalid.'
 tags:
 - reconciliation
 - checks

@@ -26,6 +26,9 @@ cases:
 - name: zero start
   inputs: [0, 46113, 365]
   expect: '#NUM!'
+- name: start serial below 61
+  inputs: [60, 46113, 365]
+  expect: '#NUM!'
 - name: text start_date
   inputs: [x, 46113, 360]
   expect: '#VALUE!'

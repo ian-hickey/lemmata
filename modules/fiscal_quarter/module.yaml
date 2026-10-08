@@ -10,7 +10,7 @@ parameters:
 - name: date
   type: number
   unit: Excel date serial
-  description: The date. Must be a positive serial number.
+  description: The date as a serial number. Must be at least 61, which is 1 March 1900.
 - name: start_month
   type: number
   unit: month number
@@ -21,7 +21,7 @@ returns:
   description: 1 for the first three months of the fiscal year, through 4.
 errors:
   '#VALUE!': An argument is not a number.
-  '#NUM!': date is not positive, or start_month is not a whole number from 1 to 12.
+  '#NUM!': date is below 61, or start_month is not a whole number from 1 to 12.
 conventions:
 - Quarters are three calendar months each, starting at start_month.
 - Pair with LEMMA.FISCAL_YEAR for a full period label.

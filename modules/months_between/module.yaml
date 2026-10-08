@@ -10,18 +10,18 @@ parameters:
 - name: start_date
   type: number
   unit: Excel date serial
-  description: Start date. Must be a positive serial number.
+  description: Start date as a serial number. Must be at least 61, which is 1 March 1900.
 - name: end_date
   type: number
   unit: Excel date serial
-  description: End date. Must be a positive serial number.
+  description: End date as a serial number. Must be at least 61, which is 1 March 1900.
 returns:
   type: number
   unit: months
   description: Signed count of month boundaries from start to end; negative when end is earlier.
 errors:
   '#VALUE!': An argument is not a number.
-  '#NUM!': Either date is not positive.
+  '#NUM!': Either date is below 61.
 conventions:
 - 31 January to 1 February is 1 month; 1 January to 31 January is 0.
 - Negative when end_date is before start_date.
