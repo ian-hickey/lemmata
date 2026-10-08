@@ -1,0 +1,37 @@
+cases:
+- name: one year
+  inputs: [45672, 46037]
+  expect: 12
+- name: same month is zero
+  inputs: [46023, 46053]
+  expect: 0
+- name: month boundary crossed by one day
+  inputs: [46053, 46054]
+  expect: 1
+- name: across a year end
+  inputs: [45971, 46063]
+  expect: 3
+- name: reversed dates are negative
+  inputs: [46082, 46023]
+  expect: -2
+- name: many years
+  inputs: [36678, 46174]
+  expect: 312
+- name: same day
+  inputs: [46147, 46147]
+  expect: 0
+- name: zero start date
+  inputs: [0, 46023]
+  expect: '#NUM!'
+- name: start serial below 61
+  inputs: [60, 46023]
+  expect: '#NUM!'
+- name: negative end date
+  inputs: [46023, -5]
+  expect: '#NUM!'
+- name: text start_date
+  inputs: [x, 46037]
+  expect: '#VALUE!'
+- name: boolean end_date
+  inputs: [45672, true]
+  expect: '#VALUE!'
