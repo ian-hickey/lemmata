@@ -82,6 +82,9 @@ The test suite runs on IronCalc 0.8.3. Excel is the reference engine. Difference
 - `ISNUMBER(range)` is not lifted over arrays in IronCalc, so modules validate ranges with `COUNT(range) = ROWS(range) * COLUMNS(range)` instead.
 - `ROWS(scalar)` returns an error in IronCalc where Excel returns 1. Range parameters must be given a range, not a single number.
 - A one-cell range passed where a LAMBDA expects a number is treated as its value by Excel but fails `ISNUMBER` in IronCalc. The reviewer's case generator therefore unwraps one-cell ranges for scalar parameters.
+- IronCalc returns `#NUM!` for magnitudes around 1e-300 or 1e300 that Excel handles. The reviewer verifies inputs between 1e-9 and 1e12 only.
+- Date serials below 61 (before 1 March 1900) differ between engines because of Excel's 1900 leap-year quirk. Modules reject them.
+- Exact comparisons that turn on binary rounding, such as 0.1 + 0.2 against 0.3, differ between IronCalc and a Python reference. The reviewer's case generator avoids them.
 
 ## License
 
