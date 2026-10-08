@@ -1,0 +1,32 @@
+id: fiscal_quarter
+name: LEMMA.FISCAL_QUARTER
+version: 0.1.0
+summary: Fiscal quarter, 1 to 4, containing a date, for a fiscal year starting in a given month.
+definition:
+  source: Wikipedia, Fiscal year
+  url: https://en.wikipedia.org/wiki/Fiscal_year
+  formula: INT(MOD(MONTH(date) - start_month, 12) / 3) + 1
+parameters:
+- name: date
+  type: number
+  unit: Excel date serial
+  description: The date as a serial number. Must be at least 61, which is 1 March 1900.
+- name: start_month
+  type: number
+  unit: month number
+  description: First month of the fiscal year, 1 to 12. Use 1 for calendar quarters.
+returns:
+  type: number
+  unit: quarter
+  description: 1 for the first three months of the fiscal year, through 4.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': date is below 61, or start_month is not a whole number from 1 to 12.
+conventions:
+- Quarters are three calendar months each, starting at start_month.
+- Pair with LEMMA.FISCAL_YEAR for a full period label.
+tags:
+- calendar
+- fiscal periods
+dependencies: []
+license: MIT-0

@@ -1,0 +1,33 @@
+id: markup
+name: LEMMA.MARKUP
+version: 0.1.0
+summary: 'Markup of a selling price over its cost as a share of cost: (price - cost) / cost, returned as a decimal.'
+definition:
+  source: Wikipedia, Markup (business)
+  url: https://en.wikipedia.org/wiki/Markup_(business)
+  formula: (price - cost) / cost
+parameters:
+- name: price
+  type: number
+  unit: currency
+  description: Selling price. Must be zero or greater.
+- name: cost
+  type: number
+  unit: currency
+  description: Cost of the item. Must be greater than zero.
+returns:
+  type: number
+  unit: decimal share
+  description: Markup where 0.5 means the price is 50 percent above cost.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': price is negative, or cost is not positive.
+conventions:
+- Markup divides by cost; margin divides by price. A 25 percent margin is a 33 percent markup.
+- Returns a decimal, not a percentage.
+tags:
+- finance
+- pricing
+- ratios
+dependencies: []
+license: MIT-0

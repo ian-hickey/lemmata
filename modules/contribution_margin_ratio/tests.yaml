@@ -1,0 +1,31 @@
+cases:
+- name: 40 percent contribution
+  inputs: [50, 30]
+  expect: 0.4
+- name: no variable cost
+  inputs: [50, 0]
+  expect: 1
+- name: variable cost equal to price
+  inputs: [50, 50]
+  expect: 0
+- name: variable cost above price
+  inputs: [50, 60]
+  expect: -0.2
+- name: fractional inputs
+  inputs: [9.99, 3.33]
+  expect: 0.6666666666666666
+- name: zero price
+  inputs: [0, 10]
+  expect: '#NUM!'
+- name: negative price
+  inputs: [-50, 10]
+  expect: '#NUM!'
+- name: negative variable cost
+  inputs: [50, -1]
+  expect: '#NUM!'
+- name: text price
+  inputs: [x, 30]
+  expect: '#VALUE!'
+- name: boolean variable_cost
+  inputs: [50, true]
+  expect: '#VALUE!'

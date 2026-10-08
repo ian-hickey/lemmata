@@ -1,0 +1,31 @@
+cases:
+- name: one and a half times
+  inputs: [150000, 100000]
+  expect: 1.5
+- name: exactly covered
+  inputs: [100, 100]
+  expect: 1
+- name: under one
+  inputs: [80, 100]
+  expect: 0.8
+- name: no current assets
+  inputs: [0, 100]
+  expect: 0
+- name: fractional inputs
+  inputs: [1234.5, 678.9]
+  expect: 1.8183826778612462
+- name: zero liabilities
+  inputs: [100, 0]
+  expect: '#NUM!'
+- name: negative liabilities
+  inputs: [100, -10]
+  expect: '#NUM!'
+- name: negative assets
+  inputs: [-5, 100]
+  expect: '#NUM!'
+- name: text current_assets
+  inputs: [x, 100000]
+  expect: '#VALUE!'
+- name: boolean current_liabilities
+  inputs: [150000, true]
+  expect: '#VALUE!'

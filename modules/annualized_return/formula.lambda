@@ -1,0 +1,4 @@
+LAMBDA(total_return, years,
+  IF(NOT(AND(ISNUMBER(total_return), ISNUMBER(years))), #VALUE!,
+  IF(OR(total_return < -1, years <= 0), #NUM!,
+  (1 + total_return) ^ (1 / years) - 1)))

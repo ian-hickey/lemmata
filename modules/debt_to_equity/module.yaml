@@ -1,0 +1,33 @@
+id: debt_to_equity
+name: LEMMA.DEBT_TO_EQUITY
+version: 0.1.0
+summary: 'Debt-to-equity ratio: total_debt / total_equity, a leverage measure.'
+definition:
+  source: Wikipedia, Debt-to-equity ratio
+  url: https://en.wikipedia.org/wiki/Debt-to-equity_ratio
+  formula: total_debt / total_equity
+parameters:
+- name: total_debt
+  type: number
+  unit: currency
+  description: Interest-bearing debt, or total liabilities if that is the convention used. Must be zero or greater.
+- name: total_equity
+  type: number
+  unit: currency
+  description: Shareholders' equity. Must be greater than zero.
+returns:
+  type: number
+  unit: number
+  description: Debt per unit of equity, where 0.5 means half as much debt as equity.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': total_debt is negative, or total_equity is not positive.
+conventions:
+- A ratio, not a percentage.
+- State whether debt means borrowings or all liabilities; both conventions exist.
+tags:
+- finance
+- ratios
+- leverage
+dependencies: []
+license: MIT-0

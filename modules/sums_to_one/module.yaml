@@ -1,0 +1,34 @@
+id: sums_to_one
+name: LEMMA.SUMS_TO_ONE
+version: 0.1.0
+summary: TRUE when a range of weights or percentages adds up to 1 within a tolerance, FALSE otherwise; every cell must be a number.
+definition:
+  source: Wikipedia, Weight function, normalized weights
+  url: https://en.wikipedia.org/wiki/Weight_function
+  formula: ABS(SUM(weights) - 1) <= tolerance
+parameters:
+- name: weights
+  type: range
+  unit: decimal shares
+  description: Allocation weights, where 0.25 means 25 percent. Every cell must hold a number.
+- name: tolerance
+  type: number
+  unit: decimal share
+  description: Largest acceptable absolute difference from 1. Must be zero or greater.
+returns:
+  type: boolean
+  unit: TRUE or FALSE
+  description: TRUE when the weights sum to 1 within tolerance.
+errors:
+  '#VALUE!': tolerance is not a number, or a cell in weights is blank or not a number.
+  '#NUM!': tolerance is negative.
+conventions:
+- Weights are decimals, not percentages; 25 and 75 do not sum to 1.
+- A blank cell is an error, not a zero.
+- 'A bad cell in weights is reported as #VALUE! even when tolerance is also invalid.'
+tags:
+- reconciliation
+- checks
+- allocation
+dependencies: []
+license: MIT-0

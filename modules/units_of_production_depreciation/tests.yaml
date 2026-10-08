@@ -1,0 +1,34 @@
+cases:
+- name: machine rated for 100,000 units
+  inputs: [50000, 5000, 100000, 12000]
+  expect: 5400
+- name: no output means no charge
+  inputs: [50000, 5000, 100000, 0]
+  expect: 0
+- name: all output in one period
+  inputs: [50000, 5000, 100000, 100000]
+  expect: 45000
+- name: no salvage
+  inputs: [8000, 0, 4000, 500]
+  expect: 1000
+- name: fractional units
+  inputs: [1000, 100, 1000, 12.5]
+  expect: 11.25
+- name: negative units
+  inputs: [1000, 100, 1000, -1]
+  expect: '#NUM!'
+- name: units beyond total
+  inputs: [1000, 100, 1000, 1001]
+  expect: '#NUM!'
+- name: zero total units
+  inputs: [1000, 100, 0, 10]
+  expect: '#NUM!'
+- name: cost below salvage
+  inputs: [100, 200, 1000, 10]
+  expect: '#NUM!'
+- name: text cost
+  inputs: [x, 5000, 100000, 12000]
+  expect: '#VALUE!'
+- name: boolean units_in_period
+  inputs: [50000, 5000, 100000, true]
+  expect: '#VALUE!'

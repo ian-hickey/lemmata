@@ -1,0 +1,4 @@
+LAMBDA(start_date, end_date, day_count_basis,
+  IF(NOT(AND(ISNUMBER(start_date), ISNUMBER(end_date), ISNUMBER(day_count_basis))), #VALUE!,
+  IF(OR(start_date < 61, end_date < start_date, AND(day_count_basis <> 360, day_count_basis <> 365)), #NUM!,
+  (end_date - start_date) / day_count_basis)))

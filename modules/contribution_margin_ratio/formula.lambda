@@ -1,0 +1,4 @@
+LAMBDA(price, variable_cost,
+  IF(NOT(AND(ISNUMBER(price), ISNUMBER(variable_cost))), #VALUE!,
+  IF(OR(price <= 0, variable_cost < 0), #NUM!,
+  (price - variable_cost) / price)))
