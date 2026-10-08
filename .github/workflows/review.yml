@@ -26,7 +26,7 @@ permissions:
 
 concurrency:
   group: review-${{ github.event.pull_request.number || inputs.pr }}
-  cancel-in-progress: true
+  cancel-in-progress: false   # a run dispatches a successor after pushing records; it must not cancel itself
 
 jobs:
   review:
@@ -96,8 +96,17 @@ jobs:
             fi
             exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "$PUSH_TOKEN" != "$GH_TOKEN" ]; then
+            # Commit as the token's owner: a push authored by the bot leaves the
+            # resulting pull_request run waiting for approval.
+            login=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .login)
+            uid=$(GH_TOKEN="$PUSH_TOKEN" gh api user -q .id)
+            git config user.name "$login"
+            git config user.email "${uid}+${login}@users.noreply.github.com"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          fi
           git worktree add -q ../prtree pr
           mkdir -p ../prtree/reviews
           for f in $new; do cp "$f" "../prtree/$f"; done
