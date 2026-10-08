@@ -48,7 +48,8 @@ The file holds exactly one `LAMBDA(...)` expression. Whitespace and newlines are
 
 Rules:
 
-- The formula validates its arguments before calculating and returns a standard Excel error on bad input: `#VALUE!` for a wrong type, `#NUM!` for a value outside the allowed domain.
+- The formula validates its arguments before calculating and returns a standard Excel error on bad input: `#VALUE!` for a wrong type, `#NUM!` for a value outside the allowed domain. Type checks come first: when both kinds of problem are present, `#VALUE!` wins. For a range parameter, "wrong type" includes a blank or non-numeric cell.
+- Dates are Excel serial numbers. A module that takes a date rejects serials below 61 (1 March 1900), because engines disagree on earlier serials under Excel's 1900 leap-year quirk.
 - The formula is pure. It must return the same output for the same input. Banned: `WEBSERVICE`, `RTD`, `NOW`, `TODAY`, `RAND`, `RANDBETWEEN`, `RANDARRAY`, `INDIRECT`, `OFFSET`, `CELL`, `INFO`, `HYPERLINK`, `FILTERXML`, `ENCODEURL`, `IMAGE`, `STOCKHISTORY`, and every `CUBE*` function.
 - The formula references no cells, sheets, external workbooks, or structured references. Everything it needs arrives through its parameters.
 - Other modules may be called by name, and each one is listed under `dependencies` with its hash.
