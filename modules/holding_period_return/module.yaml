@@ -1,0 +1,36 @@
+id: holding_period_return
+name: LEMMA.HOLDING_PERIOD_RETURN
+version: 0.1.0
+summary: 'Total return over a holding period including income received: (end_value + income - start_value) / start_value, as a decimal.'
+definition:
+  source: Wikipedia, Holding period return
+  url: https://en.wikipedia.org/wiki/Holding_period_return
+  formula: (end_value + income - start_value) / start_value
+parameters:
+- name: start_value
+  type: number
+  unit: currency
+  description: Value at the start. Must be greater than zero.
+- name: end_value
+  type: number
+  unit: currency
+  description: Value at the end. Must be zero or greater.
+- name: income
+  type: number
+  unit: currency
+  description: Dividends, interest, or rent received during the period. Any sign; use 0 for none.
+returns:
+  type: number
+  unit: decimal rate for the whole period
+  description: Return over the period, not annualized.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': start_value is not positive, or end_value is negative.
+conventions:
+- Not annualized. Use LEMMA.ANNUALIZED_RETURN to convert.
+- Income is not reinvested.
+tags:
+- finance
+- returns
+dependencies: []
+license: MIT-0

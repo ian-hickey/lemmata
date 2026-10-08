@@ -1,0 +1,31 @@
+cases:
+- name: 8 percent nominal, 3 percent inflation
+  inputs: [0.08, 0.03]
+  expect: 0.04854368932038833
+- name: zero inflation
+  inputs: [0.05, 0]
+  expect: 0.050000000000000044
+- name: deflation
+  inputs: [0.02, -0.01]
+  expect: 0.030303030303030276
+- name: inflation above the nominal rate
+  inputs: [0.02, 0.05]
+  expect: -0.02857142857142858
+- name: equal rates
+  inputs: [0.04, 0.04]
+  expect: 0
+- name: negative nominal rate
+  inputs: [-0.01, 0.02]
+  expect: -0.02941176470588236
+- name: inflation of minus one
+  inputs: [0.05, -1]
+  expect: '#NUM!'
+- name: nominal of minus one
+  inputs: [-1, 0.02]
+  expect: '#NUM!'
+- name: text nominal_rate
+  inputs: [x, 0.03]
+  expect: '#VALUE!'
+- name: boolean inflation_rate
+  inputs: [0.08, true]
+  expect: '#VALUE!'

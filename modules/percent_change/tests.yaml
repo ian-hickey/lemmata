@@ -1,0 +1,34 @@
+cases:
+- name: up 10 percent
+  inputs: [100, 110]
+  expect: 0.1
+- name: down 25 percent
+  inputs: [200, 150]
+  expect: -0.25
+- name: no change
+  inputs: [50, 50]
+  expect: 0
+- name: doubles
+  inputs: [40, 80]
+  expect: 1
+- name: from a negative base, loss shrinks
+  inputs: [-100, -50]
+  expect: 0.5
+- name: from a negative base, loss grows
+  inputs: [-100, -150]
+  expect: -0.5
+- name: crosses zero
+  inputs: [-100, 100]
+  expect: 2
+- name: to zero
+  inputs: [80, 0]
+  expect: -1
+- name: zero old value
+  inputs: [0, 5]
+  expect: '#NUM!'
+- name: text old_value
+  inputs: [x, 110]
+  expect: '#VALUE!'
+- name: boolean new_value
+  inputs: [100, true]
+  expect: '#VALUE!'

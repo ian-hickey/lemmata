@@ -1,0 +1,4 @@
+LAMBDA(nominal_rate, inflation_rate,
+  IF(NOT(AND(ISNUMBER(nominal_rate), ISNUMBER(inflation_rate))), #VALUE!,
+  IF(OR(nominal_rate <= -1, inflation_rate <= -1), #NUM!,
+  (1 + nominal_rate) / (1 + inflation_rate) - 1)))

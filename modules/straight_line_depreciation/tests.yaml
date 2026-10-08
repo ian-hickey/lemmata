@@ -1,0 +1,32 @@
+cases:
+- name: microsoft sln example
+  inputs: [30000, 7500, 10]
+  expect: 2250
+  source: computed; https://support.microsoft.com/en-us/office/sln-function-cdb666e5-c1c6-40a7-806a-e695edc2f1c8 shows 2,250
+- name: no salvage
+  inputs: [12000, 0, 5]
+  expect: 2400
+- name: fractional life
+  inputs: [1000, 100, 2.5]
+  expect: 360
+- name: cost equal to salvage
+  inputs: [500, 500, 5]
+  expect: 0
+- name: zero cost and salvage
+  inputs: [0, 0, 3]
+  expect: 0
+- name: negative salvage
+  inputs: [1000, -1, 5]
+  expect: '#NUM!'
+- name: cost below salvage
+  inputs: [100, 200, 5]
+  expect: '#NUM!'
+- name: zero life
+  inputs: [1000, 100, 0]
+  expect: '#NUM!'
+- name: text cost
+  inputs: [x, 7500, 10]
+  expect: '#VALUE!'
+- name: boolean life
+  inputs: [30000, 7500, true]
+  expect: '#VALUE!'

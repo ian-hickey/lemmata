@@ -1,0 +1,33 @@
+id: percent_change
+name: LEMMA.PERCENT_CHANGE
+version: 0.1.0
+summary: 'Change from an old value to a new value as a share of the old value''s magnitude: (new_value - old_value) / ABS(old_value).'
+definition:
+  source: Wikipedia, Relative change
+  url: https://en.wikipedia.org/wiki/Relative_change
+  formula: (new_value - old_value) / ABS(old_value)
+parameters:
+- name: old_value
+  type: number
+  unit: any consistent unit
+  description: Starting value. Must not be zero.
+- name: new_value
+  type: number
+  unit: same as old_value
+  description: Ending value. Any sign.
+returns:
+  type: number
+  unit: decimal share
+  description: Change where 0.1 means up 10 percent and -0.1 means down 10 percent.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': old_value is zero.
+conventions:
+- 'Dividing by the absolute value keeps the sign meaningful when the old value is negative: a move from -100 to -50 is +0.5.'
+- Returns a decimal, not a percentage.
+tags:
+- analysis
+- growth
+- variance
+dependencies: []
+license: MIT-0

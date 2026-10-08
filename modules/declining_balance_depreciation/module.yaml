@@ -1,0 +1,44 @@
+id: declining_balance_depreciation
+name: LEMMA.DECLINING_BALANCE_DEPRECIATION
+version: 0.1.0
+summary: Depreciation charged in a given period under the declining-balance method at a chosen factor, never taking book value below salvage.
+definition:
+  source: Wikipedia, Depreciation, declining-balance method
+  url: https://en.wikipedia.org/wiki/Depreciation#Declining-balance_method
+  formula: book value at start of period * factor / life, capped at book value minus salvage, where book value = cost * (1 - factor / life) ^ (period - 1)
+parameters:
+- name: cost
+  type: number
+  unit: currency
+  description: Initial cost of the asset. Must be at least the salvage value.
+- name: salvage
+  type: number
+  unit: currency
+  description: Value at the end of its life. Must be zero or greater.
+- name: life
+  type: number
+  unit: periods
+  description: Useful life in periods. Must be greater than zero.
+- name: period
+  type: number
+  unit: periods
+  description: Which period, counting from 1. A whole number from 1 to life.
+- name: factor
+  type: number
+  unit: dimensionless
+  description: Multiple of the straight-line rate. 2 is double-declining. Must be greater than 0 and at most life.
+returns:
+  type: number
+  unit: currency per period
+  description: Charge for that period, zero once book value has reached salvage.
+errors:
+  '#VALUE!': An argument is not a number.
+  '#NUM!': salvage is negative, cost is below salvage, life is not positive, period is not a whole number from 1 to life, or factor is not in (0, life].
+conventions:
+- Equals Excel DDB(cost, salvage, life, period, factor).
+- No switch to straight-line; the charge simply stops at salvage.
+tags:
+- accounting
+- depreciation
+dependencies: []
+license: MIT-0

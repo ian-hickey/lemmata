@@ -1,0 +1,4 @@
+LAMBDA(start_value, end_value, income,
+  IF(NOT(AND(ISNUMBER(start_value), ISNUMBER(end_value), ISNUMBER(income))), #VALUE!,
+  IF(OR(start_value <= 0, end_value < 0), #NUM!,
+  (end_value + income - start_value) / start_value)))
