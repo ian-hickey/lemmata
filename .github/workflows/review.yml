@@ -19,10 +19,13 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   review:
     runs-on: ubuntu-latest
+    outputs:
+      verdict: ${{ steps.review.outputs.verdict }}
     env:
       PR: ${{ github.event.pull_request.number || inputs.pr }}
     steps:
@@ -69,3 +72,30 @@ jobs:
         run: |
           echo "The reviewer denied this module. See the report comment."
           exit 1
+
+  # A merge performed by the Actions token does not trigger push workflows, so
+  # once auto-merge lands the pull request this job dispatches publish itself.
+  publish-after-merge:
+    needs: review
+    if: needs.review.outputs.verdict == 'approve'
+    runs-on: ubuntu-latest
+    env:
+      PR: ${{ github.event.pull_request.number || inputs.pr }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Wait for the merge, then publish
+        run: |
+          for i in $(seq 1 45); do
+            state=$(gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json state -q .state)
+            case "$state" in
+              MERGED)
+                gh workflow run publish.yml --repo "$GITHUB_REPOSITORY" --ref main
+                echo "merged; publish dispatched"
+                exit 0 ;;
+              CLOSED)
+                echo "closed without merging"
+                exit 0 ;;
+            esac
+            sleep 20
+          done
+          echo "not merged within 15 minutes; the hourly publish backstop will pick it up"
