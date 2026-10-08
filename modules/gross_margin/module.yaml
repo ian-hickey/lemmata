@@ -1,0 +1,31 @@
+id: gross_margin
+name: LEMMA.GROSS_MARGIN
+version: 0.1.0
+summary: Gross margin as a share of revenue, (revenue - cost of goods sold) / revenue, returned as a decimal.
+definition:
+  source: Investopedia, Gross Margin
+  url: https://www.investopedia.com/terms/g/grossmargin.asp
+  formula: (revenue - cost_of_goods_sold) / revenue
+parameters:
+  - name: revenue
+    type: number
+    unit: currency
+    description: Net revenue for the period. Must be greater than zero.
+  - name: cost_of_goods_sold
+    type: number
+    unit: same as revenue
+    description: Direct cost of the goods or services sold in the same period. Must be zero or greater.
+returns:
+  type: number
+  unit: decimal share of revenue
+  description: Gross margin where 0.4 means 40 percent. Negative when cost exceeds revenue.
+errors:
+  "#VALUE!": An argument is not a number. Booleans and text are rejected.
+  "#NUM!": revenue is not positive, or cost_of_goods_sold is negative.
+conventions:
+  - Returns a decimal share, not a percentage.
+  - A cost above revenue gives a negative margin rather than an error.
+  - Both inputs cover the same period in the same currency.
+tags: [finance, margins, ratios]
+dependencies: []
+license: MIT-0

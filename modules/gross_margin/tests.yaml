@@ -1,0 +1,36 @@
+cases:
+  - name: forty percent margin
+    inputs: [100, 60]
+    expect: 0.4
+    source: computed from the definition
+  - name: quarter margin on large numbers
+    inputs: [200000, 150000]
+    expect: 0.25
+  - name: fractional inputs
+    inputs: [1000000, 123456.78]
+    expect: 0.87654322
+    source: computed from the definition, 1 - 0.12345678
+  - name: no cost is full margin
+    inputs: [100, 0]
+    expect: 1
+  - name: cost equal to revenue is zero
+    inputs: [100, 100]
+    expect: 0
+  - name: cost above revenue is negative
+    inputs: [100, 150]
+    expect: -0.5
+  - name: zero revenue
+    inputs: [0, 50]
+    expect: "#NUM!"
+  - name: negative revenue
+    inputs: [-100, 50]
+    expect: "#NUM!"
+  - name: negative cost
+    inputs: [100, -1]
+    expect: "#NUM!"
+  - name: text revenue
+    inputs: ["a", 50]
+    expect: "#VALUE!"
+  - name: boolean cost
+    inputs: [100, true]
+    expect: "#VALUE!"
